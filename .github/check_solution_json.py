@@ -8,7 +8,7 @@ TIMEOUT = 300
 OPT = [None, 14, 226, 12, 220, 206]
 
 OPTIMAL_STR = "optimal"
-UNOPTIMAL_STR = "unoptimal"
+SUBOPTIMAL_STR = "suboptimal"
 INCONSISTENT_STR = "inconsistent"
 TIMEOUT_STR = "timeout"
 
