@@ -55,7 +55,12 @@ def main(args):
             results = read_json_file(folder + "/" + results_file)
             # print(f"\tChecking results for instance {results_file}")
             inst_number = re.search("\d+", results_file).group()
+
+
             inst_number_int = int(inst_number)
+            instances_status[subfolder][inst_number_int] = {}
+            
+            
             if len(inst_number) == 1:
                 inst_number = "0" + inst_number
             inst_path = args[1] + "/inst" + inst_number + ".dat"
@@ -86,22 +91,22 @@ def main(args):
                 header = f"Solver {solver}, instance {inst_number}"
                 if result["time"] < 0 or result["time"] > TIMEOUT:
                     errors += [f"{header}: runtime unsound ({result['time']} sec.)"]
-                    instances_status[subfolder][inst_number_int] = {
+                    instances_status[subfolder][inst_number_int][solver] = {
                         "status": TIMEOUT_STR,
                         "time": result["time"]
                     }
-                    break
+                    continue
                 if "sol" not in result or not result["sol"] or result["sol"] == "N/A":
                     continue
                 max_dist = 0
                 n_collected = sum(len(p) for p in result["sol"])
                 if n_collected != n_items:
                     errors += [ f"{header}: solution {result['sol']} collects {n_collected} instead of {n_items} items" ]
-                    instances_status[subfolder][inst_number_int] = {
+                    instances_status[subfolder][inst_number_int][solver] = {
                         "status": INCONSISTENT_STR,
                         "time": result["time"]
                     }
-                    break
+                    continue
                 courier_id = 0
                 for path in result["sol"]:
                     dist = 0
@@ -116,43 +121,43 @@ def main(args):
                             path_size += sizes[curr_item]
                     if path_size > capacity[courier_id]:
                         errors += [ f"{header}: path {path} of courier {courier_id} has total size {path_size}, exceeding its capacity {capacity[courier_id]}" ]
-                        instances_status[subfolder][inst_number_int] = {
+                        instances_status[subfolder][inst_number_int][solver] = {
                             "status": INCONSISTENT_STR,
                             "time": result["time"]
                         }
-                        break
+                        continue
                     if dist > max_dist:
                         max_dist = dist
                         max_path = path
                         max_cour = courier_id
                     courier_id += 1
 
-                if inst_number_int in instances_status[subfolder]: break
+                if inst_number_int in instances_status[subfolder]: continue
 
                 if max_dist != result["obj"]:
                     errors += [ f"{header}: objective value {result['obj']} inconsistent with max. distance {max_dist} of path {max_path}, courier {max_cour})" ]
-                    instances_status[subfolder][inst_number_int] = {
+                    instances_status[subfolder][inst_number_int][solver] = {
                         "status": INCONSISTENT_STR,
                         "time": result["time"]
                     }
-                    break
+                    continue
                 i = int(inst_number)
                 if i < 6:
                     if result["optimal"]:
                         if result["obj"] != OPT[i]:
                             errors += [ f"{header}: claimed optimal value {result['obj']} inconsistent with actual optimal value {OPT[i]})" ]
-                            instances_status[subfolder][inst_number_int] = {
+                            instances_status[subfolder][inst_number_int][solver] = {
                                 "status": INCONSISTENT_STR,
                                 "time": result["time"]
                             }
 
-                        instances_status[subfolder][inst_number_int] = {
+                        instances_status[subfolder][inst_number_int][solver] = {
                             "status": OPTIMAL_STR,
                             "time": result["time"]
                         }
                     else:
                         warnings += [ f"{header}: instance {inst_number} not solved to optimality" ]
-                        instances_status[subfolder][inst_number_int] = {
+                        instances_status[subfolder][inst_number_int][solver] = {
                             "status": "unoptimal",
                             "time": result["time"]
                         }

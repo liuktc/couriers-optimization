@@ -3,6 +3,14 @@ import json
 import re
 
 
+
+def statusToOrdinal(status):
+    if status == "optimal": return 0
+    if status == "suboptimal": return 1
+    if status == "timeout": return 2
+    if status == "inconsistent": return 3
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="Update README statuses")
     parser.add_argument("--checks-file", type=str, required=True)
@@ -32,18 +40,31 @@ if __name__ == "__main__":
         for method in to_display_methods:
             badge = ""
 
-            if checks[method][instance]["status"] == "optimal":
-                badge = f"https://img.shields.io/badge/{method}-{checks[method][instance]['time']}_s-brightgreen"
-            elif checks[method][instance]["status"] == "suboptimal":
-                badge = f"https://img.shields.io/badge/{method}-{checks[method][instance]['time']}_s-orange"
-            elif checks[method][instance]["status"] == "inconsistent":
+            instance_tests = [ 
+                {
+                    "name": test_name,
+                    **status
+                } 
+                for test_name, status in checks[method][instance].items()
+            ]
+            instance_tests = sorted(instance_tests, key=lambda x: (statusToOrdinal(x["status"]), x["time"]))
+
+            best_instance_status = instance_tests[0]["status"]
+            best_instance_time = instance_tests[0]["time"]
+            best_instance_name = instance_tests[0]["name"]
+
+            if best_instance_status == "optimal":
+                badge = f"https://img.shields.io/badge/{method}-{best_instance_time}_s_({best_instance_name})-brightgreen"
+            elif best_instance_status == "suboptimal":
+                badge = f"https://img.shields.io/badge/{method}-{best_instance_time}_s_({best_instance_name})-orange"
+            elif best_instance_status == "inconsistent":
                 badge = f"https://img.shields.io/badge/{method}-Inconsistent-red"
-            elif checks[method][instance]["status"] == "timeout":
-                badge = f"https://img.shields.io/badge/{method}-Timeout-lightgray"
+            elif best_instance_status == "timeout":
+                badge = f"https://img.shields.io/badge/{method}-Timeout_({best_instance_name})-lightgray"
             else:
                 raise Exception("Unknown status")
             
-            status_md += f"[![{checks[method][instance]['status']}]({badge})]({badge}) | "
+            status_md += f"[![{best_instance_status}]({badge})]({badge}) | "
         status_md += "\n"
 
 
