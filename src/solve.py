@@ -2,6 +2,7 @@ from cp.solve import solve as cp_solve
 from sat.solve import solve as sat_solve
 from smt.solve import solve as smt_solve
 from milp.solve import solve as milp_solve
+from input_parser import parseInstanceFile
 import argparse
 import os
 import json
@@ -9,8 +10,13 @@ import json
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="Instance solver")
+    parser.add_argument("--instances-path", type=str, default="./instances")
+    parser.add_argument("--timeout", type=int, default=300)
     parser.add_argument("--output-path", type=str, default="./res")
     args = parser.parse_args()
+
+
+    instances = [ parseInstanceFile(os.path.join(args.instances_path, f)) for f in sorted(os.listdir(args.instances_path)) ]
 
 
     # Create output directories
@@ -33,7 +39,16 @@ if __name__ == "__main__":
     ]
 
     for out_dir, solve_fn in output_hierarchy:
-        results = solve_fn()
+        results = []
+
+        for instance in instances:
+            results.append( 
+                solve_fn(
+                    instance = instance,
+                    timeout = args.timeout
+                ) 
+            )
+
         for i, instance_result in enumerate(results):
             with open(os.path.join(out_dir, f"{i+1}.json"), "w") as f:
                 json.dump(instance_result, f, indent=3)
