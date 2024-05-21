@@ -14,31 +14,40 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
-            pip install -r ${GITHUB_WORKSPACE}/src/requirements.txt
+          pip install -r ${GITHUB_WORKSPACE}/src/requirements.txt
+
+      - name: Install MiniZinc
+        run: |
+          wget https://github.com/MiniZinc/MiniZincIDE/releases/download/2.8.4/MiniZincIDE-2.8.4-bundle-linux-x86_64.tgz
+          tar -xf MiniZincIDE-2.8.4-bundle-linux-x86_64.tgz
+          mv MiniZincIDE-2.8.4-bundle-linux-x86_64 minizinc
+          sudo cp -r minizinc/bin/* /usr/local/bin
+          sudo cp -r minizinc/lib/* /usr/local/lib
+          sudo cp -r minizinc/share/* /usr/local/share
 
 
       - name: Generate results
         run: |
-            cd ${GITHUB_WORKSPACE}/src
-            python3 solve.py --output-path=/tmp/res
+          cd ${GITHUB_WORKSPACE}/src
+          python3 solve.py --output-path=/tmp/res
 
       - name: Generate checks
         run: |
-            cd ${GITHUB_WORKSPACE}/.github
-            python3 check_solution_json.py ${GITHUB_WORKSPACE}/src/instances /tmp/res/ > /tmp/instances_checks.json
+          cd ${GITHUB_WORKSPACE}/.github
+          python3 check_solution_json.py ${GITHUB_WORKSPACE}/src/instances /tmp/res/ > /tmp/instances_checks.json
 
       - name: Update status in README
         run: |
-            cd ${GITHUB_WORKSPACE}/.github
-            python3 status_update.py --checks-file=/tmp/instances_checks.json --readme-file=${GITHUB_WORKSPACE}/README.md
+          cd ${GITHUB_WORKSPACE}/.github
+          python3 status_update.py --checks-file=/tmp/instances_checks.json --readme-file=${GITHUB_WORKSPACE}/README.md
 
 
       - name: Push status
         run: |
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git add ${GITHUB_WORKSPACE}/README.md
-            git commit -m "Update status" || true
-            git push || true
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add ${GITHUB_WORKSPACE}/README.md
+          git commit -m "Update status" || true
+          git push || true
