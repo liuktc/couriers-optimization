@@ -46,14 +46,18 @@ def solve(instance, timeout, cache={}, random_seed=42):
                     timeout = timedelta(seconds=timeout),
                     random_seed = random_seed
                 )
-            except:
-                time = timeout+1
+            except Exception as e:
+                logger.error(e)
+                time = 0
                 optimal = False
                 objective_value = None
                 sol = None
             else:
-                time = math.ceil(result.statistics["solveTime"].total_seconds()) if ("solveTime" in result.statistics) else timeout
-                optimal = result.status == Status.OPTIMAL_SOLUTION
+                if (result.status == Status.UNKNOWN) or ("solveTime" not in result.statistics): 
+                    time = -1
+                else:
+                    time = math.ceil(result.statistics["solveTime"].total_seconds())
+                optimal = (result.status == Status.OPTIMAL_SOLUTION)
                 if result.solution is None:
                     objective_value = None
                     sol = None
@@ -65,7 +69,10 @@ def solve(instance, timeout, cache={}, random_seed=42):
                 "time": time,
                 "optimal": optimal,
                 "obj": objective_value,
-                "sol": sol
+                "sol": sol,
+                "_extras": {
+                    "minizinc_statistics": str(result.statistics)
+                }
             }
 
     return out_results

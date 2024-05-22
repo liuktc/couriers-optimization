@@ -38,6 +38,10 @@ if __name__ == "__main__":
 
         status_md += f"| {instance} | "
         for method in to_display_methods:
+            if len(checks[method][instance]) == 0:
+                status_md += "| "
+                continue
+
             badge = ""
 
             instance_tests = [ 
@@ -60,7 +64,7 @@ if __name__ == "__main__":
             elif best_instance_status == "inconsistent":
                 badge = f"https://img.shields.io/badge/{method}-Inconsistent-red"
             elif best_instance_status == "timeout":
-                badge = f"https://img.shields.io/badge/{method}-Timeout_({best_instance_name})-lightgray"
+                badge = f"https://img.shields.io/badge/{method}-Timeout-lightgray"
             else:
                 raise Exception("Unknown status")
             

@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARN)
 
-    instances = [ parseInstanceFile(os.path.join(args.instances_path, f)) for f in sorted(os.listdir(args.instances_path)) ]
+    instances = [ (i+1, parseInstanceFile(os.path.join(args.instances_path, f))) for i, f in enumerate(sorted(os.listdir(args.instances_path))) ]
 
 
     # Create output directories
@@ -53,15 +53,15 @@ if __name__ == "__main__":
     for out_dir, solve_fn in output_hierarchy:
         logger.info(f"Starting processing for {out_dir}")
 
-        for i, instance in enumerate(instances):
+        for instance_number, instance in instances:
             # Init cache
             if args.overwrite_old:
                 cached_results = {}
             else:
-                cached_results = __loadCache(os.path.join(out_dir, f"{i+1}.json"))
+                cached_results = __loadCache(os.path.join(out_dir, f"{instance_number}.json"))
 
             # Solving instance
-            logger.info(f"Starting instance {i+1}")
+            logger.info(f"Starting instance {instance_number}")
             instance_results = solve_fn(
                 instance = instance,
                 timeout = args.timeout,
@@ -73,7 +73,7 @@ if __name__ == "__main__":
                     instance_results[key] = cached_results[key]
 
             # Saving instance results
-            results_file_path = os.path.join(out_dir, f"{i+1}.json")
+            results_file_path = os.path.join(out_dir, f"{instance_number}.json")
             with open(results_file_path, "w") as f:
                 logger.info(f"Saving results in {results_file_path}")
                 json.dump(instance_results, f, indent=3)
