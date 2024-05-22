@@ -12,6 +12,7 @@ SUBOPTIMAL_STR = "suboptimal"
 INCONSISTENT_STR = "inconsistent"
 TIMEOUT_STR = "timeout"
 OUT_OF_MEMORY_STR = "out-of-memory"
+CRASHED_STR = "crashed"
 
 
 def read_json_file(file_path):
@@ -28,12 +29,20 @@ def read_json_file(file_path):
 
 
 def didTimeout(result):
-    return (result["time"] < 0 or result["time"] > TIMEOUT)
+    return (result["time"] >= TIMEOUT) and (result["sol"] is None)
+
 
 def isOutOfMemory(result):
-    if "_extras" in result and "out_of_memory" in result["_extras"]:
+    if ("_extras" in result) and ("out_of_memory" in result["_extras"]):
         return result["_extras"]["out_of_memory"]
     return False
+
+
+def didCrash(result):
+    if ("_extras" in result) and ("has_crashed" in result["_extras"]):
+        return result["_extras"]["has_crashed"]
+    return False
+
 
 def isInconsistent(result, instance_num, n_items, dist_matrix, sizes, capacity):
     if "sol" not in result or not result["sol"] or result["sol"] == "N/A":
@@ -74,11 +83,11 @@ def isInconsistent(result, instance_num, n_items, dist_matrix, sizes, capacity):
 
 
 def isSuboptimal(result):
-    return not result["optimal"]
+    return (not result["optimal"]) and (result["sol"] is not None)
 
 
 def isOptimal(result):
-    return result["optimal"]
+    return (result["optimal"]) and (result["sol"] is not None)
 
 
 
@@ -144,14 +153,19 @@ def main(args):
                 assert dist_matrix[i][i] == 0
 
             for solver, result in results.items():
-                if didTimeout(result):
-                    instances_status[subfolder][inst_number_int][solver] = {
-                        "status": TIMEOUT_STR,
-                        "time": -1
-                    }
-                elif isOutOfMemory(result):
+                if isOutOfMemory(result):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": OUT_OF_MEMORY_STR,
+                        "time": -1
+                    }
+                elif didCrash(result):
+                    instances_status[subfolder][inst_number_int][solver] = {
+                        "status": CRASHED_STR,
+                        "time": -1
+                    }
+                elif didTimeout(result):
+                    instances_status[subfolder][inst_number_int][solver] = {
+                        "status": TIMEOUT_STR,
                         "time": -1
                     }
                 elif isInconsistent(result, inst_number_int, n_items, dist_matrix, sizes, capacity):
