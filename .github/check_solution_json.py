@@ -11,6 +11,7 @@ OPTIMAL_STR = "optimal"
 SUBOPTIMAL_STR = "suboptimal"
 INCONSISTENT_STR = "inconsistent"
 TIMEOUT_STR = "timeout"
+OUT_OF_MEMORY_STR = "out-of-memory"
 
 
 def read_json_file(file_path):
@@ -29,6 +30,10 @@ def read_json_file(file_path):
 def didTimeout(result):
     return (result["time"] < 0 or result["time"] > TIMEOUT)
 
+def isOutOfMemory(result):
+    if "_extras" in result and "out_of_memory" in result["_extras"]:
+        return result["_extras"]["out_of_memory"]
+    return False
 
 def isInconsistent(result, instance_num, n_items, dist_matrix, sizes, capacity):
     if "sol" not in result or not result["sol"] or result["sol"] == "N/A":
@@ -142,12 +147,17 @@ def main(args):
                 if didTimeout(result):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": TIMEOUT_STR,
-                        "time": result["time"]
+                        "time": -1
+                    }
+                elif isOutOfMemory(result):
+                    instances_status[subfolder][inst_number_int][solver] = {
+                        "status": OUT_OF_MEMORY_STR,
+                        "time": -1
                     }
                 elif isInconsistent(result, inst_number_int, n_items, dist_matrix, sizes, capacity):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": INCONSISTENT_STR,
-                        "time": result["time"]
+                        "time": -1
                     }
                 elif isSuboptimal(result):
                     instances_status[subfolder][inst_number_int][solver] = {

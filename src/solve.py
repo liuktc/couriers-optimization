@@ -6,6 +6,7 @@ from input_parser import parseInstanceFile
 import argparse
 import os
 import json
+import resource
 import logging
 logger = logging.getLogger(__name__)
 
@@ -24,12 +25,21 @@ if __name__ == "__main__":
     parser.add_argument("--output-path", type=str, default="./res")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--overwrite-old", action="store_true", help="If set, old results with the same name will be run again")
+    parser.add_argument("--instances", type=lambda arg: sorted([*map(int, arg.split(","))]), required=False, default=[], 
+                        help="Number of the instances to run, comma separated")
+    parser.add_argument("--mem-limit", type=int, required=False, default=-1, help="Memory usage limit in MB")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARN)
 
+    # Load and filter instances (if needed)
     instances = [ (i+1, parseInstanceFile(os.path.join(args.instances_path, f))) for i, f in enumerate(sorted(os.listdir(args.instances_path))) ]
+    if len(args.instances) != 0:
+        instances = [ (num, inst) for num, inst in instances if num in args.instances]
 
+    # Set memory limit if needed
+    if args.mem_limit >= 0:
+        resource.setrlimit(resource.RLIMIT_AS, (args.mem_limit*1024*1024, args.mem_limit*1024*1024))
 
     # Create output directories
     results_dir = args.output_path

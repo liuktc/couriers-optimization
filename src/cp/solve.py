@@ -52,6 +52,8 @@ def solve(instance, timeout, cache={}, random_seed=42):
                 optimal = False
                 objective_value = None
                 sol = None
+                minizinc_statistics_str = None
+                out_of_memory = (str(e) == "out of memory" or "std::bad_alloc" in str(e))
             else:
                 if (result.status == Status.UNKNOWN) or ("solveTime" not in result.statistics): 
                     time = -1
@@ -64,6 +66,8 @@ def solve(instance, timeout, cache={}, random_seed=42):
                 else:
                     objective_value = result["objective"]
                     sol = [[x for x in sol if x != 0] for sol in result["T"]]
+                minizinc_statistics_str = str(result.statistics)
+                out_of_memory = False
 
             out_results[result_key] = {
                 "time": time,
@@ -71,7 +75,8 @@ def solve(instance, timeout, cache={}, random_seed=42):
                 "obj": objective_value,
                 "sol": sol,
                 "_extras": {
-                    "minizinc_statistics": str(result.statistics)
+                    "minizinc_statistics": minizinc_statistics_str,
+                    "out_of_memory": out_of_memory
                 }
             }
 

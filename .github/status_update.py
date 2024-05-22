@@ -8,7 +8,8 @@ def statusToOrdinal(status):
     if status == "optimal": return 0
     if status == "suboptimal": return 1
     if status == "timeout": return 2
-    if status == "inconsistent": return 3
+    if status == "out-of-memory": return 3
+    if status == "inconsistent": return 4
 
 
 if __name__ == "__main__":
@@ -65,6 +66,8 @@ if __name__ == "__main__":
                 badge = f"https://img.shields.io/badge/{method}-Inconsistent-red"
             elif best_instance_status == "timeout":
                 badge = f"https://img.shields.io/badge/{method}-Timeout-lightgray"
+            elif best_instance_status == "out-of-memory":
+                badge = f"https://img.shields.io/badge/{method}-Out_of_memory-fedcba"
             else:
                 raise Exception("Unknown status")
             
