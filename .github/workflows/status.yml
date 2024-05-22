@@ -31,12 +31,12 @@ jobs:
       - name: Generate results
         run: |
           cd ${GITHUB_WORKSPACE}/src
-          python3 solve.py --output-path=/tmp/res
+          python3 solve.py --verbose --output-path=${GITHUB_WORKSPACE}/.github/results
 
       - name: Generate checks
         run: |
           cd ${GITHUB_WORKSPACE}/.github
-          python3 check_solution_json.py ${GITHUB_WORKSPACE}/src/instances /tmp/res/ > /tmp/instances_checks.json
+          python3 check_solution_json.py ${GITHUB_WORKSPACE}/src/instances ${GITHUB_WORKSPACE}/.github/results/ > /tmp/instances_checks.json
 
       - name: Update status in README
         run: |
@@ -49,5 +49,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add ${GITHUB_WORKSPACE}/README.md
+          git add ${GITHUB_WORKSPACE}/.github/results/*
           git commit -m "Update status" || true
           git push || true

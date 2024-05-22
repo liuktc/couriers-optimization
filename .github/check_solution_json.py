@@ -97,6 +97,10 @@ def main(args):
                     }
                     continue
                 if "sol" not in result or not result["sol"] or result["sol"] == "N/A":
+                    instances_status[subfolder][inst_number_int][solver] = {
+                        "status": INCONSISTENT_STR,
+                        "time": result["time"]
+                    }
                     continue
                 max_dist = 0
                 n_collected = sum(len(p) for p in result["sol"])
@@ -132,7 +136,7 @@ def main(args):
                         max_cour = courier_id
                     courier_id += 1
 
-                if inst_number_int in instances_status[subfolder]: continue
+                if solver in instances_status[subfolder][inst_number_int]: continue
 
                 if max_dist != result["obj"]:
                     errors += [ f"{header}: objective value {result['obj']} inconsistent with max. distance {max_dist} of path {max_path}, courier {max_cour})" ]
@@ -150,15 +154,26 @@ def main(args):
                                 "status": INCONSISTENT_STR,
                                 "time": result["time"]
                             }
-
+                        else:
+                            instances_status[subfolder][inst_number_int][solver] = {
+                                "status": OPTIMAL_STR,
+                                "time": result["time"]
+                            }
+                    else:
+                        warnings += [ f"{header}: instance {inst_number} not solved to optimality" ]
+                        instances_status[subfolder][inst_number_int][solver] = {
+                            "status": SUBOPTIMAL_STR,
+                            "time": result["time"]
+                        }
+                else:
+                    if result["optimal"]:
                         instances_status[subfolder][inst_number_int][solver] = {
                             "status": OPTIMAL_STR,
                             "time": result["time"]
                         }
                     else:
-                        warnings += [ f"{header}: instance {inst_number} not solved to optimality" ]
                         instances_status[subfolder][inst_number_int][solver] = {
-                            "status": "unoptimal",
+                            "status": SUBOPTIMAL_STR,
                             "time": result["time"]
                         }
     # print("\nCheck terminated.")

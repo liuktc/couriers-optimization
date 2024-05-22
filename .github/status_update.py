@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
             best_instance_status = instance_tests[0]["status"]
             best_instance_time = instance_tests[0]["time"]
-            best_instance_name = instance_tests[0]["name"]
+            best_instance_name = instance_tests[0]["name"].replace("_", "__").replace("-", "--")
 
             if best_instance_status == "optimal":
                 badge = f"https://img.shields.io/badge/{method}-{best_instance_time}_s_({best_instance_name})-brightgreen"

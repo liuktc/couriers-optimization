@@ -3,6 +3,7 @@ from minizinc.result import Status
 import pathlib
 import os
 from datetime import timedelta
+import math
 import logging
 logger = logging.getLogger(__name__)
 
@@ -46,12 +47,12 @@ def solve(instance, timeout, cache={}, random_seed=42):
                     random_seed = random_seed
                 )
             except:
-                time = timeout
+                time = timeout+1
                 optimal = False
                 objective_value = None
                 sol = None
             else:
-                time = round(result.statistics["solveTime"].total_seconds()) if ("solveTime" in result.statistics) else timeout
+                time = math.ceil(result.statistics["solveTime"].total_seconds()) if ("solveTime" in result.statistics) else timeout
                 optimal = result.status == Status.OPTIMAL_SOLUTION
                 if result.solution is None:
                     objective_value = None
