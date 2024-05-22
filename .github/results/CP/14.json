@@ -1,0 +1,22 @@
+{
+   "milp_like-gecode": {
+      "time": 0,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": null,
+         "out_of_memory": false
+      }
+   },
+   "milp_like-chuffed": {
+      "time": -1,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": "{}",
+         "out_of_memory": false
+      }
+   }
+}

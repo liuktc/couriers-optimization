@@ -1,0 +1,38 @@
+{
+   "milp_like-gecode": {
+      "time": 1,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 116, 'flatIntVars': 51, 'flatBoolConstraints': 90, 'flatIntConstraints': 99, 'evaluatedReifiedConstraints': 24, 'evaluatedHalfReifiedConstraints': 68, 'eliminatedImplications': 10, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=114207), 'time': datetime.timedelta(microseconds=131000), 'initTime': datetime.timedelta(microseconds=1265), 'solveTime': datetime.timedelta(microseconds=390), 'solutions': 2, 'variables': 167, 'propagators': 185, 'propagations': 1408, 'nodes': 17, 'failures': 7, 'restarts': 0, 'peakDepth': 3, 'nSolutions': 2}",
+         "out_of_memory": false
+      }
+   },
+   "milp_like-chuffed": {
+      "time": 1,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 134, 'flatIntVars': 55, 'flatBoolConstraints': 99, 'flatIntConstraints': 117, 'evaluatedReifiedConstraints': 66, 'evaluatedHalfReifiedConstraints': 44, 'eliminatedImplications': 10, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=116571), 'time': datetime.timedelta(microseconds=5000), 'nodes': 38, 'failures': 7, 'restarts': 2, 'variables': 3182, 'intVars': 67, 'boolVariables': 3113, 'propagators': 64, 'propagations': 539, 'peakDepth': 16, 'nogoods': 7, 'backjumps': 5, 'peakMem': 0.0, 'initTime': datetime.timedelta(microseconds=4000), 'solveTime': datetime.timedelta(microseconds=1000), 'objective': 206, 'optTime': datetime.timedelta(microseconds=1000), 'baseMem': 0.0, 'trailMem': 0.01, 'randomSeed': 42, 'nSolutions': 2}",
+         "out_of_memory": false
+      }
+   }
+}
