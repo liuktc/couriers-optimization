@@ -1,6 +1,7 @@
 import argparse
 import json
 import re
+import os
 
 
 
@@ -16,6 +17,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="Update README statuses")
     parser.add_argument("--checks-file", type=str, required=True)
     parser.add_argument("--readme-file", type=str, required=True)
+    parser.add_argument("--results-git-path", type=str, required=True)
     args = parser.parse_args()
 
     to_display_methods = ["CP", "SAT", "SMT", "MILP"]
@@ -71,7 +73,8 @@ if __name__ == "__main__":
             else:
                 raise Exception("Unknown status")
             
-            status_md += f"[![{best_instance_status}]({badge})]({badge}) | "
+            results_path = os.path.join(args.results_git_path, method, f"{instance}.json")
+            status_md += f"[![{best_instance_status}]({badge})]({results_path}) | "
         status_md += "\n"
 
 

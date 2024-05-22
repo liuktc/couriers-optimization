@@ -22,17 +22,20 @@ jobs:
 
       - name: Generate results
         run: |
-          docker run -v ${GITHUB_WORKSPACE}/.github/results:/cdmo/results cdmo --verbose --timeout=300 --mem-limit=10240
+          docker run -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo --verbose --timeout=300 --mem-limit=10240
 
       - name: Generate checks
         run: |
           cd ${GITHUB_WORKSPACE}/.github
-          python3 check_solution_json.py ${GITHUB_WORKSPACE}/src/instances ${GITHUB_WORKSPACE}/.github/results/ > /tmp/instances_checks.json
+          python3 check_solution_json.py ${GITHUB_WORKSPACE}/src/instances ${GITHUB_WORKSPACE}/results/ > /tmp/instances_checks.json
 
       - name: Update status in README
         run: |
           cd ${GITHUB_WORKSPACE}/.github
-          python3 status_update.py --checks-file=/tmp/instances_checks.json --readme-file=${GITHUB_WORKSPACE}/README.md
+          python3 status_update.py \
+            --checks-file=/tmp/instances_checks.json \
+            --readme-file=${GITHUB_WORKSPACE}/README.md \
+            --results-git-path=./results
 
 
       - name: Push status
@@ -40,6 +43,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add ${GITHUB_WORKSPACE}/README.md
-          git add ${GITHUB_WORKSPACE}/.github/results/*
+          git add ${GITHUB_WORKSPACE}/results/*
           git commit -m "Update status" || true
           git push || true
