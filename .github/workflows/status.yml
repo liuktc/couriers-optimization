@@ -8,7 +8,7 @@ on:
 
 jobs:
   check-status:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout repo
@@ -31,7 +31,7 @@ jobs:
       - name: Generate results
         run: |
           cd ${GITHUB_WORKSPACE}/src
-          python3 solve.py --verbose --output-path=${GITHUB_WORKSPACE}/.github/results
+          python3 solve.py --timeout=120 --verbose --output-path=${GITHUB_WORKSPACE}/.github/results
 
       - name: Generate checks
         run: |
