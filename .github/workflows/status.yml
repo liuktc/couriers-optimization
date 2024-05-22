@@ -8,30 +8,21 @@ on:
 
 jobs:
   check-status:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install Python dependencies
+      - name: Build Dockerfile
         run: |
-          pip install -r ${GITHUB_WORKSPACE}/src/requirements.txt
-
-      - name: Install MiniZinc
-        run: |
-          wget https://github.com/MiniZinc/MiniZincIDE/releases/download/2.8.4/MiniZincIDE-2.8.4-bundle-linux-x86_64.tgz
-          tar -xf MiniZincIDE-2.8.4-bundle-linux-x86_64.tgz
-          mv MiniZincIDE-2.8.4-bundle-linux-x86_64 minizinc
-          sudo cp -r minizinc/bin/* /usr/local/bin
-          sudo cp -r minizinc/lib/* /usr/local/lib
-          sudo cp -r minizinc/share/* /usr/local/share
+          cd ${GITHUB_WORKSPACE}/src
+          docker build . -t cdmo
 
 
       - name: Generate results
         run: |
-          cd ${GITHUB_WORKSPACE}/src
-          python3 solve.py --timeout=120 --verbose --output-path=${GITHUB_WORKSPACE}/.github/results
+          docker run -v ${GITHUB_WORKSPACE}/.github/results:/cdmo/results cdmo --timeout=2 --verbose
 
       - name: Generate checks
         run: |
