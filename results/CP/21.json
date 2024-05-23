@@ -1,0 +1,24 @@
+{
+   "milp_like-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": null,
+         "out_of_memory": false,
+         "has_crashed": true
+      }
+   },
+   "milp_like-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 2087340, 'flatIntVars': 431739, 'flatBoolConstraints': 1264129, 'flatIntConstraints': 1269559, 'evaluatedReifiedConstraints': 1235460, 'evaluatedHalfReifiedConstraints': 431640, 'eliminatedImplications': 2900, 'method': 'minimize', 'flatTime': datetime.timedelta(seconds=88, microseconds=190400), 'nSolutions': 0}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   }
+}

@@ -1,0 +1,52 @@
+{
+   "milp_like-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            4,
+            2
+         ],
+         [
+            3,
+            6
+         ],
+         [
+            7,
+            1
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 834, 'flatIntVars': 277, 'flatBoolConstraints': 651, 'flatIntConstraints': 555, 'evaluatedReifiedConstraints': 180, 'evaluatedHalfReifiedConstraints': 450, 'eliminatedImplications': 27, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=135523), 'time': datetime.timedelta(microseconds=240000), 'initTime': datetime.timedelta(microseconds=6151), 'solveTime': datetime.timedelta(microseconds=121311), 'solutions': 2, 'variables': 1111, 'propagators': 1204, 'propagations': 1317334, 'nodes': 6947, 'failures': 3472, 'restarts': 0, 'peakDepth': 88, 'nSolutions': 2}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "milp_like-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            6,
+            3
+         ],
+         [
+            4,
+            2
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 981, 'flatIntVars': 296, 'flatBoolConstraints': 672, 'flatIntConstraints': 713, 'evaluatedReifiedConstraints': 495, 'evaluatedHalfReifiedConstraints': 282, 'eliminatedImplications': 27, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=140588), 'time': datetime.timedelta(microseconds=122000), 'nodes': 6486, 'failures': 3224, 'restarts': 2, 'variables': 6871, 'intVars': 298, 'boolVariables': 6571, 'propagators': 250, 'propagations': 227867, 'peakDepth': 109, 'nogoods': 3224, 'backjumps': 3064, 'peakMem': 0.0, 'initTime': datetime.timedelta(microseconds=12000), 'solveTime': datetime.timedelta(microseconds=110000), 'objective': 12, 'optTime': datetime.timedelta(microseconds=29000), 'baseMem': 0.0, 'trailMem': 0.02, 'randomSeed': 42, 'nSolutions': 2}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   }
+}
