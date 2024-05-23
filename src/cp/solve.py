@@ -56,7 +56,11 @@ def solve(instance, timeout, cache={}, random_seed=42):
                 out_of_memory = (str(e) == "out of memory" or "std::bad_alloc" in str(e))
                 has_crashed = True
             else:
-                if (result.status == Status.UNKNOWN) or ("solveTime" not in result.statistics): 
+                print(result.status)
+                if ((result.status == Status.UNKNOWN) or 
+                    (result.status == Status.SATISFIED) or 
+                    ("solveTime" not in result.statistics)
+                ): 
                     time = timeout
                 else:
                     time = math.floor(result.statistics["solveTime"].total_seconds())
