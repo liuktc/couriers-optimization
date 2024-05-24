@@ -36,5 +36,43 @@
          "out_of_memory": false,
          "has_crashed": false
       }
+   },
+   "n_n_matrix-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 104, 'flatIntVars': 60, 'flatBoolConstraints': 60, 'flatIntConstraints': 135, 'evaluatedReifiedConstraints': 42, 'evaluatedHalfReifiedConstraints': 56, 'eliminatedImplications': 10, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=107604), 'time': datetime.timedelta(microseconds=125000), 'initTime': datetime.timedelta(microseconds=1304), 'solveTime': datetime.timedelta(microseconds=309), 'solutions': 2, 'variables': 164, 'propagators': 188, 'propagations': 1342, 'nodes': 9, 'failures': 3, 'restarts': 0, 'peakDepth': 3, 'nSolutions': 2}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "n_n_matrix-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 113, 'flatIntVars': 64, 'flatBoolConstraints': 69, 'flatIntConstraints': 144, 'evaluatedReifiedConstraints': 69, 'evaluatedHalfReifiedConstraints': 38, 'eliminatedImplications': 10, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=110985), 'time': datetime.timedelta(microseconds=4000), 'nodes': 24, 'failures': 15, 'restarts': 1, 'variables': 3237, 'intVars': 77, 'boolVariables': 3158, 'propagators': 64, 'propagations': 677, 'peakDepth': 7, 'nogoods': 15, 'backjumps': 5, 'peakMem': 0.0, 'initTime': datetime.timedelta(microseconds=4000), 'solveTime': datetime.timedelta(0), 'objective': 206, 'optTime': datetime.timedelta(0), 'baseMem': 0.0, 'trailMem': 0.01, 'randomSeed': 42, 'nSolutions': 1}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
    }
 }

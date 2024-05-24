@@ -20,5 +20,27 @@
          "out_of_memory": false,
          "has_crashed": true
       }
+   },
+   "n_n_matrix-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 2249520, 'flatIntVars': 792722, 'flatBoolConstraints': 782680, 'flatIntConstraints': 2971873, 'evaluatedReifiedConstraints': 1466820, 'evaluatedHalfReifiedConstraints': 767600, 'eliminatedImplications': 3860, 'method': 'minimize', 'flatTime': datetime.timedelta(seconds=142, microseconds=70000), 'nSolutions': 0}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "n_n_matrix-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 2286001, 'flatIntVars': 796540, 'flatBoolConstraints': 783253, 'flatIntConstraints': 3011980, 'evaluatedReifiedConstraints': 2232921, 'evaluatedHalfReifiedConstraints': 37980, 'eliminatedImplications': 3860, 'method': 'minimize', 'flatTime': datetime.timedelta(seconds=148, microseconds=212000), 'nSolutions': 0}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
    }
 }

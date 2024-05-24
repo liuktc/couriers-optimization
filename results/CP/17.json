@@ -20,5 +20,27 @@
          "out_of_memory": true,
          "has_crashed": true
       }
+   },
+   "n_n_matrix-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": null,
+         "out_of_memory": true,
+         "has_crashed": true
+      }
+   },
+   "n_n_matrix-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": null,
+         "out_of_memory": true,
+         "has_crashed": true
+      }
    }
 }

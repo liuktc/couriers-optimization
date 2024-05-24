@@ -62,5 +62,69 @@
          "out_of_memory": false,
          "has_crashed": false
       }
+   },
+   "n_n_matrix-gecode": {
+      "time": 95,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            8,
+            4
+         ],
+         [
+            7,
+            6
+         ],
+         [
+            3
+         ],
+         [
+            5
+         ],
+         [
+            2
+         ],
+         [
+            1
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 1782, 'flatIntVars': 755, 'flatBoolConstraints': 930, 'flatIntConstraints': 2140, 'evaluatedReifiedConstraints': 846, 'evaluatedHalfReifiedConstraints': 798, 'eliminatedImplications': 60, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=166584), 'time': datetime.timedelta(microseconds=227000), 'initTime': datetime.timedelta(microseconds=14237), 'solveTime': datetime.timedelta(seconds=95, microseconds=167100), 'solutions': 6, 'variables': 2537, 'propagators': 3112, 'propagations': 779270659, 'nodes': 3029269, 'failures': 1514629, 'restarts': 0, 'peakDepth': 61, 'nSolutions': 6}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "n_n_matrix-chuffed": {
+      "time": 8,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            7
+         ],
+         [
+            3
+         ],
+         [
+            5
+         ],
+         [
+            6,
+            2,
+            1
+         ],
+         [
+            8
+         ],
+         [
+            4
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 1846, 'flatIntVars': 801, 'flatBoolConstraints': 954, 'flatIntConstraints': 2241, 'evaluatedReifiedConstraints': 1294, 'evaluatedHalfReifiedConstraints': 414, 'eliminatedImplications': 60, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=171256), 'time': datetime.timedelta(seconds=8, microseconds=870000), 'nodes': 124910, 'failures': 49607, 'restarts': 3, 'variables': 51305, 'intVars': 852, 'boolVariables': 50451, 'propagators': 548, 'propagations': 7677922, 'peakDepth': 140, 'nogoods': 49607, 'backjumps': 75154, 'peakMem': 0.0, 'initTime': datetime.timedelta(microseconds=52000), 'solveTime': datetime.timedelta(seconds=8, microseconds=818000), 'objective': 322, 'optTime': datetime.timedelta(microseconds=16000), 'baseMem': 0.0, 'trailMem': 0.28, 'randomSeed': 42, 'nSolutions': 3}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
    }
 }

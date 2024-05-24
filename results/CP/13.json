@@ -20,5 +20,81 @@
          "out_of_memory": false,
          "has_crashed": false
       }
+   },
+   "n_n_matrix-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1278,
+      "sol": [
+         [
+            47,
+            44,
+            41,
+            38,
+            35,
+            32,
+            29,
+            26,
+            23,
+            20,
+            17,
+            13,
+            6,
+            3,
+            10,
+            9,
+            7,
+            16,
+            1
+         ],
+         [
+            46,
+            43,
+            40,
+            37,
+            34,
+            31,
+            28,
+            25,
+            22,
+            19,
+            15,
+            12,
+            8,
+            5,
+            2
+         ],
+         [
+            45,
+            42,
+            39,
+            36,
+            33,
+            30,
+            27,
+            24,
+            21,
+            18,
+            14,
+            11,
+            4
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 22068, 'flatIntVars': 9806, 'flatBoolConstraints': 8538, 'flatIntConstraints': 28489, 'evaluatedReifiedConstraints': 13527, 'evaluatedHalfReifiedConstraints': 8004, 'eliminatedImplications': 147, 'method': 'minimize', 'flatTime': datetime.timedelta(seconds=1, microseconds=53970), 'time': datetime.timedelta(seconds=113, microseconds=807000), 'initTime': datetime.timedelta(microseconds=202610), 'solveTime': datetime.timedelta(seconds=298, microseconds=957000), 'solutions': 47, 'variables': 31874, 'propagators': 37165, 'propagations': 722302599, 'nodes': 1288562, 'failures': 643420, 'restarts': 0, 'peakDepth': 1862, 'nSolutions': 47}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "n_n_matrix-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 24277, 'flatIntVars': 9945, 'flatBoolConstraints': 8679, 'flatIntConstraints': 30789, 'evaluatedReifiedConstraints': 22363, 'evaluatedHalfReifiedConstraints': 1377, 'eliminatedImplications': 147, 'method': 'minimize', 'flatTime': datetime.timedelta(seconds=1, microseconds=115910), 'nSolutions': 0}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
    }
 }
