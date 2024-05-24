@@ -23,7 +23,7 @@ constraint forall(i in COURIERS)(
 
 % All packages should be taken by exactly one courier.
 constraint forall(j in PACKS)(
-  exactly(n-1, [ A[j, k] | k in ORDERING], 0)
+  count_eq( [ A[j, k] | k in ORDERING], 0, n-1 )
 );
 
 
