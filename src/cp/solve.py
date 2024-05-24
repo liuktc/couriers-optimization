@@ -13,6 +13,11 @@ experiments_setup = [
         "name": "milp_like",
         "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./milp_like.mzn") ),
         "solvers": ["gecode", "chuffed"]
+    },
+    {
+        "name": "n_n_matrix",
+        "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix.mzn") ),
+        "solvers": ["gecode", "chuffed"]
     }
 ]
 
