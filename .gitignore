@@ -164,7 +164,8 @@ src/res
 
 
 # Latex
-*.aux
-*.fdb_latexmk
-*.fls
-*.synctex.gz
+report/*.aux
+report/*.fdb_latexmk
+report/*.fls
+report/*.synctex.gz
+report/*.out

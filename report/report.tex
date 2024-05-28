@@ -1,9 +1,31 @@
 \documentclass{article}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage[all]{hypcap} % Links hyperref to object top and not caption
+\usepackage[nameinlink]{cleveref}   
+\usepackage{array, makecell, multirow, booktabs}
+\hypersetup{ colorlinks, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black, linktoc=all }
+
+\let\endtitlepage\relax
+
 
 \begin{document}
 
-    \begin{center}
-        Project title
-    \end{center}
+    \begin{titlepage}
+        \begin{center}
+            {\LARGE Very\_cool\_project.mzn}
+            \vspace*{1em}
+            
+            Valerio Costa, Tian Cheng Xia
 
+            \{valerio.costa, tiancheng.xia\}@studio.unibo.it
+        \end{center}
+    \end{titlepage}
+
+
+    \section{Introduction}
+
+    \input{./sections/cp.tex}    
+    \input{./sections/sat.tex}    
+    \input{./sections/smt.tex}    
+    \input{./sections/mip.tex}    
 \end{document}
