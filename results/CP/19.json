@@ -42,5 +42,27 @@
          "out_of_memory": false,
          "has_crashed": false
       }
+   },
+   "n_n_matrix_symm-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 324720, 'flatIntVars': 115682, 'flatBoolConstraints': 120280, 'flatIntConstraints': 422990, 'evaluatedReifiedConstraints': 204420, 'evaluatedHalfReifiedConstraints': 114800, 'eliminatedImplications': 1460, 'method': 'minimize', 'flatTime': datetime.timedelta(seconds=28, microseconds=928100), 'nSolutions': 0}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "n_n_matrix_symm-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 340121, 'flatIntVars': 117100, 'flatBoolConstraints': 130779, 'flatIntConstraints': 434594, 'evaluatedReifiedConstraints': 318088, 'evaluatedHalfReifiedConstraints': 13980, 'eliminatedImplications': 1460, 'method': 'minimize', 'flatTime': datetime.timedelta(seconds=18, microseconds=490400), 'nSolutions': 0}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
    }
 }
