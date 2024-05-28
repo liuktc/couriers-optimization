@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate results
         run: |
-          docker run -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo --verbose --timeout=300 --mem-limit=8192
+          docker run -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo --verbose --timeout=300 --mem-limit=6144
 
       - name: Generate checks
         run: |
