@@ -64,5 +64,27 @@
          "out_of_memory": false,
          "has_crashed": false
       }
+   },
+   "n_n_matrix_symm_glob-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 226700, 'flatIntVars': 19082, 'flatBoolConstraints': 123060, 'flatIntConstraints': 229770, 'evaluatedReifiedConstraints': 5600, 'evaluatedHalfReifiedConstraints': 219800, 'eliminatedImplications': 4260, 'method': 'minimize', 'flatTime': datetime.timedelta(seconds=10, microseconds=439200), 'nSolutions': 0}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "n_n_matrix_symm_glob-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": null,
+         "out_of_memory": true,
+         "has_crashed": true
+      }
    }
 }

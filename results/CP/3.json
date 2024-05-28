@@ -148,5 +148,55 @@
          "out_of_memory": false,
          "has_crashed": false
       }
+   },
+   "n_n_matrix_symm_glob-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            4,
+            2
+         ],
+         [
+            3,
+            7
+         ],
+         [
+            1,
+            6
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 597, 'flatIntVars': 236, 'flatBoolConstraints': 411, 'flatIntConstraints': 666, 'evaluatedReifiedConstraints': 72, 'evaluatedHalfReifiedConstraints': 522, 'eliminatedImplications': 63, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=144357), 'time': datetime.timedelta(microseconds=258000), 'initTime': datetime.timedelta(microseconds=4998), 'solveTime': datetime.timedelta(microseconds=131993), 'solutions': 2, 'variables': 833, 'propagators': 1092, 'propagations': 1534496, 'nodes': 8865, 'failures': 4430, 'restarts': 0, 'peakDepth': 52, 'nSolutions': 2}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "n_n_matrix_symm_glob-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            6,
+            3
+         ],
+         [
+            4,
+            2
+         ],
+         [
+            7,
+            1
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 646, 'flatIntVars': 255, 'flatBoolConstraints': 432, 'flatIntConstraints': 726, 'evaluatedReifiedConstraints': 268, 'evaluatedHalfReifiedConstraints': 375, 'eliminatedImplications': 63, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=141636), 'time': datetime.timedelta(microseconds=36000), 'nodes': 1117, 'failures': 762, 'restarts': 2, 'variables': 7168, 'intVars': 258, 'boolVariables': 6908, 'propagators': 322, 'propagations': 68997, 'peakDepth': 25, 'nogoods': 762, 'backjumps': 313, 'peakMem': 0.0, 'initTime': datetime.timedelta(microseconds=11000), 'solveTime': datetime.timedelta(microseconds=25000), 'objective': 12, 'optTime': datetime.timedelta(microseconds=15000), 'baseMem': 0.0, 'trailMem': 0.02, 'randomSeed': 42, 'nSolutions': 2}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
    }
 }

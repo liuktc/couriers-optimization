@@ -112,5 +112,43 @@
          "out_of_memory": false,
          "has_crashed": false
       }
+   },
+   "n_n_matrix_symm_glob-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 94, 'flatIntVars': 56, 'flatBoolConstraints': 66, 'flatIntConstraints': 125, 'evaluatedReifiedConstraints': 16, 'evaluatedHalfReifiedConstraints': 84, 'eliminatedImplications': 18, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=110420), 'time': datetime.timedelta(microseconds=127000), 'initTime': datetime.timedelta(microseconds=1225), 'solveTime': datetime.timedelta(microseconds=346), 'solutions': 2, 'variables': 150, 'propagators': 192, 'propagations': 1358, 'nodes': 11, 'failures': 4, 'restarts': 0, 'peakDepth': 3, 'nSolutions': 2}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
+   },
+   "n_n_matrix_symm_glob-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 103, 'flatIntVars': 60, 'flatBoolConstraints': 75, 'flatIntConstraints': 134, 'evaluatedReifiedConstraints': 43, 'evaluatedHalfReifiedConstraints': 66, 'eliminatedImplications': 18, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=116651), 'time': datetime.timedelta(microseconds=4000), 'nodes': 26, 'failures': 12, 'restarts': 2, 'variables': 3389, 'intVars': 79, 'boolVariables': 3308, 'propagators': 80, 'propagations': 813, 'peakDepth': 8, 'nogoods': 12, 'backjumps': 2, 'peakMem': 0.0, 'initTime': datetime.timedelta(microseconds=4000), 'solveTime': datetime.timedelta(0), 'objective': 206, 'optTime': datetime.timedelta(0), 'baseMem': 0.0, 'trailMem': 0.02, 'randomSeed': 42, 'nSolutions': 2}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
    }
 }
