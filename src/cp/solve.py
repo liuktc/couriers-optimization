@@ -32,6 +32,14 @@ experiments_setup = [
             "gecode", 
             "chuffed"
         ]
+    },
+    {
+        "name": "n_n_matrix_symm_glob",
+        "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix_symm_glob.mzn") ),
+        "solvers": [
+            "gecode", 
+            "chuffed"
+        ]
     }
 ]
 
