@@ -30,7 +30,8 @@ experiments_setup = [
         "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix_symm.mzn") ),
         "solvers": [
             "gecode", 
-            "chuffed"
+            "chuffed",
+            # "com.google.ortools.sat"
         ]
     },
     {
@@ -38,6 +39,14 @@ experiments_setup = [
         "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix_symm_glob.mzn") ),
         "solvers": [
             "gecode", 
+            "chuffed"
+        ]
+    },
+    {
+        "name": "n_n_matrix_symm_glob_heur",
+        "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix_symm_glob_heur.mzn") ),
+        "solvers": [
+            # "gecode", 
             "chuffed"
         ]
     }
