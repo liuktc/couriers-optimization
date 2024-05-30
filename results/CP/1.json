@@ -174,5 +174,27 @@
          "out_of_memory": false,
          "has_crashed": false
       }
+   },
+   "n_n_matrix_symm_glob_heur-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 14,
+      "sol": [
+         [
+            1,
+            3,
+            4
+         ],
+         [
+            2,
+            5,
+            6
+         ]
+      ],
+      "_extras": {
+         "minizinc_statistics": "{'paths': 0, 'flatBoolVars': 346, 'flatIntVars': 153, 'flatBoolConstraints': 234, 'flatIntConstraints': 395, 'evaluatedReifiedConstraints': 148, 'evaluatedHalfReifiedConstraints': 198, 'eliminatedImplications': 36, 'method': 'minimize', 'flatTime': datetime.timedelta(microseconds=196329), 'time': datetime.timedelta(microseconds=14000), 'nodes': 285, 'failures': 252, 'restarts': 3, 'variables': 3572, 'intVars': 156, 'boolVariables': 3414, 'propagators': 188, 'propagations': 28277, 'peakDepth': 11, 'nogoods': 252, 'backjumps': 0, 'peakMem': 0.0, 'initTime': datetime.timedelta(microseconds=6000), 'solveTime': datetime.timedelta(microseconds=8000), 'objective': 14, 'optTime': datetime.timedelta(microseconds=2000), 'baseMem': 0.0, 'trailMem': 0.02, 'randomSeed': 42, 'nSolutions': 3}",
+         "out_of_memory": false,
+         "has_crashed": false
+      }
    }
 }

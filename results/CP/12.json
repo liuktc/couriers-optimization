@@ -86,5 +86,16 @@
          "out_of_memory": false,
          "has_crashed": true
       }
+   },
+   "n_n_matrix_symm_glob_heur-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "minizinc_statistics": null,
+         "out_of_memory": false,
+         "has_crashed": true
+      }
    }
 }
