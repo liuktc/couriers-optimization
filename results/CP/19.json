@@ -149,5 +149,156 @@
          "crash_reason": null,
          "time_to_last_solution": 234.216
       }
+   },
+   "vrp-gecode-lns-symm_weak": {
+      "time": 300,
+      "optimal": false,
+      "obj": 375,
+      "sol": [
+         [
+            39,
+            35,
+            54
+         ],
+         [
+            21
+         ],
+         [
+            68,
+            43,
+            71,
+            32,
+            56,
+            69
+         ],
+         [
+            37,
+            40,
+            66
+         ],
+         [
+            59,
+            10
+         ],
+         [
+            41,
+            64,
+            51,
+            31
+         ],
+         [
+            34
+         ],
+         [
+            25,
+            20,
+            65,
+            6,
+            52,
+            48
+         ],
+         [
+            28,
+            57,
+            50,
+            47,
+            49
+         ],
+         [
+            27,
+            3
+         ],
+         [
+            38,
+            2,
+            15,
+            70,
+            19
+         ],
+         [
+            14,
+            12,
+            24,
+            22
+         ],
+         [
+            23
+         ],
+         [
+            18,
+            33,
+            30,
+            53,
+            29
+         ],
+         [
+            1
+         ],
+         [
+            45,
+            46,
+            26,
+            17,
+            11
+         ],
+         [
+            36,
+            60,
+            9,
+            58,
+            44,
+            16
+         ],
+         [
+            55,
+            62,
+            63,
+            5,
+            13
+         ],
+         [
+            42,
+            61,
+            4,
+            7
+         ],
+         [
+            67,
+            8
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 115420,
+               "flatIntVars": 11863,
+               "flatBoolConstraints": 11580,
+               "flatIntConstraints": 118610,
+               "evaluatedReifiedConstraints": 2920,
+               "evaluatedHalfReifiedConstraints": 108180,
+               "eliminatedImplications": 1500,
+               "method": "minimize",
+               "flatTime": 3.05541
+            },
+            "solver": {
+               "initTime": 0.757164,
+               "solveTime": 296.961,
+               "solutions": 46,
+               "variables": 127283,
+               "propagators": 130190,
+               "propagations": 1599771235,
+               "nodes": 1012945,
+               "failures": 454161,
+               "restarts": 2001,
+               "peakDepth": 1486
+            },
+            "solution": {
+               "nSolutions": 46
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 274.781
+      }
    }
 }

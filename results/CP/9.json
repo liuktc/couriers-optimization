@@ -70,5 +70,77 @@
          "crash_reason": null,
          "time_to_last_solution": 0.32
       }
+   },
+   "vrp-gecode-lns-symm_weak": {
+      "time": 0,
+      "optimal": true,
+      "obj": 436,
+      "sol": [
+         [
+            8
+         ],
+         [
+            4
+         ],
+         [],
+         [
+            10,
+            5
+         ],
+         [
+            9
+         ],
+         [
+            2
+         ],
+         [
+            13
+         ],
+         [
+            3
+         ],
+         [
+            1,
+            7,
+            11
+         ],
+         [
+            12,
+            6
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 3190,
+               "flatIntVars": 1247,
+               "flatBoolConstraints": 1150,
+               "flatIntConstraints": 3591,
+               "evaluatedReifiedConstraints": 300,
+               "evaluatedHalfReifiedConstraints": 2470,
+               "eliminatedImplications": 170,
+               "method": "minimize",
+               "flatTime": 0.205059
+            },
+            "solver": {
+               "initTime": 0.0285348,
+               "solveTime": 0.027099,
+               "solutions": 2,
+               "variables": 4437,
+               "propagators": 4741,
+               "propagations": 215234,
+               "nodes": 602,
+               "failures": 165,
+               "restarts": 8,
+               "peakDepth": 138
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.322
+      }
    }
 }

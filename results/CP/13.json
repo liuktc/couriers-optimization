@@ -91,5 +91,98 @@
          "crash_reason": null,
          "time_to_last_solution": 283.915
       }
+   },
+   "vrp-gecode-lns-symm_weak": {
+      "time": 300,
+      "optimal": false,
+      "obj": 718,
+      "sol": [
+         [
+            7,
+            14,
+            28,
+            20,
+            40,
+            38,
+            47,
+            39,
+            43,
+            46,
+            42,
+            11,
+            44,
+            35,
+            45,
+            27,
+            3
+         ],
+         [
+            41,
+            32,
+            36,
+            18,
+            17,
+            5,
+            8,
+            33,
+            4,
+            26,
+            24,
+            12,
+            25,
+            23,
+            6,
+            34
+         ],
+         [
+            19,
+            13,
+            29,
+            16,
+            1,
+            31,
+            15,
+            30,
+            21,
+            9,
+            2,
+            37,
+            22,
+            10
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 8097,
+               "flatIntVars": 1277,
+               "flatBoolConstraints": 1161,
+               "flatIntConstraints": 8465,
+               "evaluatedReifiedConstraints": 294,
+               "evaluatedHalfReifiedConstraints": 7371,
+               "eliminatedImplications": 153,
+               "method": "minimize",
+               "flatTime": 0.290722
+            },
+            "solver": {
+               "initTime": 0.051537,
+               "solveTime": 299.709,
+               "solutions": 91,
+               "variables": 9374,
+               "propagators": 9626,
+               "propagations": 2211810683,
+               "nodes": 6723410,
+               "failures": 3260440,
+               "restarts": 9424,
+               "peakDepth": 179
+            },
+            "solution": {
+               "nSolutions": 91
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 295.105
+      }
    }
 }
