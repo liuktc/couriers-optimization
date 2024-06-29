@@ -1,54 +1,36 @@
-from minizinc import Instance, Model, Solver
-from minizinc.result import Status
+from .minizinc_utils import minizincSolve
 import pathlib
 import os
-from datetime import timedelta
+import json
 import math
 import logging
 logger = logging.getLogger(__name__)
 
 
+
+def solutionExtractorFromForwardPath(variables):
+    paths = variables["path"]
+    depot_idx = len(paths[0])
+    solution = []
+    
+    for i in range(len(paths)):
+        route = []
+        start = paths[i][-1]
+        
+        while start != depot_idx:
+            route.append(start)
+            start = paths[i][start-1]
+        solution.append(route)
+
+    return solution
+
+
 experiments_setup = [
     {
-        "name": "milp_like",
-        "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./milp_like.mzn") ),
-        "solvers": [
-            "gecode", 
-            "chuffed"
-        ]
-    },
-    {
-        "name": "n_n_matrix",
-        "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix.mzn") ),
-        "solvers": [
-            "gecode", 
-            "chuffed"
-        ]
-    },
-    {
-        "name": "n_n_matrix_symm",
-        "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix_symm.mzn") ),
-        "solvers": [
-            "gecode", 
-            "chuffed",
-            # "com.google.ortools.sat"
-        ]
-    },
-    {
-        "name": "n_n_matrix_symm_glob",
-        "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix_symm_glob.mzn") ),
-        "solvers": [
-            "gecode", 
-            "chuffed"
-        ]
-    },
-    {
-        "name": "n_n_matrix_symm_glob_heur",
-        "model": Model( os.path.join(pathlib.Path(__file__).parent.resolve(), "./n_n_matrix_symm_glob_heur.mzn") ),
-        "solvers": [
-            # "gecode", 
-            "chuffed"
-        ]
+        "name": "vrp-gecode-lns",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": solutionExtractorFromForwardPath
     }
 ]
 
@@ -57,69 +39,48 @@ def solve(instance, timeout, cache={}, random_seed=42):
     out_results = {}
 
     for experiment in experiments_setup:
-        logger.info(f"Starting model {experiment['name']}")
-        model = experiment["model"]
+        logger.info(f"Starting model {experiment['name']} with {experiment['solver']}")
 
-        for solver_name in experiment["solvers"]:
-            logger.info(f"Solving with {solver_name}")
-            result_key = f"{experiment['name']}-{solver_name}"
+        # Check if result is in cache
+        if experiment["name"] in cache:
+            logger.info(f"Cache hit")
+            out_results[experiment["name"]] = cache[experiment["name"]]
+            continue
+        
+        # Solve instance
+        outcome, solutions, statistics = minizincSolve(
+            model_path = experiment["model_path"],
+            data_json = json.dumps(instance),
+            solver = experiment["solver"],
+            timeout_ms = timeout*1000,
+            seed = random_seed
+        )
 
-            # Check if result is in cache
-            if result_key in cache:
-                logger.info(f"Cache hit")
-                out_results[result_key] = cache[result_key]
-                continue
+        # Parse results
+        if (outcome["mz_status"] is None) or (len(solutions) == 0):
+            logger.warning(f"Instance crashed. Reason: {outcome['crash_reason']}")
+            time = timeout
+            optimality = False
+            objective = None
+            solution = None
+            crash_reason = outcome["crash_reason"]
+        else:
+            time = timeout if outcome["mz_status"] in ["UNKNOWN", "SATISFIED"] else math.floor(outcome["time_ms"]/1000)
+            optimality = outcome["mz_status"] == "OPTIMAL_SOLUTION"
+            objective = solutions[-1]["variables"]["_objective"]
+            solution = experiment["solution_extractor_fn"](solutions[-1]["variables"])
+            crash_reason = outcome["crash_reason"]
 
-            solver = Solver.lookup(solver_name)
-            instance_data = Instance(solver, model)
-
-            # Set input data
-            for key, value in instance.items():
-                instance_data[key] = value
-
-            try:
-                result = instance_data.solve(
-                    timeout = timedelta(seconds=timeout),
-                    random_seed = random_seed
-                )
-            except Exception as e:
-                logger.error(e)
-                time = timeout
-                optimal = False
-                objective_value = None
-                sol = None
-                minizinc_statistics_str = None
-                out_of_memory = (str(e) == "out of memory" or "std::bad_alloc" in str(e))
-                has_crashed = True
-            else:
-                if ((result.status == Status.UNKNOWN) or 
-                    (result.status == Status.SATISFIED) or 
-                    ("solveTime" not in result.statistics)
-                ): 
-                    time = timeout
-                else:
-                    time = math.floor(result.statistics["solveTime"].total_seconds())
-                optimal = (result.status == Status.OPTIMAL_SOLUTION)
-                if result.solution is None:
-                    objective_value = None
-                    sol = None
-                else:
-                    objective_value = result["objective"]
-                    sol = [[x for x in sol if x != 0] for sol in result["T"]]
-                minizinc_statistics_str = str(result.statistics)
-                out_of_memory = False
-                has_crashed = False
-
-            out_results[result_key] = {
-                "time": time,
-                "optimal": optimal,
-                "obj": objective_value,
-                "sol": sol,
-                "_extras": {
-                    "minizinc_statistics": minizinc_statistics_str,
-                    "out_of_memory": out_of_memory,
-                    "has_crashed": has_crashed
-                }
+        out_results[experiment["name"]] = {
+            "time": time,
+            "optimal": optimality,
+            "obj": objective,
+            "sol": solution,
+            "_extras": {
+                "statistics": statistics,
+                "crash_reason": crash_reason,
+                "time_to_last_solution": solutions[-1]["time_ms"]/1000
             }
+        }
 
     return out_results

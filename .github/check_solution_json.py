@@ -33,14 +33,14 @@ def didTimeout(result):
 
 
 def isOutOfMemory(result):
-    if ("_extras" in result) and ("out_of_memory" in result["_extras"]):
-        return result["_extras"]["out_of_memory"]
+    if ("_extras" in result) and ("crash_reason" in result["_extras"]):
+        return (result["_extras"]["crash_reason"] == "out-of-memory") and (result["sol"] is None)
     return False
 
 
 def didCrash(result):
-    if ("_extras" in result) and ("has_crashed" in result["_extras"]):
-        return result["_extras"]["has_crashed"]
+    if ("_extras" in result) and ("crash_reason" in result["_extras"]):
+        return (result["_extras"]["crash_reason"] != None) and (result["sol"] is None)
     return False
 
 

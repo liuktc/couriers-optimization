@@ -170,5 +170,7 @@ report/*.fls
 report/*.synctex.gz
 report/*.out
 
+*.ozn
+*.fzn
 
 .old
