@@ -56,9 +56,15 @@ def solve(instance, timeout, cache={}, random_seed=42):
             seed = random_seed
         )
 
+        if (outcome["mz_status"] is None) and (len(solutions) > 0):
+            # Solver crashed before finishing but there are intermediate solutions.
+            # Consider as if it timed out.
+            outcome["mz_status"] = "UNKNOWN"
+
         # Parse results
         if (outcome["mz_status"] is None) or (len(solutions) == 0):
-            logger.warning(f"Instance crashed. Reason: {outcome['crash_reason']}")
+            if outcome['crash_reason'] is not None:
+                logger.warning(f"Instance crashed. Reason: {outcome['crash_reason']}")
             time = timeout
             optimality = False
             objective = None
