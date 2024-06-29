@@ -1,0 +1,30 @@
+{
+   "vrp-gecode-lns": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1705180,
+               "flatIntVars": 46855,
+               "flatBoolConstraints": 46140,
+               "flatIntConstraints": 1717189,
+               "evaluatedReifiedConstraints": 11560,
+               "evaluatedHalfReifiedConstraints": 1676340,
+               "eliminatedImplications": 5820,
+               "method": "minimize",
+               "flatTime": 53.3273
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": null
+         },
+         "crash_reason": "yes",
+         "time_to_last_solution": null
+      }
+   }
+}

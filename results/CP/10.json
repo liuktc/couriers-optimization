@@ -1,0 +1,74 @@
+{
+   "vrp-gecode-lns": {
+      "time": 0,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            9
+         ],
+         [
+            7,
+            2
+         ],
+         [
+            12
+         ],
+         [
+            6
+         ],
+         [
+            13
+         ],
+         [],
+         [
+            3
+         ],
+         [
+            4,
+            11
+         ],
+         [
+            8,
+            1
+         ],
+         [
+            5,
+            10
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 3190,
+               "flatIntVars": 1247,
+               "flatBoolConstraints": 1150,
+               "flatIntConstraints": 3585,
+               "evaluatedReifiedConstraints": 300,
+               "evaluatedHalfReifiedConstraints": 2470,
+               "eliminatedImplications": 170,
+               "method": "minimize",
+               "flatTime": 0.205993
+            },
+            "solver": {
+               "initTime": 0.0251409,
+               "solveTime": 0.0445712,
+               "solutions": 6,
+               "variables": 4437,
+               "propagators": 4735,
+               "propagations": 318213,
+               "nodes": 1465,
+               "failures": 338,
+               "restarts": 16,
+               "peakDepth": 133
+            },
+            "solution": {
+               "nSolutions": 6
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.333
+      }
+   }
+}

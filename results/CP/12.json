@@ -1,0 +1,166 @@
+{
+   "vrp-gecode-lns": {
+      "time": 300,
+      "optimal": false,
+      "obj": 388,
+      "sol": [
+         [
+            42,
+            67,
+            14,
+            71,
+            63,
+            78
+         ],
+         [
+            75,
+            82,
+            56,
+            33,
+            74,
+            65
+         ],
+         [
+            89,
+            20,
+            25,
+            10
+         ],
+         [
+            92,
+            4,
+            45,
+            40,
+            91
+         ],
+         [
+            34,
+            36,
+            35,
+            54
+         ],
+         [
+            9,
+            17,
+            73,
+            41,
+            31,
+            26,
+            30,
+            53,
+            51,
+            2
+         ],
+         [
+            32,
+            86,
+            13
+         ],
+         [
+            3,
+            12,
+            5,
+            64
+         ],
+         [
+            52,
+            38
+         ],
+         [
+            81,
+            61,
+            70,
+            55,
+            68,
+            22
+         ],
+         [
+            90,
+            79,
+            1,
+            85
+         ],
+         [
+            88,
+            19,
+            8
+         ],
+         [
+            87,
+            50,
+            47,
+            72
+         ],
+         [
+            58,
+            76,
+            29,
+            28
+         ],
+         [
+            77,
+            93,
+            23,
+            15,
+            46
+         ],
+         [
+            83,
+            18,
+            48,
+            7,
+            37
+         ],
+         [
+            66,
+            49,
+            59,
+            16
+         ],
+         [
+            6,
+            43,
+            44,
+            69
+         ],
+         [
+            11,
+            21,
+            95,
+            80,
+            24,
+            62,
+            84,
+            60,
+            94
+         ],
+         [
+            57,
+            39,
+            27
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 199900,
+               "flatIntVars": 15751,
+               "flatBoolConstraints": 15420,
+               "flatIntConstraints": 204037,
+               "evaluatedReifiedConstraints": 3880,
+               "evaluatedHalfReifiedConstraints": 190260,
+               "eliminatedImplications": 1980,
+               "method": "minimize",
+               "flatTime": 5.0294
+            },
+            "solver": {
+               "nSolutions": 58
+            },
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 226.315
+      }
+   }
+}

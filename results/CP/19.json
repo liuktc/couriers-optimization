@@ -1,0 +1,153 @@
+{
+   "vrp-gecode-lns": {
+      "time": 300,
+      "optimal": false,
+      "obj": 354,
+      "sol": [
+         [
+            14,
+            28,
+            70,
+            66,
+            51
+         ],
+         [
+            11,
+            2,
+            38,
+            58,
+            49,
+            61
+         ],
+         [
+            56,
+            16,
+            54,
+            8,
+            24,
+            52
+         ],
+         [
+            57
+         ],
+         [
+            69,
+            44
+         ],
+         [
+            35,
+            12,
+            29
+         ],
+         [
+            62,
+            47,
+            26
+         ],
+         [
+            50,
+            43,
+            7,
+            31,
+            20
+         ],
+         [
+            15,
+            60,
+            40
+         ],
+         [
+            22,
+            67,
+            33,
+            65,
+            9
+         ],
+         [
+            45,
+            27,
+            18
+         ],
+         [
+            21,
+            17
+         ],
+         [
+            55,
+            53,
+            5,
+            19,
+            36,
+            25
+         ],
+         [
+            1
+         ],
+         [
+            30,
+            23,
+            59,
+            34
+         ],
+         [
+            10,
+            39,
+            32
+         ],
+         [
+            46
+         ],
+         [
+            4,
+            64,
+            41,
+            13,
+            37,
+            42
+         ],
+         [
+            3,
+            71,
+            6
+         ],
+         [
+            63,
+            68,
+            48
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 115420,
+               "flatIntVars": 11863,
+               "flatBoolConstraints": 11580,
+               "flatIntConstraints": 118573,
+               "evaluatedReifiedConstraints": 2920,
+               "evaluatedHalfReifiedConstraints": 108180,
+               "eliminatedImplications": 1500,
+               "method": "minimize",
+               "flatTime": 2.99995
+            },
+            "solver": {
+               "initTime": 0.750113,
+               "solveTime": 297.017,
+               "solutions": 55,
+               "variables": 127283,
+               "propagators": 130153,
+               "propagations": 1229913055,
+               "nodes": 1335360,
+               "failures": 602940,
+               "restarts": 2327,
+               "peakDepth": 1467
+            },
+            "solution": {
+               "nSolutions": 55
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 234.216
+      }
+   }
+}

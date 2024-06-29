@@ -1,0 +1,129 @@
+{
+   "vrp-gecode-lns": {
+      "time": 11,
+      "optimal": true,
+      "obj": 286,
+      "sol": [
+         [
+            14
+         ],
+         [
+            24,
+            38
+         ],
+         [
+            30,
+            40,
+            32
+         ],
+         [
+            2,
+            7
+         ],
+         [
+            41,
+            19,
+            44
+         ],
+         [
+            17,
+            18,
+            34,
+            35
+         ],
+         [
+            45,
+            21
+         ],
+         [
+            29,
+            9
+         ],
+         [
+            6,
+            3
+         ],
+         [
+            47,
+            12
+         ],
+         [
+            1,
+            13
+         ],
+         [
+            20,
+            22,
+            10
+         ],
+         [
+            31
+         ],
+         [
+            11,
+            36
+         ],
+         [
+            26,
+            15,
+            8,
+            4
+         ],
+         [
+            25,
+            43,
+            23,
+            37
+         ],
+         [
+            33
+         ],
+         [
+            28,
+            5,
+            16,
+            39
+         ],
+         [
+            46,
+            42
+         ],
+         [
+            27
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 53980,
+               "flatIntVars": 7975,
+               "flatBoolConstraints": 7740,
+               "flatIntConstraints": 56149,
+               "evaluatedReifiedConstraints": 1960,
+               "evaluatedHalfReifiedConstraints": 49140,
+               "eliminatedImplications": 1020,
+               "method": "minimize",
+               "flatTime": 1.65674
+            },
+            "solver": {
+               "initTime": 0.355866,
+               "solveTime": 8.5633,
+               "solutions": 20,
+               "variables": 61955,
+               "propagators": 63889,
+               "propagations": 41235061,
+               "nodes": 71279,
+               "failures": 25104,
+               "restarts": 173,
+               "peakDepth": 963
+            },
+            "solution": {
+               "nSolutions": 20
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 11.237
+      }
+   }
+}
