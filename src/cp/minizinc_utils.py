@@ -6,7 +6,21 @@ logger = logging.getLogger(__name__)
 
 
 
-def formatCommand(model_path, data_path, solver, timeout_ms, seed):
+def parseInstanceForMinizinc(instance):
+    out = ""
+    out += f"m = {instance['m']};\n"
+    out += f"n = {instance['n']};\n"
+    out += f"l = [ {','.join([str(x) for x in instance['l']])} ];\n"
+    out += f"s = [ {','.join([str(x) for x in instance['s']])} ];\n"
+    out += "D = ["
+    for d in instance["D"]:
+        out += f"| {','.join([str(x) for x in d])} "
+    out += "|];\n"
+    
+    return out
+
+
+def __formatCommand(model_path, data_path, solver, timeout_ms, seed):
     return [
         "minizinc",
         "--json-stream",
@@ -38,7 +52,7 @@ def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int,
         "solver": None,
         "solution": None
     }
-    minizinc_cmd = formatCommand(model_path, data_path, solver, timeout_ms, seed)
+    minizinc_cmd = __formatCommand(model_path, data_path, solver, timeout_ms, seed)
 
     with Popen(minizinc_cmd, stdout=PIPE, stderr=PIPE) as pipe:
         while True:

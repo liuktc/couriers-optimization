@@ -1,5 +1,4 @@
-from .minizinc_utils import minizincSolve
-from .instance_parser import parseForMinizinc
+from .minizinc_utils import minizincSolve, parseInstanceForMinizinc
 import pathlib
 import os
 import math
@@ -31,6 +30,12 @@ experiments_setup = [
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": solutionExtractorFromForwardPath
+    },
+    {
+        "name": "vrp-gecode-lns-symm_weak",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_weak.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": solutionExtractorFromForwardPath
     }
 ]
 
@@ -38,7 +43,7 @@ experiments_setup = [
 def solve(instance, timeout, cache={}, random_seed=42):
     instance_path = os.path.join(pathlib.Path(__file__).parent.resolve(), ".instance.dzn")
     with open(instance_path, "w") as f:
-        f.write( parseForMinizinc(instance) )
+        f.write( parseInstanceForMinizinc(instance) )
     out_results = {}
 
     for experiment in experiments_setup:
