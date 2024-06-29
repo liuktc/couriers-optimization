@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 
-def formatCommand(model_path, data_json, solver, timeout_ms, seed):
+def formatCommand(model_path, data_path, solver, timeout_ms, seed):
     return [
         "minizinc",
         "--json-stream",
@@ -19,11 +19,11 @@ def formatCommand(model_path, data_json, solver, timeout_ms, seed):
         "--output-time",
         "--output-objective",
         "--model", f"{os.path.abspath(model_path)}",
-        "--cmdline-json-data", f"{data_json}"
+        "--data", f"{os.path.abspath(data_path)}"
     ]
 
 
-def minizincSolve(model_path: str, data_json: str, solver: str, timeout_ms: int, seed: int):
+def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int, seed: int):
     """
         Calls MiniZinc on a model and returns solving statistics and all solutions.
     """
@@ -38,7 +38,7 @@ def minizincSolve(model_path: str, data_json: str, solver: str, timeout_ms: int,
         "solver": None,
         "solution": None
     }
-    minizinc_cmd = formatCommand(model_path, data_json, solver, timeout_ms, seed)
+    minizinc_cmd = formatCommand(model_path, data_path, solver, timeout_ms, seed)
 
     with Popen(minizinc_cmd, stdout=PIPE, stderr=PIPE) as pipe:
         while True:
@@ -68,7 +68,7 @@ def minizincSolve(model_path: str, data_json: str, solver: str, timeout_ms: int,
                 outcome["time_ms"] = data["time"]
 
         pipe.wait()
-        if pipe.returncode == [-6, -11]:
+        if pipe.returncode in [-6, -11]:
             outcome["crash_reason"] = "out-of-memory"
         elif pipe.returncode != 0:
             outcome["crash_reason"] = "yes"

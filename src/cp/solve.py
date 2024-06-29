@@ -1,7 +1,7 @@
 from .minizinc_utils import minizincSolve
+from .instance_parser import parseForMinizinc
 import pathlib
 import os
-import json
 import math
 import logging
 logger = logging.getLogger(__name__)
@@ -36,6 +36,9 @@ experiments_setup = [
 
 
 def solve(instance, timeout, cache={}, random_seed=42):
+    instance_path = os.path.join(pathlib.Path(__file__).parent.resolve(), ".instance.dzn")
+    with open(instance_path, "w") as f:
+        f.write( parseForMinizinc(instance) )
     out_results = {}
 
     for experiment in experiments_setup:
@@ -50,7 +53,7 @@ def solve(instance, timeout, cache={}, random_seed=42):
         # Solve instance
         outcome, solutions, statistics = minizincSolve(
             model_path = experiment["model_path"],
-            data_json = json.dumps(instance),
+            data_path = instance_path,
             solver = experiment["solver"],
             timeout_ms = timeout*1000,
             seed = random_seed
@@ -85,8 +88,9 @@ def solve(instance, timeout, cache={}, random_seed=42):
             "_extras": {
                 "statistics": statistics,
                 "crash_reason": crash_reason,
-                "time_to_last_solution": solutions[-1]["time_ms"]/1000
+                "time_to_last_solution": None if len(solutions) == 0 else solutions[-1]["time_ms"]/1000
             }
         }
 
+    os.remove(instance_path) 
     return out_results
