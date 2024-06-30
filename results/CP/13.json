@@ -186,5 +186,99 @@
          "time_to_last_solution": 295.105,
          "runner": "github-action"
       }
+   },
+   "vrp-gecode-lns-symm_strong": {
+      "time": 300,
+      "optimal": false,
+      "obj": 686,
+      "sol": [
+         [
+            31,
+            7,
+            35,
+            9,
+            27,
+            3,
+            43,
+            47,
+            24,
+            40,
+            25,
+            15,
+            42,
+            46,
+            34,
+            37,
+            41
+         ],
+         [
+            23,
+            18,
+            17,
+            5,
+            13,
+            33,
+            19,
+            10,
+            45,
+            32,
+            11,
+            2,
+            39,
+            21
+         ],
+         [
+            16,
+            20,
+            29,
+            8,
+            26,
+            36,
+            22,
+            6,
+            12,
+            38,
+            30,
+            44,
+            28,
+            1,
+            4,
+            14
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 8673,
+               "flatIntVars": 1280,
+               "flatBoolConstraints": 1449,
+               "flatIntConstraints": 8758,
+               "evaluatedReifiedConstraints": 726,
+               "evaluatedHalfReifiedConstraints": 7374,
+               "eliminatedImplications": 153,
+               "method": "minimize",
+               "flatTime": 0.304767
+            },
+            "solver": {
+               "initTime": 0.0547648,
+               "solveTime": 299.695,
+               "solutions": 98,
+               "variables": 9953,
+               "propagators": 10207,
+               "propagations": 2286411685,
+               "nodes": 4756871,
+               "failures": 2300875,
+               "restarts": 7709,
+               "peakDepth": 187
+            },
+            "solution": {
+               "nSolutions": 98
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 291.551,
+         "runner": "github-action"
+      }
    }
 }

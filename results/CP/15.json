@@ -336,5 +336,34 @@
          "time_to_last_solution": null,
          "runner": "github-action"
       }
+   },
+   "vrp-gecode-lns-symm_strong": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1373020,
+               "flatIntVars": 39269,
+               "flatBoolConstraints": 129660,
+               "flatIntConstraints": 1292241,
+               "evaluatedReifiedConstraints": 146440,
+               "evaluatedHalfReifiedConstraints": 1166770,
+               "eliminatedImplications": 4860,
+               "method": "minimize",
+               "flatTime": 38.9441
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
    }
 }
