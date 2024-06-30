@@ -49,7 +49,7 @@ def generateOverallStatus(checks, to_display_methods, method_status_path):
             best_instance_status = instance_tests[0]["status"]
             best_instance_time = instance_tests[0]["time"]
             best_instance_obj = instance_tests[0]["obj"]
-            best_instance_name = instance_tests[0]["name"].replace('_', '\\_')
+            best_instance_name = instance_tests[0]["name"].replace('_', '-')
 
             if best_instance_status == "optimal":
                 entry = (
@@ -87,7 +87,7 @@ def generateSpecificStatus(checks, method):
     status_md += f"|:-:| {''.join([':---:|']*num_instances)}\n"
 
     for model in checks[method]["1"].keys():
-        status_md += "$\\text{"+ model.replace('_', '\\_') +"}$ | "
+        status_md += "$\\text{"+ model.replace('_', '-') +"}$ | "
         for i in range(num_instances):
             instance = f"{i+1}"
             entry = ""
