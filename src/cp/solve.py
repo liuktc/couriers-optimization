@@ -36,6 +36,12 @@ experiments_setup = [
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_weak.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": solutionExtractorFromForwardPath
+    },
+    {
+        "name": "vrp-gecode-lns-symm_strong",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_strong.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": solutionExtractorFromForwardPath
     }
 ]
 
