@@ -28,6 +28,7 @@ if __name__ == "__main__":
     parser.add_argument("--instances", type=lambda arg: sorted([*map(int, arg.split(","))]), required=False, default=[], 
                         help="Number of the instances to run, comma separated")
     parser.add_argument("--mem-limit", type=int, required=False, default=-1, help="Memory usage limit in MB")
+    parser.add_argument("--runner-label", type=str, required=False, default="", help="Name of the machine that is executing")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARN)
@@ -77,10 +78,16 @@ if __name__ == "__main__":
                 timeout = args.timeout,
                 cache = cached_results
             ) 
-
+            
+            # Adding missing cached results
             for key in cached_results:
                 if key not in instance_results:
                     instance_results[key] = cached_results[key]
+
+            # Adding runner label
+            for key in instance_results:
+                if "_extras" not in instance_results[key]: instance_results[key]["_extras"] = {}
+                if "runner" not in instance_results[key]["_extras"]: instance_results[key]["_extras"]["runner"] = args.runner_label
 
             # Saving instance results
             results_file_path = os.path.join(out_dir, f"{instance_number}.json")

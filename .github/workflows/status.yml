@@ -22,7 +22,11 @@ jobs:
 
       - name: Generate results
         run: |
-          docker run -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo --verbose --timeout=300 --mem-limit=5120
+          docker run -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo \
+            --runner-label="github-action" \
+            --verbose \
+            --timeout=300 \
+            --mem-limit=5120
 
       - name: Generate checks
         run: |
@@ -35,7 +39,6 @@ jobs:
           python3 status_update.py \
             --checks-file=/tmp/instances_checks.json \
             --readme-file=${GITHUB_WORKSPACE}/README.md \
-            --results-git-path=./results
 
 
       - name: Push status
