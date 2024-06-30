@@ -31,7 +31,11 @@ if __name__ == "__main__":
     parser.add_argument("--runner-label", type=str, required=False, default="", help="Name of the machine that is executing")
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO if args.verbose else logging.WARN)
+    logging.basicConfig(
+        level=logging.INFO if args.verbose else logging.WARN,
+        format = "%(asctime)s %(levelname)-5s %(message)s",
+        datefmt = "%d-%m-%Y %H:%M:%S"
+    )
 
     # Load and filter instances (if needed)
     instances = [ (i+1, parseInstanceFile(os.path.join(args.instances_path, f))) for i, f in enumerate(sorted(os.listdir(args.instances_path))) ]
