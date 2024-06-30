@@ -453,5 +453,92 @@
          "time_to_last_solution": null,
          "runner": "github-action"
       }
+   },
+   "vrp-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 437980,
+               "flatIntVars": 26365,
+               "flatBoolConstraints": 23100,
+               "flatIntConstraints": 446962,
+               "evaluatedReifiedConstraints": 11580,
+               "evaluatedHalfReifiedConstraints": 417760,
+               "eliminatedImplications": 2940,
+               "method": "minimize",
+               "flatTime": 11.9575
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
+   "vrp-chuffed-lns-symm_weak": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 456284,
+               "flatIntVars": 26365,
+               "flatBoolConstraints": 41340,
+               "flatIntConstraints": 456178,
+               "evaluatedReifiedConstraints": 25340,
+               "evaluatedHalfReifiedConstraints": 417760,
+               "eliminatedImplications": 2940,
+               "method": "minimize",
+               "flatTime": 12.054
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
+   "vrp-chuffed-lns-symm_strong": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 547420,
+               "flatIntVars": 26555,
+               "flatBoolConstraints": 132160,
+               "flatIntConstraints": 502062,
+               "evaluatedReifiedConstraints": 93660,
+               "evaluatedHalfReifiedConstraints": 417950,
+               "eliminatedImplications": 2940,
+               "method": "minimize",
+               "flatTime": 15.3169
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
    }
 }
