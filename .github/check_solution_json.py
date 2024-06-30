@@ -156,32 +156,38 @@ def main(args):
                 if isOutOfMemory(result):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": OUT_OF_MEMORY_STR,
-                        "time": -1
+                        "time": -1,
+                        "obj": 2**31-1
                     }
                 elif didCrash(result):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": CRASHED_STR,
-                        "time": -1
+                        "time": -1,
+                        "obj": 2**31-1
                     }
                 elif didTimeout(result):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": TIMEOUT_STR,
-                        "time": -1
+                        "time": -1,
+                        "obj": 2**31-1
                     }
                 elif isInconsistent(result, inst_number_int, n_items, dist_matrix, sizes, capacity):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": INCONSISTENT_STR,
-                        "time": -1
+                        "time": -1,
+                        "obj": 2**31-1
                     }
                 elif isSuboptimal(result):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": SUBOPTIMAL_STR,
-                        "time": result["time"]
+                        "time": result["time"],
+                        "obj": result["obj"]
                     }
                 elif isOptimal(result):
                     instances_status[subfolder][inst_number_int][solver] = {
                         "status": OPTIMAL_STR,
-                        "time": result["time"]
+                        "time": result["time"],
+                        "obj": result["obj"]
                     }
                 else:
                     raise Exception("Case not handled")

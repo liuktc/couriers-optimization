@@ -14,39 +14,27 @@ def statusToOrdinal(status):
     if status == "inconsistent": return 5
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(prog="Update README statuses")
-    parser.add_argument("--checks-file", type=str, required=True)
-    parser.add_argument("--readme-file", type=str, required=True)
-    parser.add_argument("--results-git-path", type=str, required=True)
-    args = parser.parse_args()
+def formatMethodStatusFileName(method):
+    return f"{method.lower()}-status.md"
 
-    to_display_methods = ["CP", "SAT", "SMT", "MILP"]
-    with open(args.checks_file, "r") as f: 
-        checks = json.load(f)
+
+def generateOverallStatus(checks, to_display_methods, method_status_dir):
     num_instances = len(checks[to_display_methods[0]])
     status_md = ""
 
-    for i in range(1, len(to_display_methods)):
-        assert to_display_methods[i] in checks
-        assert len(checks[to_display_methods[i]]) == num_instances
-
-    
     # status_md = f"| Instance | {' | '.join(to_display_methods)} |\n"
-    status_md = f"| Instance | {' | '.join(['']*len(to_display_methods))} |\n"
-    status_md += f"|:-:| {''.join(['---|']*(len(to_display_methods)))}\n"
+    status_md = f"| Instance | {' | '.join([f'[{m}]({method_status_dir}/{formatMethodStatusFileName(m)})' for m in to_display_methods])} |\n"
+    status_md += f"|:-:| {''.join([':---:|']*(len(to_display_methods)))}\n"
 
-    # Format badges
+    # Format overall results
     for i in range(num_instances):
         instance = f"{i+1}"
 
-        status_md += f"| {instance} | "
+        status_md += f"| ${instance}$ | "
         for method in to_display_methods:
             if len(checks[method][instance]) == 0:
                 status_md += "| "
                 continue
-
-            badge = ""
 
             instance_tests = [ 
                 {
@@ -55,41 +43,106 @@ if __name__ == "__main__":
                 } 
                 for test_name, status in checks[method][instance].items()
             ]
-            instance_tests = sorted(instance_tests, key=lambda x: (statusToOrdinal(x["status"]), x["time"]))
+            instance_tests = sorted(instance_tests, key=lambda x: (statusToOrdinal(x["status"]), x["obj"], x["time"]))
+            entry = ""
 
             best_instance_status = instance_tests[0]["status"]
             best_instance_time = instance_tests[0]["time"]
-            best_instance_name = instance_tests[0]["name"].replace("_", "__").replace("-", "--")
+            best_instance_obj = instance_tests[0]["obj"]
+            best_instance_name = instance_tests[0]["name"].replace('_', '\\_')
 
             if best_instance_status == "optimal":
-                badge = f"https://img.shields.io/badge/{method}-{best_instance_time}_s_({best_instance_name})-brightgreen"
+                entry = (
+                    f"$\\color{{green}}\\text{{{best_instance_time} s (obj: {best_instance_obj})}}$"
+                    "</br>$\\color{green}"+"\\text{"+best_instance_name+"}$"
+                )
             elif best_instance_status == "suboptimal":
-                badge = f"https://img.shields.io/badge/{method}-{best_instance_time}_s_({best_instance_name})-orange"
+                entry = (
+                    f"$\\color{{orange}}\\text{{{best_instance_time} s (obj: {best_instance_obj})}}$"
+                    "</br>$\\color{orange}"+"\\text{"+best_instance_name+"}$"
+                )
             elif best_instance_status == "inconsistent":
-                badge = f"https://img.shields.io/badge/{method}-Inconsistent-red"
+                entry = "$\\color{red}\\text{Inconsistent}$"
             elif best_instance_status == "timeout":
-                badge = f"https://img.shields.io/badge/{method}-Timeout-lightgray"
+                entry = "$\\color{lightgray}\\text{Timeout}$"
             elif best_instance_status == "out-of-memory":
-                badge = f"https://img.shields.io/badge/{method}-Out_of_memory-fedcba"
+                entry = "$\\color{pink}\\text{Out of memory}$"
             elif best_instance_status == "crashed":
-                badge = f"https://img.shields.io/badge/{method}-Crashed-fedcba"
+                entry = "$\\color{pink}\\text{Crashed}$"
             else:
                 raise Exception("Unknown status")
             
-            results_path = os.path.join(args.results_git_path, method, f"{instance}.json")
-            status_md += f"[![{best_instance_status}]({badge})]({results_path}) | "
+            status_md += f"{entry} | "
         status_md += "\n"
 
+    return status_md
 
-    # Update readme
+
+def generateSpecificStatus(checks, method):
+    num_instances = len(checks[method])
+    status_md = ""
+
+    # status_md = f"| Instance | {' | '.join(to_display_methods)} |\n"
+    status_md = f"| $\\text{{Model}}$ | {' | '.join([f'${i+1}$' for i in range(num_instances)])} |\n"
+    status_md += f"|:-:| {''.join([':---:|']*num_instances)}\n"
+
+    for model in checks[method]["1"].keys():
+        status_md += "$\\text{"+ model.replace('_', '\\_') +"}$ | "
+        for i in range(num_instances):
+            instance = f"{i+1}"
+            entry = ""
+            status = checks[method][instance][model]["status"]
+            obj = checks[method][instance][model]["obj"]
+            time = checks[method][instance][model]["time"]
+
+
+            if status == "optimal":
+                entry = f"$\\color{{green}}\\text{{{obj} ({time} s)}}$"
+            elif status == "suboptimal":
+                entry = f"$\\color{{orange}}\\text{{{obj} ({time} s)}}$"
+            else:
+                entry = f"$-$"
+            status_md += f"{entry} | "
+        status_md += "\n"
+    
+    return status_md
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(prog="Update README statuses")
+    parser.add_argument("--checks-file", type=str, required=True)
+    parser.add_argument("--readme-file", type=str, required=True)
+    parser.add_argument("--method-status-dir", type=str, required=True)
+    args = parser.parse_args()
+
+    to_display_methods = ["CP", "SAT", "SMT", "MILP"]
+    with open(args.checks_file, "r") as f: 
+        checks = json.load(f)
+
+    for i in range(1, len(to_display_methods)):
+        assert to_display_methods[i] in checks
+        assert len(checks[to_display_methods[i]]) == len(checks[to_display_methods[0]])
+
+    os.makedirs((args.method_status_dir), exist_ok=True)
+
+
+    # Update overall readme
     with open(args.readme_file, "r+") as f: 
+        overall_status_md = generateOverallStatus(checks, to_display_methods, args.method_status_dir)
+        
         markdown = f.read()
         f.seek(0)
         f.write(
             re.sub(
                 r"<!-- begin-status -->[\s\S]*<!-- end-status -->", 
-                f"<!-- begin-status -->\n{status_md}\n<!-- end-status -->", 
+                "<!-- begin-status -->\n" + overall_status_md.replace('\\', '\\\\') + "\n<!-- end-status -->", 
                 markdown
             )
         )
         f.truncate()
+
+    # Update method specific readme
+    for method in to_display_methods:
+        with open(os.path.join(args.method_status_dir, formatMethodStatusFileName(method)), "w") as f: 
+            f.write(f"# {method} status\n")
+            f.write(generateSpecificStatus(checks, method))

@@ -39,6 +39,7 @@ jobs:
           python3 status_update.py \
             --checks-file=/tmp/instances_checks.json \
             --readme-file=${GITHUB_WORKSPACE}/README.md \
+            --method-status-dir=./method-statuses
 
 
       - name: Push status
