@@ -62,7 +62,8 @@
             }
          },
          "crash_reason": null,
-         "time_to_last_solution": 0.25
+         "time_to_last_solution": 0.25,
+         "runner": "github-action"
       }
    },
    "vrp-gecode-lns-symm_weak": {
@@ -128,7 +129,8 @@
             }
          },
          "crash_reason": null,
-         "time_to_last_solution": 0.347
+         "time_to_last_solution": 0.347,
+         "runner": "github-action"
       }
    }
 }

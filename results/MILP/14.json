@@ -7,7 +7,10 @@
          [
             1
          ]
-      ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
    },
    "test2": {
       "time": 300,
@@ -17,6 +20,9 @@
          [
             1
          ]
-      ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
    }
 }
