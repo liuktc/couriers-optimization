@@ -22,10 +22,10 @@
 | $14$ | $\color{orange}\text{300 s (obj: 917)}$</br>$\color{orange}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $15$ | $\color{orange}\text{300 s (obj: 900)}$</br>$\color{orange}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $16$ | $\color{green}\text{11 s (obj: 286)}$</br>$\color{green}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $17$ | $\color{pink}\text{Crashed}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $17$ | $\color{orange}\text{300 s (obj: 1337)}$</br>$\color{orange}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $18$ | $\color{orange}\text{300 s (obj: 774)}$</br>$\color{orange}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $19$ | $\color{orange}\text{300 s (obj: 354)}$</br>$\color{orange}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $20$ | $\color{pink}\text{Crashed}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $20$ | $\color{orange}\text{300 s (obj: 1286)}$</br>$\color{orange}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $21$ | $\color{orange}\text{300 s (obj: 653)}$</br>$\color{orange}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 
 <!-- end-status -->
