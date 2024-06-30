@@ -39,7 +39,8 @@ jobs:
           python3 status_update.py \
             --checks-file=/tmp/instances_checks.json \
             --readme-file=${GITHUB_WORKSPACE}/README.md \
-            --method-status-dir=./method-statuses
+            --method-status-dir=${GITHUB_WORKSPACE}/method-statuses \
+            --method-status-git=./method-statuses
 
 
       - name: Push status
@@ -48,5 +49,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add ${GITHUB_WORKSPACE}/README.md
           git add ${GITHUB_WORKSPACE}/results/*
+          git add ${GITHUB_WORKSPACE}/method-statuses/*
           git commit -m "Update status" || true
           git push || true

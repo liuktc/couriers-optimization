@@ -18,12 +18,12 @@ def formatMethodStatusFileName(method):
     return f"{method.lower()}-status.md"
 
 
-def generateOverallStatus(checks, to_display_methods, method_status_dir):
+def generateOverallStatus(checks, to_display_methods, method_status_path):
     num_instances = len(checks[to_display_methods[0]])
     status_md = ""
 
     # status_md = f"| Instance | {' | '.join(to_display_methods)} |\n"
-    status_md = f"| Instance | {' | '.join([f'[{m}]({method_status_dir}/{formatMethodStatusFileName(m)})' for m in to_display_methods])} |\n"
+    status_md = f"| Instance | {' | '.join([f'[{m}]({os.path.join(method_status_path, formatMethodStatusFileName(m))})' for m in to_display_methods])} |\n"
     status_md += f"|:-:| {''.join([':---:|']*(len(to_display_methods)))}\n"
 
     # Format overall results
@@ -113,6 +113,7 @@ if __name__ == "__main__":
     parser.add_argument("--checks-file", type=str, required=True)
     parser.add_argument("--readme-file", type=str, required=True)
     parser.add_argument("--method-status-dir", type=str, required=True)
+    parser.add_argument("--method-status-git", type=str, required=True)
     args = parser.parse_args()
 
     to_display_methods = ["CP", "SAT", "SMT", "MILP"]
@@ -128,7 +129,7 @@ if __name__ == "__main__":
 
     # Update overall readme
     with open(args.readme_file, "r+") as f: 
-        overall_status_md = generateOverallStatus(checks, to_display_methods, args.method_status_dir)
+        overall_status_md = generateOverallStatus(checks, to_display_methods, args.method_status_git)
         
         markdown = f.read()
         f.seek(0)
