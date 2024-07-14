@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+      - cp
+      - sat
+      - smt
+      - milp
     paths: ["src/**", .github/workflows/status.yml, .github/status_update.py, .github/check_solution_json.py]
 
 jobs:
@@ -20,13 +24,36 @@ jobs:
           docker build . -t cdmo
 
 
+      - name: Set env for methods to run (main)
+        if: endsWith(github.ref, '/main')
+        run: |
+          echo "METHODS=cp,sat,smt,milp" >> $GITHUB_ENV
+      - name: Set env for methods to run (CP)
+        if: endsWith(github.ref, '/cp')
+        run: |
+          echo "METHODS=cp" >> $GITHUB_ENV
+      - name: Set env for methods to run (SAT)
+        if: endsWith(github.ref, '/sat')
+        run: |
+          echo "METHODS=sat" >> $GITHUB_ENV
+      - name: Set env for methods to run (SMT)
+        if: endsWith(github.ref, '/smt')
+        run: |
+          echo "METHODS=smt" >> $GITHUB_ENV
+      - name: Set env for methods to run (MILP)
+        if: endsWith(github.ref, '/milp')
+        run: |
+          echo "METHODS=milp" >> $GITHUB_ENV
+
+          
       - name: Generate results
         run: |
           docker run -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo \
             --runner-label="github-action" \
             --verbose \
             --timeout=300 \
-            --mem-limit=5120
+            --mem-limit=5120 \
+            --methods=$METHODS
 
       - name: Generate checks
         run: |

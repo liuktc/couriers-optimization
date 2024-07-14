@@ -29,6 +29,8 @@ if __name__ == "__main__":
                         help="Number of the instances to run, comma separated")
     parser.add_argument("--mem-limit", type=int, required=False, default=-1, help="Memory usage limit in MB")
     parser.add_argument("--runner-label", type=str, required=False, default="", help="Name of the machine that is executing")
+    parser.add_argument("--methods", type=lambda arg: arg.split(","), required=False, default=["cp", "sat", "smt", "milp"], 
+                        help="Methods to run, comma separated")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -56,16 +58,23 @@ if __name__ == "__main__":
     for dir in [results_dir, cp_dir, sat_dir, smt_dir, milp_dir]:
         os.makedirs((dir), exist_ok=True)
 
-    
-    # Dump results
-    output_hierarchy = [
-        (cp_dir, cp_solve),
-        (sat_dir, sat_solve),
-        (smt_dir, smt_solve),
-        (milp_dir, milp_solve)
-    ]
 
-    for out_dir, solve_fn in output_hierarchy:
+    logger.info("-"*50)
+    logger.info("Running with the following configuration:")
+    logger.info(f"Methods: {args.methods}")
+    logger.info(f"Instances: {args.instances}")
+    logger.info(f"Memory limit: {args.mem_limit} MB")
+    logger.info(f"Timeout: {args.timeout} s")
+    logger.info("-"*50)
+
+    
+    experiments_setup = []
+    if "cp" in args.methods: experiments_setup.append((cp_dir, cp_solve))
+    if "sat" in args.methods: experiments_setup.append((sat_dir, sat_solve))
+    if "smt" in args.methods: experiments_setup.append((smt_dir, smt_solve))
+    if "milp" in args.methods: experiments_setup.append((milp_dir, milp_solve))
+
+    for out_dir, solve_fn in experiments_setup:
         logger.info(f"Starting processing for {out_dir}")
 
         for instance_number, instance in instances:
@@ -98,5 +107,3 @@ if __name__ == "__main__":
             with open(results_file_path, "w") as f:
                 logger.info(f"Saving results in {results_file_path}")
                 json.dump(instance_results, f, indent=3)
-
-
