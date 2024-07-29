@@ -60,7 +60,19 @@ experiments_setup = [
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-chuffed-symm_strong.mzn"),
         "solver": "chuffed",
         "solution_extractor_fn": solutionExtractorFromForwardPath
-    }
+    },
+    {
+        "name": "vrp-gecode-lns2",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode2.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": solutionExtractorFromForwardPath
+    },
+    {
+        "name": "vrp-gecode-lns-symm_weak2",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_weak2.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": solutionExtractorFromForwardPath
+    },
 ]
 
 
