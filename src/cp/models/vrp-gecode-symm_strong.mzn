@@ -26,7 +26,9 @@ array[COURIERS, 1..DEPOT] of var 1..DEPOT: path;
 array[COURIERS] of var int: carry_load;
 array[COURIERS] of var int: carry_num;
 
-var MIN_PATH..MAX_PATH: obj = max(c in COURIERS)( sum(j in 1..DEPOT where path[c, j] != j)(D[j, path[c, j]]) );
+% --- Objective ---
+var MIN_PATH..MAX_PATH: obj;
+constraint obj = max(c in COURIERS)( sum(j in 1..DEPOT where path[c, j] != j)(D[j, path[c, j]]) );
 
 
 
