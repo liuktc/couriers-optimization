@@ -1214,5 +1214,71 @@
          "time_to_last_solution": 301.095,
          "runner": "github-action"
       }
+   },
+   "vrp-gecode-lns-triang": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 57800,
+               "flatIntVars": 41095,
+               "flatBoolConstraints": 34660,
+               "flatIntConstraints": 69789,
+               "evaluatedReifiedConstraints": 5820,
+               "evaluatedHalfReifiedConstraints": 40440,
+               "eliminatedImplications": 5820,
+               "method": "minimize",
+               "flatTime": 4.05447
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": {
+               "initTime": 0.925865,
+               "solveTime": 293.055,
+               "solutions": 0,
+               "variables": 98895,
+               "propagators": 104449,
+               "propagations": 339762602,
+               "nodes": 77745
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
+   "vrp-gecode-symm_weak-triang": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 75020,
+               "flatIntVars": 46835,
+               "flatBoolConstraints": 46140,
+               "flatIntConstraints": 87046,
+               "evaluatedReifiedConstraints": 11560,
+               "evaluatedHalfReifiedConstraints": 51920,
+               "eliminatedImplications": 5820,
+               "method": "minimize",
+               "flatTime": 4.71249
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
    }
 }
