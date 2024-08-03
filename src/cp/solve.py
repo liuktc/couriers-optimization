@@ -25,6 +25,28 @@ def _solutionExtractorFromForwardPath(variables):
     return solution
 
 
+def _preproCarryUpperBound(experiment, instance, random_seed):
+    instance_path = os.path.join(pathlib.Path(__file__).parent.resolve(), ".instance.dzn")
+    dzn_content = parseInstanceForMinizinc(instance)
+    with open(instance_path, "w") as f:
+        f.write(dzn_content)
+
+    outcome, solutions, statistics = minizincSolve(
+        model_path = os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/utils/num_carry_upper.mzn"),
+        data_path = instance_path,
+        solver = "gecode",
+        timeout_ms = 5000,
+        seed = random_seed
+    )
+
+    if outcome["mz_status"] == "UNKNOWN":
+        max_carry_per_courier = instance["n"]
+    else:
+        max_carry_per_courier = solutions[-1]["variables"]["obj"]
+
+    return f"MAX_CARRY = {max_carry_per_courier}\n"
+
+
 experiments_setup = [
     {
         "name": "vrp-gecode-lns",
@@ -81,7 +103,21 @@ experiments_setup = [
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": None
-    }
+    },
+    {
+        "name": "vrp-gecode-lns-triang",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-triang.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": _preproCarryUpperBound
+    },
+    {
+        "name": "vrp-gecode-symm_weak-triang",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm-triang.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": _preproCarryUpperBound
+    },
 ]
 
 
