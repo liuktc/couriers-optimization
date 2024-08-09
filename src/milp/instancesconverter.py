@@ -11,20 +11,20 @@ def prepare_data(input_file, output_file):
     distances = [list(map(int, line.split())) for line in lines[4:]]
 
     with open(output_file, 'w') as f:
-        f.write(f"set COURIERS := {' '.join(map(str, range(1, num_couriers+1)))};\n")
-        f.write(f"set PACKAGES := {' '.join(map(str, range(1, num_packages+1)))};\n\n")
+        f.write(f"param m := {num_couriers};\n")
+        f.write(f"param n := {num_packages};\n\n")
 
-        f.write("param capacity :=\n")
+        f.write("param l :=\n")
         for i, cap in enumerate(capacities, 1):
             f.write(f"{i} {cap}\n")
         f.write(";\n\n")
 
-        f.write("param size :=\n")
+        f.write("param s :=\n")
         for i, s in enumerate(sizes, 1):
             f.write(f"{i} {s}\n")
         f.write(";\n\n")
 
-        f.write("param distance :\n")
+        f.write("param D :\n")
         f.write("    " + " ".join(map(str, range(1, num_packages+2))) + " :=\n")
         for i, row in enumerate(distances):
             f.write(f"{i+1} " + " ".join(map(str, row)) + "\n")

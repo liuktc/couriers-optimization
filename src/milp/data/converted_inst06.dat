@@ -1,7 +1,7 @@
-set COURIERS := 1 2 3 4 5 6;
-set PACKAGES := 1 2 3 4 5 6 7 8;
+param m := 6;
+param n := 8;
 
-param capacity :=
+param l :=
 1 200
 2 100
 3 200
@@ -10,7 +10,7 @@ param capacity :=
 6 100
 ;
 
-param size :=
+param s :=
 1 16
 2 25
 3 21
@@ -21,7 +21,7 @@ param size :=
 8 20
 ;
 
-param distance :
+param D :
     1 2 3 4 5 6 7 8 9 :=
 1 0 80 131 22 41 127 87 48 113
 2 60 0 85 82 101 81 53 106 57
