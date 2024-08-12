@@ -1,28 +1,140 @@
 {
-   "test1": {
-      "time": 300,
-      "optimal": false,
-      "obj": 14,
+  "initial_model.mod": {
+    "cbc": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12.0,
       "sol": [
-         [
-            1
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "test2": {
-      "time": 300,
-      "optimal": false,
-      "obj": 16,
+        [
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    },
+    "scip": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12.0,
       "sol": [
-         [
-            1
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   }
+        [
+          5
+        ],
+        [],
+        []
+      ]
+    },
+    "highs": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12.000000000000025,
+      "sol": [
+        [
+          6
+        ],
+        [],
+        []
+      ]
+    }
+  },
+  "model_with_implied_constraint.mod": {
+    "cbc": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12.0,
+      "sol": [
+        [
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    },
+    "scip": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12.0,
+      "sol": [
+        [
+          3,
+          5,
+          6
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    },
+    "highs": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12.0,
+      "sol": [
+        [
+          3,
+          5,
+          6
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    }
+  },
+  "model_with_symmetry_breaking.mod": {
+    "cbc": {
+      "time": 0,
+      "optimal": false,
+      "obj": 10.514285714285721,
+      "sol": [
+        [
+          6
+        ],
+        [],
+        []
+      ]
+    },
+    "scip": {
+      "time": 0,
+      "optimal": false,
+      "obj": 0.0,
+      "sol": [
+        [],
+        [],
+        []
+      ]
+    },
+    "highs": {
+      "time": 0,
+      "optimal": false,
+      "obj": 0.0,
+      "sol": [
+        [],
+        [],
+        []
+      ]
+    }
+  }
 }

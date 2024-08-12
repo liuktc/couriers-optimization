@@ -1,5 +1,3 @@
-#Ok gira senza warning ma mi dà risultati non ottimali nonostante mi dica siano ottimali
-
 param m integer; #Number of couriers
 param n integer; #Number of packages
 
@@ -13,30 +11,27 @@ param l{COURIERS} integer; #array of capacity of each coureirs
 param s{PACKS} integer; #array of size of each packs
 param D{i in NODES, j in NODES} integer; #matrix of distances
 
-#Da migliorare
 #param UpperBound := sum{i in NODES, j in NODES} D[i,j]; 
 #param LowerBound := 0;
 
 #####################
 
-#A[i,k] = 1 iff the courier K bring the pakcs j
+#A[i,k] = 1 iff the courier k bring the pakcs j
 var A{i in PACKS, k in COURIERS} binary;
 #X[i,j,k] = 1 iff the couriers k start from the point i and end to the point j 
 var X{i in NODES, j in NODES, k in COURIERS} binary;
 #var u[i,k] used of the soubtur elimination following the MTZ approach
 var u{i in PACKS, k in COURIERS} >= 0;
 #MaxDistance of each courier
-var MaxDistance >= 0;
+#var MaxDistance >= 0;
 
-#minimize TotalDistance:
-	#sum{i in NODES, j in NODES, k in COURIERS} D[i,j] * X[i,j,k];
-
-minimize ObjectiveMaxDistance: MaxDistance;
+minimize ObjectiveMaxDistance: 
+	max{k in COURIERS} sum{i in NODES, j in NODES} D[i,j]*X[i,j,k];
 #####################
 
-#DefinitionOfMaxDistance (like the variable that is greater than all the distance cover by the couriers)
-subject to DefineMaxDistance {k in COURIERS}:
-	MaxDistance >= sum{i in NODES, j in NODES} D[i,j]*X[i,j,k];
+#DefinitionOfMaxDistance (as the variable that is greater than all the distances cover by the couriers)
+#subject to DefineMaxDistance {k in COURIERS}:
+	#MaxDistance >= sum{i in NODES, j in NODES} D[i,j]*X[i,j,k];
 
 #link XY constraints
 subject to LinkXY1{i in PACKS, k in COURIERS}:
@@ -75,7 +70,7 @@ subject to StartAtDepot {k in COURIERS}:
 subject to EndAtDepot {k in COURIERS}:
 	sum{i in NODES} X[i, DEPOT, k] = 1;
 
-#Subtour elimination (Da capire meglio!) -> MTZ formultation
+#Subtour elimination (Da guardarci meglio!) -> MTZ formultation
 subject to SubtourElimination{i in PACKS, j in PACKS, k in COURIERS}:
     u[i,k] - u[j,k] + n * X[i,j,k] <= n - 1;
     
@@ -91,6 +86,6 @@ subject to SubtourElimination{i in PACKS, j in PACKS, k in COURIERS}:
 #subject to ImpliedConstraint {k in COURIERS}:
 	#sum{i in PACKS} A[i,k] >= 1;
 	
-#subject to SymmetryBreaking {k in COURIERS: k < m}:
-    #sum{i in PACKS} i * A[i,k] <= sum{i in PACKS} i * A[i,k+1];
-
+subject to SymmetryBreaking {k in COURIERS: k < m}:
+    sum{i in PACKS} i * A[i,k] <= sum{i in PACKS} i * A[i,k+1];
+    

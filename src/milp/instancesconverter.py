@@ -31,10 +31,6 @@ def prepare_data(input_file, output_file):
         f.write(";\n")
 
 def process_directory(input_dir, output_dir):
-    # Create output directory if it doesn't exist
-    #if not os.path.exists(output_dir):
-        #os.makedirs(output_dir)
-    
     # Process each file in the input directory
     for filename in os.listdir(input_dir):
         if filename.endswith(".dat"):  # Assuming input files are .txt

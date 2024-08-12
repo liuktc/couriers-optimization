@@ -1,10 +1,11 @@
 import os
 import json
 import time
+import numpy as np
 from amplpy import AMPL, add_to_path
 
-# Lista dei solver da testare, da aggiungerene altri e/o da testare modificadone parametri
-SOLVERS = ['cbc', 'scip']
+# Lista dei solver da testare, da aggiungerene altri e/o da testare modificadone parametri -> con highs non so cosa succeda...
+SOLVERS = ['cbc', 'scip', 'highs']
 
 def run_ampl_model(model_file, data_file, solver):
     
@@ -16,39 +17,75 @@ def run_ampl_model(model_file, data_file, solver):
         ampl.readData(data_file)
         ampl.setOption('solver', solver)
         ampl.setOption(solver + '_options', 'timelimit=300')
-        ampl.solve()
         
+        #DA MOGLIORARE
+        #if solver == 'cbc':
+            #ampl.option['cbc_options'] = "preprocess=on roundingHeuristic=on greedyHeuristic=on"
+        #elif solver == 'scip':
+            #ampl.option['scip_options'] = "heuristics/shiftandpropagate/freq = 1 numerics/feastol = 1e-6"
+        #elif solver == 'highs':
+            #ampl.option['highs_options'] = "presolve=on parallel=on mip_heuristic_effort=0.5 mip_rel_gap=1e-4"
+        #else:
+            #raise ValueError(f"Solver non supportato: {solver}")
+        
+        ampl.solve()
         objective = ampl.getObjective('ObjectiveMaxDistance').value()
         is_optimal = ampl.getValue('solve_result') == "solved"
         solve_time = ampl.getValue('_solve_time')
         
+        #ALTRI PARAMETRI DA STAMPARE NELLA SOLUZIONE
+        #iterations = ampl.getValue('solve_iterations')
+        #nodes = ampl.getValue('solve_nodes')
+        #memory_used = ampl.getValue('solve_result_memory_used')
+        #cuts = ampl.getValue('solve_result_num_cuts')
+        
         # Estrai la soluzione
-        assignments = ampl.getVariable('A')
-        path = ampl.getVariable('X')
+        A = ampl.getVariable('A')
+        X = ampl.getVariable('X')
         m = ampl.getValue('m')
         n = ampl.getValue('n')
         
-        #Questa soluzione mostra i pacchi che prende ciascun corrriere
+        #Questa soluzione mostra i pacchi che prende ciascun corrriere -> non so se effettivamente è ordinato...
         solution = []
         for couriers in range(1,m+1):
             couriers_packages = []
             for packs in range(1,n+1):
-                if assignments[packs, couriers].value() == 1:
+                if A[packs, couriers].value() == 1:
                     couriers_packages.append(packs)
             solution.append(couriers_packages)
-            
-        #solution = [[[] for _ in range(1,n+2)] for _ in range (1,n+2)]
+        
+        #IN ALCUNI CASI MI VA IN UN LOOP INFINITO, C'E' QUALCHE PROBELMA COL MODELLO...  
+        #solution = []
+        #for couriers in range(1,m+1):
+            #couriers_packs = []
+            #packs = n + 1
+            #while X[packs, n+1, couriers].value() == 0:
+                #for i in range(1, n + 1):
+                    #if X[packs, i, couriers].value() == 1:
+                        #couriers_packs.append(i)
+                        #packs = i
+                        #break
+            #solution.append(couriers_packs)
+        
+        #solution = np.zeros((n+1,n+1,m))
         #for i in range(1,n+2):
             #for j in range(1,n+2):
                 #for k in range(1,m+1):
-                    #solution[i,j,k] = path[i,j,k].value()
-                    
+                    #if X[i,j,k].value() == 1:
+                        #solution[i-1,j-1,k-1] = 1
+        
+        #print(solution)
+        
         #Da aggiungere altre info al risultiato finale!!!
         return {
-            "time": solve_time,
+            "time": int(solve_time),
             "optimal": is_optimal,
             "obj": objective,
-            "sol": solution
+            "sol": solution,
+            #'iterations' : iterations,
+            #'nodes' : nodes,
+            #'memory used' : memory_used,
+            #'cuts' : cuts
         }
     except Exception as e:
         print(f"Error with solver {solver}: {str(e)}")
@@ -61,44 +98,40 @@ def run_ampl_model(model_file, data_file, solver):
     finally:
         ampl.close()
 
-def test_model(model_file, data_dir, num_instances):
-    results = {}
-    instances = sorted([f for f in os.listdir(data_dir) if f.endswith('.dat')])[:num_instances]
-    
-    for instance in instances:
-        instance_name = os.path.splitext(instance)[0]
-        print(f"Testing on instance: {instance_name}")
-        
-        data_file = os.path.join(data_dir, instance)
-        instance_results = {}
-        
-        for solver in SOLVERS:
-            print(f"  Using solver: {solver}")
-            #start_time = time.time()
-            result = run_ampl_model(model_file, data_file, solver)
-            #end_time = time.time()
-            #result['time'] = end_time - start_time 
-            
-            instance_results[solver] = result
-        
-        results[instance_name] = instance_results
-    
-    return results
+#DA CAPIRE SE EFFETTIVAMENTE CHIAVE DEL DIZIONARIO DEVE ESSERE MODELLO-SOLVER (E IN QUESTO CASO DOVREBBERO QUINDI ESSERE 6)
+#ORA COME ORA LE CHIAVI SONO SOLTANTO I MODELLI
+def test_model(model_file, data_dir, num_instance):
+    instance = sorted([f for f in os.listdir(data_dir) if f.endswith('.dat')])[num_instance]
+    data_file = os.path.join(data_dir, instance)
+    model_results = {}
+    for solver in SOLVERS:
+        print(f"  Using solver: {solver}")
+        result = run_ampl_model(model_file, data_file, solver)
+        model_results[solver] = result
+
+    return model_results
 
 def main():
-    model_file = 'src/milp/models/model1.mod'  
+    model_dir = 'src/milp/models/'
+    models_file = ['initial_model.mod', 'model_with_implied_constraint.mod', 'model_with_symmetry_breaking.mod']
     data_dir = 'src/milp/data'  
     results_dir = 'results/MILP'
     num_instances = 10
     
-    results = test_model(model_file, data_dir, num_instances)
+    #Salva i risultati nei file json specificati per istanza
+    for i in range(1,num_instances+1):
+        print(f'Testing on instance number {i}')
+        models_result = {}
+        for model_file in models_file:
+            percorso_model = os.path.join(model_dir, model_file)
+            print(f'Testing on model: {model_file}')
+            results = test_model(percorso_model, data_dir, i-1)
+            models_result[model_file] = results
+        percorso = os.path.join(results_dir, f'{i}.json')
+        with open(percorso, 'w') as f:
+            json.dump(models_result, f, indent=2)
     
-    # Salva i risultati in un file JSON (da modificare!)
-    results_file = os.path.join(results_dir, 'test_results_multi_solver_experiment.json')
-    with open(results_file, 'w') as f:
-        json.dump(results, f, indent=2)
-    
-    print(f"Test completati. Risultati salvati in '{results_file}'.")
+    print(f"Test completati. Risultati salvati nell'apposita directory.")
 
 if __name__ == "__main__":
     main()
