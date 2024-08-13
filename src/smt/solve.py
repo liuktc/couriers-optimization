@@ -1,4 +1,4 @@
-def solve(instance, timeout, **kwargs):
+def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     return {
         "test1": {
             "time": 300,
