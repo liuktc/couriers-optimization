@@ -10,6 +10,10 @@ on:
       - milp
     paths: ["src/**", .github/workflows/status.yml, .github/status_update.py, .github/check_solution_json.py]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check-status:
     runs-on: ubuntu-latest
