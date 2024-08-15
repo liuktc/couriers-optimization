@@ -1,0 +1,302 @@
+{
+   "vrp-plain-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4,
+            7
+         ],
+         [
+            2,
+            6
+         ],
+         [],
+         [
+            8
+         ],
+         [
+            3
+         ],
+         [
+            1,
+            5
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 600,
+               "flatIntVars": 501,
+               "flatBoolConstraints": 402,
+               "flatIntConstraints": 818,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 366,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.14604
+            },
+            "solver": {
+               "initTime": 0.00688792,
+               "solveTime": 0.00212281,
+               "solutions": 4,
+               "variables": 1101,
+               "propagators": 1220,
+               "propagations": 11483,
+               "nodes": 186,
+               "failures": 34,
+               "restarts": 0,
+               "peakDepth": 51
+            },
+            "solution": {
+               "nSolutions": 4
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.18012993812561034,
+         "runner": "github-action"
+      }
+   },
+   "vrp-luby-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4
+         ],
+         [],
+         [
+            1,
+            5
+         ],
+         [
+            8
+         ],
+         [
+            6,
+            7
+         ],
+         [
+            2,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 600,
+               "flatIntVars": 447,
+               "flatBoolConstraints": 402,
+               "flatIntConstraints": 764,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 366,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.142498
+            },
+            "solver": {
+               "initTime": 0.0063676,
+               "solveTime": 0.00173642,
+               "solutions": 2,
+               "variables": 1047,
+               "propagators": 1166,
+               "propagations": 10163,
+               "nodes": 99,
+               "failures": 0,
+               "restarts": 1,
+               "peakDepth": 50
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.17514853477478026,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns80-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4
+         ],
+         [],
+         [
+            1,
+            5
+         ],
+         [
+            8
+         ],
+         [
+            6,
+            7
+         ],
+         [
+            2,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 600,
+               "flatIntVars": 447,
+               "flatBoolConstraints": 402,
+               "flatIntConstraints": 764,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 366,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.14208
+            },
+            "solver": {
+               "initTime": 0.00656285,
+               "solveTime": 0.00186911,
+               "solutions": 2,
+               "variables": 1047,
+               "propagators": 1166,
+               "propagations": 10163,
+               "nodes": 99,
+               "failures": 0,
+               "restarts": 1,
+               "peakDepth": 50
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.17514853477478026,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns90-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4
+         ],
+         [],
+         [
+            1,
+            5
+         ],
+         [
+            8
+         ],
+         [
+            6,
+            7
+         ],
+         [
+            2,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 600,
+               "flatIntVars": 447,
+               "flatBoolConstraints": 402,
+               "flatIntConstraints": 764,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 366,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.141799
+            },
+            "solver": {
+               "initTime": 0.00651262,
+               "solveTime": 0.00169078,
+               "solutions": 2,
+               "variables": 1047,
+               "propagators": 1166,
+               "propagations": 10163,
+               "nodes": 99,
+               "failures": 0,
+               "restarts": 1,
+               "peakDepth": 50
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.17414901161193846,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4
+         ],
+         [],
+         [
+            1,
+            5
+         ],
+         [
+            8
+         ],
+         [
+            6,
+            7
+         ],
+         [
+            2,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 600,
+               "flatIntVars": 447,
+               "flatBoolConstraints": 402,
+               "flatIntConstraints": 764,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 366,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.140494
+            },
+            "solver": {
+               "initTime": 0.00632792,
+               "solveTime": 0.00168036,
+               "solutions": 2,
+               "variables": 1047,
+               "propagators": 1166,
+               "propagations": 10163,
+               "nodes": 99,
+               "failures": 0,
+               "restarts": 1,
+               "peakDepth": 50
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.17114567375183107,
+         "runner": "github-action"
+      }
+   }
+}
