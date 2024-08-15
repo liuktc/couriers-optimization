@@ -63,6 +63,13 @@ experiments_setup = [
         "preprocessing": None
     },
     {
+        "name": "vrp-lns50-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns50.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": None
+    },
+    {
         "name": "vrp-lns80-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns80.mzn"),
         "solver": "gecode",
@@ -79,6 +86,20 @@ experiments_setup = [
     {
         "name": "vrp-lns95-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns95.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": None
+    },
+    {
+        "name": "vrp-lns97-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns97.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": None
+    },
+    {
+        "name": "vrp-lns99-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns99.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": None
