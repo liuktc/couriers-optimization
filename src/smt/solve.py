@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 from model import SMT
 
 def solve(instance, timeout, **kwargs):
     return SMT(instance["m"], instance["n"], instance["l"], instance["s"], instance["D"], timeout=timeout,**kwargs)
     
     
+=======
+def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
+>>>>>>> e304f3d5aaa2650faf771ed74a065e4d7ba4171d
     return {
         "test1": {
             "time": 300,
