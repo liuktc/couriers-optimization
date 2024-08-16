@@ -125,6 +125,20 @@ experiments_setup = [
         "preprocessing": [ _setLNSPercentage(95) ]
     },
     {
+        "name": "vrp-lns95-symm_amount_strong-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_amount_strong.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95) ]
+    },
+    {
+        "name": "vrp-lns95-symm_packs_strong-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_packs_strong.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95) ]
+    },
+    {
         "name": "vrp-lns95-symm_all-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_all.mzn"),
         "solver": "gecode",
