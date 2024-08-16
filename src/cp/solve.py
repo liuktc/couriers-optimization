@@ -124,69 +124,41 @@ experiments_setup = [
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": [ _setLNSPercentage(95) ]
     },
-        {
+    {
         "name": "vrp-lns95-symm_all-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_all.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": [ _setLNSPercentage(95) ]
     },
-    # {
-    #     "name": "vrp-gecode-lns-symm_strong",
-    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_strong.mzn"),
-    #     "solver": "gecode",
-    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": []
-    # },
-    # {
-    #     "name": "vrp-chuffed",
-    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-chuffed.mzn"),
-    #     "solver": "chuffed",
-    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": []
-    # },
-    # {
-    #     "name": "vrp-chuffed-lns-symm_weak",
-    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-chuffed-symm_weak.mzn"),
-    #     "solver": "chuffed",
-    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": []
-    # },
-    # {
-    #     "name": "vrp-chuffed-lns-symm_strong",
-    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-chuffed-symm_strong.mzn"),
-    #     "solver": "chuffed",
-    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": []
-    # },
-    # {
-    #     "name": "vrp-gecode-lns2",
-    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode2.mzn"),
-    #     "solver": "gecode",
-    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": []
-    # },
-    # {
-    #     "name": "vrp-gecode-lns-symm_weak2",
-    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_weak2.mzn"),
-    #     "solver": "gecode",
-    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": []
-    # },
-    # {
-    #     "name": "vrp-gecode-lns-triang",
-    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-triang.mzn"),
-    #     "solver": "gecode",
-    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": [ _preproCarryUpperBound ]
-    # },
-    # {
-    #     "name": "vrp-gecode-symm_weak-triang",
-    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-gecode-symm-triang.mzn"),
-    #     "solver": "gecode",
-    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": [ _preproCarryUpperBound ]
-    # },
+    {
+        "name": "vrp-lns95-triang-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-triang.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95), _preproCarryUpperBound ]
+    },
+    {
+        "name": "vrp-lns95-triang-symm_amount-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-triang-symm_amount.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95), _preproCarryUpperBound ]
+    },
+    {
+        "name": "vrp-lns95-triang-symm_packs-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-triang-symm_packs.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95), _preproCarryUpperBound ]
+    },
+    {
+        "name": "vrp-lns95-triang-symm_all-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-triang-symm_all.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95), _preproCarryUpperBound ]
+    },
 ]
 
 
