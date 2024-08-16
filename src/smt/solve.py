@@ -1,8 +1,9 @@
 from model import SMT
+from model_arrays import SMT_array
 
 def solve(instance, timeout, **kwargs):
     return SMT(instance["m"], instance["n"], instance["l"], instance["s"], instance["D"], timeout=timeout,**kwargs)
-    
+    # return SMT_array(instance["m"], instance["n"], instance["l"], instance["s"], instance["D"], timeout=timeout,**kwargs)
     return {
         "test1": {
             "time": 300,
@@ -48,8 +49,8 @@ if __name__ == "__main__":
     
     instances = [ (i+1, parseInstanceFile(os.path.join("../instances", f))) for i, f in enumerate(sorted(os.listdir("../instances"))) ]
     
-    for instance_number, instance in instances[:1]:
+    for instance_number, instance in instances[10:11]:
         print(instance)
         print(f"Solving instance {instance_number}")
-        solve(instance, timeout=300)
+        solve(instance, timeout=10)
     
