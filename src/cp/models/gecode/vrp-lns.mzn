@@ -21,6 +21,8 @@ int: MAX_PATH = sum(d in LOCATIONS)(max(D[d, ..]));
 
 array[LOCATIONS] of int: MIN_PER_POS = [ min(D[i, ..]) | i in LOCATIONS ];
 
+int: LNS_PERC;
+
 
 
 % --- Decision variables ---
@@ -80,5 +82,5 @@ solve
       | c in reverse(arg_sort(l)) ]),
   ])
   :: restart_luby( n )
-  :: relax_and_reconstruct(assignments, if n <= 10 then 0 else 80 endif)
+  :: relax_and_reconstruct(assignments, if n <= 10 then 0 else LNS_PERC endif)
 minimize obj;

@@ -47,125 +47,131 @@ def _preproCarryUpperBound(experiment, instance, random_seed):
     return f"MAX_CARRY = {max_carry_per_courier};\n"
 
 
+def _setLNSPercentage(percentage):
+    def __set(*args, **kwargs):
+        return f"LNS_PERC = {percentage};\n"
+    return __set
+
+
 experiments_setup = [
     {
         "name": "vrp-plain-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-plain.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": None
+        "preprocessing": []
     },
     {
         "name": "vrp-luby-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-luby.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": None
+        "preprocessing": []
     },
     {
         "name": "vrp-lns50-gecode",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns50.mzn"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": None
+        "preprocessing": [ _setLNSPercentage(50) ]
     },
     {
         "name": "vrp-lns80-gecode",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns80.mzn"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": None
+        "preprocessing": [ _setLNSPercentage(80) ]
     },
     {
         "name": "vrp-lns90-gecode",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns90.mzn"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": None
+        "preprocessing": [ _setLNSPercentage(90) ]
     },
     {
         "name": "vrp-lns95-gecode",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns95.mzn"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": None
+        "preprocessing": [ _setLNSPercentage(95) ]
     },
     {
         "name": "vrp-lns97-gecode",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns97.mzn"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": None
+        "preprocessing": [ _setLNSPercentage(97) ]
     },
     {
         "name": "vrp-lns99-gecode",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns99.mzn"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": None
+        "preprocessing": [ _setLNSPercentage(99) ]
     },
     # {
     #     "name": "vrp-gecode-lns-symm_weak",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_weak.mzn"),
     #     "solver": "gecode",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": None
+    #     "preprocessing": []
     # },
     # {
     #     "name": "vrp-gecode-lns-symm_strong",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_strong.mzn"),
     #     "solver": "gecode",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": None
+    #     "preprocessing": []
     # },
     # {
     #     "name": "vrp-chuffed",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-chuffed.mzn"),
     #     "solver": "chuffed",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": None
+    #     "preprocessing": []
     # },
     # {
     #     "name": "vrp-chuffed-lns-symm_weak",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-chuffed-symm_weak.mzn"),
     #     "solver": "chuffed",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": None
+    #     "preprocessing": []
     # },
     # {
     #     "name": "vrp-chuffed-lns-symm_strong",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-chuffed-symm_strong.mzn"),
     #     "solver": "chuffed",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": None
+    #     "preprocessing": []
     # },
     # {
     #     "name": "vrp-gecode-lns2",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode2.mzn"),
     #     "solver": "gecode",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": None
+    #     "preprocessing": []
     # },
     # {
     #     "name": "vrp-gecode-lns-symm_weak2",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-symm_weak2.mzn"),
     #     "solver": "gecode",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": None
+    #     "preprocessing": []
     # },
     # {
     #     "name": "vrp-gecode-lns-triang",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/vrp-gecode-triang.mzn"),
     #     "solver": "gecode",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": _preproCarryUpperBound
+    #     "preprocessing": [ _preproCarryUpperBound ]
     # },
     # {
     #     "name": "vrp-gecode-symm_weak-triang",
     #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-gecode-symm-triang.mzn"),
     #     "solver": "gecode",
     #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
-    #     "preprocessing": _preproCarryUpperBound
+    #     "preprocessing": [ _preproCarryUpperBound ]
     # },
 ]
 
@@ -187,8 +193,9 @@ def solve(instance, timeout, cache={}, random_seed=42):
         start_time = time.time()
 
         # Create instance input file
-        if experiment["preprocessing"] is not None:
-            dzn_content += experiment["preprocessing"](experiment, instance, random_seed)
+        if len(experiment["preprocessing"]) > 0:
+            for prepro_fn in experiment["preprocessing"]:
+                dzn_content += prepro_fn(experiment, instance, random_seed)
         with open(instance_path, "w") as f:
             f.write(dzn_content)
         preprocess_time = time.time() - start_time
