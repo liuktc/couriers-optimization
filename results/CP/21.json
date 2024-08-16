@@ -2053,6 +2053,75 @@
          "runner": "github-action"
       }
    },
+   "vrp-lns95-symm_amount_strong-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 29380,
+               "flatIntVars": 23574,
+               "flatBoolConstraints": 20430,
+               "flatIntConstraints": 38392,
+               "evaluatedReifiedConstraints": 5800,
+               "evaluatedHalfReifiedConstraints": 17800,
+               "eliminatedImplications": 2940,
+               "method": "minimize",
+               "flatTime": 2.28985
+            },
+            "solver": {
+               "initTime": 0.405779,
+               "solveTime": 296.741,
+               "solutions": 0,
+               "variables": 52954,
+               "propagators": 58822,
+               "propagations": 1160170327,
+               "nodes": 340317,
+               "failures": 151568,
+               "restarts": 274,
+               "peakDepth": 165
+            },
+            "solution": {
+               "nSolutions": 0
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-symm_packs_strong-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 146260,
+               "flatIntVars": 26434,
+               "flatBoolConstraints": 80300,
+               "flatIntConstraints": 101122,
+               "evaluatedReifiedConstraints": 87310,
+               "evaluatedHalfReifiedConstraints": 26190,
+               "eliminatedImplications": 2940,
+               "method": "minimize",
+               "flatTime": 4.50271
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
    "vrp-lns95-symm_all-gecode": {
       "time": 300,
       "optimal": false,

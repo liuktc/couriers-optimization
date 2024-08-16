@@ -1404,6 +1404,86 @@
          "runner": "github-action"
       }
    },
+   "vrp-lns95-symm_amount_strong-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 14980,
+               "flatIntVars": 11982,
+               "flatBoolConstraints": 10350,
+               "flatIntConstraints": 19672,
+               "evaluatedReifiedConstraints": 2920,
+               "evaluatedHalfReifiedConstraints": 9160,
+               "eliminatedImplications": 1500,
+               "method": "minimize",
+               "flatTime": 1.17844
+            },
+            "solver": {
+               "initTime": 0.177361,
+               "solveTime": 297.826,
+               "solutions": 0,
+               "variables": 26962,
+               "propagators": 30022,
+               "propagations": 2015250487,
+               "nodes": 829285,
+               "failures": 379243,
+               "restarts": 1097,
+               "peakDepth": 95
+            },
+            "solution": {
+               "nSolutions": 0
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-symm_packs_strong-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 72820,
+               "flatIntVars": 13402,
+               "flatBoolConstraints": 39980,
+               "flatIntConstraints": 50722,
+               "evaluatedReifiedConstraints": 43390,
+               "evaluatedHalfReifiedConstraints": 13230,
+               "eliminatedImplications": 1500,
+               "method": "minimize",
+               "flatTime": 2.30817
+            },
+            "solver": {
+               "initTime": 0.574119,
+               "solveTime": 296.697,
+               "solutions": 0,
+               "variables": 86222,
+               "propagators": 90702,
+               "propagations": 2282029001,
+               "nodes": 247584,
+               "failures": 112966,
+               "restarts": 431,
+               "peakDepth": 105
+            },
+            "solution": {
+               "nSolutions": 0
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
    "vrp-lns95-symm_all-gecode": {
       "time": 300,
       "optimal": false,
