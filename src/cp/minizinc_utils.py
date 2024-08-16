@@ -61,15 +61,23 @@ def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int,
             data = json.loads(out_stream)
 
             if data["type"] == "statistics":
-                # MiniZinc outputs 3 statistics at different times.
-                if statistics["compiler"] is None: 
-                    statistics["compiler"] = data["statistics"]
-                elif statistics["solver"] is None: 
-                    statistics["solver"] = data["statistics"]
-                elif statistics["solution"] is None: 
-                    statistics["solution"] = data["statistics"]
-                else: 
-                    logger.warning("Unexpected statistics from MiniZinc")
+                if solver in ["gecode", "chuffed"]:
+                    # Gecode/Chuffed outputs 3 statistics at different times.
+                    if statistics["compiler"] is None: 
+                        statistics["compiler"] = data["statistics"]
+                    elif statistics["solver"] is None: 
+                        statistics["solver"] = data["statistics"]
+                    elif statistics["solution"] is None: 
+                        statistics["solution"] = data["statistics"]
+                    else: 
+                        logger.warning("Unexpected statistics from Gecode/Chuffed")
+                elif "ortools" in solver:
+                    if statistics["compiler"] is None: 
+                        statistics["compiler"] = data["statistics"]
+                    else:
+                        pass # OR-tools sends statistics for each intermediate solution
+                else:
+                    logger.warning("Unknown solver")
             elif data["type"] == "solution":
                 # Each intermediate solution is stored
                 sol = {

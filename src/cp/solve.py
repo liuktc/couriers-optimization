@@ -173,6 +173,34 @@ experiments_setup = [
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": [ _setLNSPercentage(95), _preproCarryUpperBound ]
     },
+    {
+        "name": "vrp-plain-chuffed",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-plain.mzn"),
+        "solver": "chuffed",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-luby-chuffed",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-luby.mzn"),
+        "solver": "chuffed",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-plain-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-plain.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-luby-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-luby.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
 ]
 
 
