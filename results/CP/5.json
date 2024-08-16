@@ -382,5 +382,149 @@
          "time_to_last_solution": 0.1291530647277832,
          "runner": "github-action"
       }
+   },
+   "vrp-lns95-symm_amount-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 100,
+               "flatIntVars": 80,
+               "flatBoolConstraints": 64,
+               "flatIntConstraints": 136,
+               "evaluatedReifiedConstraints": 20,
+               "evaluatedHalfReifiedConstraints": 62,
+               "eliminatedImplications": 14,
+               "method": "minimize",
+               "flatTime": 0.116515
+            },
+            "solver": {
+               "initTime": 0.00139574,
+               "solveTime": 0.000219382,
+               "solutions": 2,
+               "variables": 180,
+               "propagators": 31,
+               "propagations": 584,
+               "nodes": 6,
+               "failures": 0,
+               "restarts": 1,
+               "peakDepth": 2
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.13311038780212403,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-symm_packs-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 118,
+               "flatIntVars": 86,
+               "flatBoolConstraints": 76,
+               "flatIntConstraints": 154,
+               "evaluatedReifiedConstraints": 20,
+               "evaluatedHalfReifiedConstraints": 80,
+               "eliminatedImplications": 14,
+               "method": "minimize",
+               "flatTime": 0.110564
+            },
+            "solver": {
+               "initTime": 0.00151826,
+               "solveTime": 0.00022916,
+               "solutions": 2,
+               "variables": 204,
+               "propagators": 31,
+               "propagations": 626,
+               "nodes": 6,
+               "failures": 0,
+               "restarts": 1,
+               "peakDepth": 2
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.12815854835510254,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-symm_all-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 118,
+               "flatIntVars": 86,
+               "flatBoolConstraints": 76,
+               "flatIntConstraints": 154,
+               "evaluatedReifiedConstraints": 20,
+               "evaluatedHalfReifiedConstraints": 80,
+               "eliminatedImplications": 14,
+               "method": "minimize",
+               "flatTime": 0.110894
+            },
+            "solver": {
+               "initTime": 0.00152743,
+               "solveTime": 0.000230873,
+               "solutions": 2,
+               "variables": 204,
+               "propagators": 31,
+               "propagations": 626,
+               "nodes": 6,
+               "failures": 0,
+               "restarts": 1,
+               "peakDepth": 2
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.1281685619354248,
+         "runner": "github-action"
+      }
    }
 }

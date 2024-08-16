@@ -2174,5 +2174,357 @@
          "time_to_last_solution": 153.63524223327636,
          "runner": "github-action"
       }
+   },
+   "vrp-lns95-symm_amount-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 38600,
+               "flatIntVars": 27272,
+               "flatBoolConstraints": 26960,
+               "flatIntConstraints": 46499,
+               "evaluatedReifiedConstraints": 7720,
+               "evaluatedHalfReifiedConstraints": 23180,
+               "eliminatedImplications": 3900,
+               "method": "minimize",
+               "flatTime": 3.19317
+            },
+            "solver": {
+               "initTime": 0.552495,
+               "solveTime": 295.854,
+               "solutions": 0,
+               "variables": 65872,
+               "propagators": 73459,
+               "propagations": 710509387,
+               "nodes": 206855,
+               "failures": 90295,
+               "restarts": 143,
+               "peakDepth": 237
+            },
+            "solution": {
+               "nSolutions": 0
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-symm_packs-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": 620,
+      "sol": [
+         [
+            143,
+            182,
+            140,
+            105,
+            151,
+            126,
+            76,
+            107,
+            178,
+            149,
+            188
+         ],
+         [
+            113,
+            134,
+            89,
+            108,
+            116,
+            87,
+            97,
+            125
+         ],
+         [
+            60,
+            139,
+            77,
+            187,
+            104,
+            45
+         ],
+         [
+            22,
+            115,
+            90,
+            146,
+            102,
+            61,
+            129,
+            111,
+            176,
+            58,
+            148
+         ],
+         [
+            10,
+            19,
+            14,
+            54,
+            63,
+            44,
+            185,
+            23,
+            181,
+            2,
+            110
+         ],
+         [
+            84,
+            171,
+            137,
+            24,
+            95,
+            133,
+            86
+         ],
+         [
+            27,
+            28,
+            29,
+            112,
+            147,
+            85,
+            18,
+            21,
+            46,
+            138
+         ],
+         [
+            67,
+            142,
+            47,
+            93,
+            177,
+            56,
+            92,
+            136,
+            78
+         ],
+         [
+            33,
+            183,
+            15,
+            122,
+            38,
+            174
+         ],
+         [
+            123,
+            79,
+            128,
+            55,
+            34,
+            36,
+            51,
+            42,
+            103,
+            144,
+            12
+         ],
+         [
+            119,
+            175,
+            83,
+            118,
+            65,
+            74,
+            150,
+            73,
+            52,
+            109
+         ],
+         [
+            72,
+            57,
+            117,
+            71,
+            124,
+            156,
+            101,
+            120,
+            64,
+            160,
+            39,
+            161
+         ],
+         [
+            145,
+            167,
+            16,
+            70,
+            80,
+            11,
+            96,
+            8,
+            49,
+            43
+         ],
+         [
+            121,
+            168,
+            127,
+            159,
+            130,
+            6,
+            41,
+            75,
+            184,
+            26
+         ],
+         [
+            40,
+            31,
+            131,
+            135,
+            173,
+            106,
+            9,
+            68,
+            114
+         ],
+         [
+            154,
+            162,
+            59,
+            141,
+            32,
+            100,
+            155,
+            81,
+            88
+         ],
+         [
+            7,
+            189,
+            153,
+            35,
+            5,
+            191,
+            179,
+            158,
+            37,
+            180
+         ],
+         [
+            91,
+            98,
+            132,
+            62,
+            99,
+            164,
+            1,
+            48,
+            166,
+            30,
+            165
+         ],
+         [
+            82,
+            53,
+            190,
+            3,
+            25,
+            69,
+            170,
+            20,
+            163,
+            17
+         ],
+         [
+            50,
+            94,
+            169,
+            4,
+            152,
+            172,
+            13,
+            157,
+            186,
+            66
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 50060,
+               "flatIntVars": 31092,
+               "flatBoolConstraints": 34600,
+               "flatIntConstraints": 57959,
+               "evaluatedReifiedConstraints": 7720,
+               "evaluatedHalfReifiedConstraints": 34640,
+               "eliminatedImplications": 3900,
+               "method": "minimize",
+               "flatTime": 3.71199
+            },
+            "solver": {
+               "initTime": 0.642049,
+               "solveTime": 295.335,
+               "solutions": 198,
+               "variables": 81152,
+               "propagators": 92559,
+               "propagations": 672643089,
+               "nodes": 1780240,
+               "failures": 508432,
+               "restarts": 530,
+               "peakDepth": 4031
+            },
+            "solution": {
+               "nSolutions": 198
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 265.14926965141296,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-symm_all-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 50060,
+               "flatIntVars": 31092,
+               "flatBoolConstraints": 34600,
+               "flatIntConstraints": 57996,
+               "evaluatedReifiedConstraints": 7720,
+               "evaluatedHalfReifiedConstraints": 34640,
+               "eliminatedImplications": 3900,
+               "method": "minimize",
+               "flatTime": 3.56263
+            },
+            "solver": {
+               "initTime": 0.642838,
+               "solveTime": 295.49,
+               "solutions": 0,
+               "variables": 81152,
+               "propagators": 92596,
+               "propagations": 352537531,
+               "nodes": 65320,
+               "failures": 27574,
+               "restarts": 63,
+               "peakDepth": 244
+            },
+            "solution": {
+               "nSolutions": 0
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
    }
 }
