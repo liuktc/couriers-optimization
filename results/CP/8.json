@@ -1121,5 +1121,259 @@
          "time_to_last_solution": 0.3592215232849121,
          "runner": "github-action"
       }
+   },
+   "vrp-plain-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            1,
+            2
+         ],
+         [
+            3,
+            5,
+            10
+         ],
+         [
+            4,
+            7
+         ],
+         [
+            6
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 960,
+               "flatIntVars": 865,
+               "flatBoolConstraints": 648,
+               "flatIntConstraints": 1383,
+               "evaluatedReifiedConstraints": 376,
+               "evaluatedHalfReifiedConstraints": 400,
+               "eliminatedImplications": 112,
+               "method": "minimize",
+               "flatTime": 0.169182
+            },
+            "solver": {
+               "nodes": 16506,
+               "failures": 2963,
+               "restarts": 47,
+               "variables": 44727,
+               "intVars": 953,
+               "boolVariables": 43772,
+               "propagators": 1320,
+               "propagations": 1108500,
+               "peakDepth": 275,
+               "nogoods": 2963,
+               "backjumps": 2539,
+               "peakMem": 0.0,
+               "time": 0.347,
+               "initTime": 0.04,
+               "solveTime": 0.307,
+               "objective": 186,
+               "optTime": 0.307,
+               "baseMem": 0.0,
+               "trailMem": 0.19,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 47
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.5381163482666016,
+         "runner": "github-action"
+      }
+   },
+   "vrp-luby-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            1,
+            2
+         ],
+         [
+            3,
+            5,
+            10
+         ],
+         [
+            4,
+            7
+         ],
+         [
+            6
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 960,
+               "flatIntVars": 857,
+               "flatBoolConstraints": 648,
+               "flatIntConstraints": 1375,
+               "evaluatedReifiedConstraints": 376,
+               "evaluatedHalfReifiedConstraints": 400,
+               "eliminatedImplications": 112,
+               "method": "minimize",
+               "flatTime": 0.173416
+            },
+            "solver": {
+               "nodes": 19819,
+               "failures": 2963,
+               "restarts": 155,
+               "variables": 42247,
+               "intVars": 945,
+               "boolVariables": 41300,
+               "propagators": 1304,
+               "propagations": 1491817,
+               "peakDepth": 275,
+               "nogoods": 2963,
+               "backjumps": 2539,
+               "peakMem": 0.0,
+               "time": 0.42,
+               "initTime": 0.039,
+               "solveTime": 0.381,
+               "objective": 186,
+               "optTime": 0.381,
+               "baseMem": 0.0,
+               "trailMem": 0.19,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 47
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.6161420974731445,
+         "runner": "github-action"
+      }
+   },
+   "vrp-plain-or_tools": {
+      "time": 5,
+      "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            1,
+            2
+         ],
+         [
+            3,
+            5,
+            10
+         ],
+         [
+            4,
+            7
+         ],
+         [
+            6
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 352,
+               "flatIntVars": 379,
+               "flatBoolConstraints": 264,
+               "flatIntConstraints": 649,
+               "evaluatedReifiedConstraints": 176,
+               "evaluatedHalfReifiedConstraints": 264,
+               "eliminatedImplications": 88,
+               "method": "minimize",
+               "flatTime": 0.145414
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 5.088180006027222,
+         "runner": "github-action"
+      }
+   },
+   "vrp-luby-or_tools": {
+      "time": 4,
+      "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            1,
+            2
+         ],
+         [
+            3,
+            5,
+            10
+         ],
+         [
+            4,
+            7
+         ],
+         [
+            6
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 352,
+               "flatIntVars": 371,
+               "flatBoolConstraints": 264,
+               "flatIntConstraints": 641,
+               "evaluatedReifiedConstraints": 176,
+               "evaluatedHalfReifiedConstraints": 264,
+               "eliminatedImplications": 88,
+               "method": "minimize",
+               "flatTime": 0.145174
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 4.572208139419556,
+         "runner": "github-action"
+      }
    }
 }

@@ -1111,5 +1111,251 @@
          "time_to_last_solution": 0.35494481277465817,
          "runner": "github-action"
       }
+   },
+   "vrp-plain-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            1,
+            4,
+            2,
+            9
+         ],
+         [
+            10,
+            6,
+            3,
+            5
+         ],
+         [
+            7
+         ],
+         [
+            8
+         ],
+         [],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 960,
+               "flatIntVars": 865,
+               "flatBoolConstraints": 648,
+               "flatIntConstraints": 1383,
+               "evaluatedReifiedConstraints": 376,
+               "evaluatedHalfReifiedConstraints": 400,
+               "eliminatedImplications": 112,
+               "method": "minimize",
+               "flatTime": 0.170763
+            },
+            "solver": {
+               "nodes": 18190,
+               "failures": 3735,
+               "restarts": 51,
+               "variables": 43686,
+               "intVars": 953,
+               "boolVariables": 42731,
+               "propagators": 1320,
+               "propagations": 1225325,
+               "peakDepth": 275,
+               "nogoods": 3735,
+               "backjumps": 2098,
+               "peakMem": 0.0,
+               "time": 0.371,
+               "initTime": 0.04,
+               "solveTime": 0.331,
+               "objective": 220,
+               "optTime": 0.33,
+               "baseMem": 0.0,
+               "trailMem": 0.19,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 51
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.5641156330108642,
+         "runner": "github-action"
+      }
+   },
+   "vrp-luby-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            1,
+            4,
+            2,
+            9
+         ],
+         [
+            10,
+            6,
+            3,
+            5
+         ],
+         [
+            7
+         ],
+         [
+            8
+         ],
+         [],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 960,
+               "flatIntVars": 857,
+               "flatBoolConstraints": 648,
+               "flatIntConstraints": 1375,
+               "evaluatedReifiedConstraints": 376,
+               "evaluatedHalfReifiedConstraints": 400,
+               "eliminatedImplications": 112,
+               "method": "minimize",
+               "flatTime": 0.171919
+            },
+            "solver": {
+               "nodes": 22164,
+               "failures": 3735,
+               "restarts": 176,
+               "variables": 40790,
+               "intVars": 945,
+               "boolVariables": 39843,
+               "propagators": 1304,
+               "propagations": 1683674,
+               "peakDepth": 275,
+               "nogoods": 3735,
+               "backjumps": 2098,
+               "peakMem": 0.0,
+               "time": 0.459,
+               "initTime": 0.038,
+               "solveTime": 0.421,
+               "objective": 220,
+               "optTime": 0.42,
+               "baseMem": 0.0,
+               "trailMem": 0.19,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 51
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.6521542568206787,
+         "runner": "github-action"
+      }
+   },
+   "vrp-plain-or_tools": {
+      "time": 6,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            1,
+            4,
+            2,
+            9
+         ],
+         [
+            10,
+            6,
+            3,
+            5
+         ],
+         [
+            7
+         ],
+         [
+            8
+         ],
+         [],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 352,
+               "flatIntVars": 379,
+               "flatBoolConstraints": 264,
+               "flatIntConstraints": 649,
+               "evaluatedReifiedConstraints": 176,
+               "evaluatedHalfReifiedConstraints": 264,
+               "eliminatedImplications": 88,
+               "method": "minimize",
+               "flatTime": 0.150749
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 6.416184297561646,
+         "runner": "github-action"
+      }
+   },
+   "vrp-luby-or_tools": {
+      "time": 6,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            1,
+            4,
+            2,
+            9
+         ],
+         [
+            10,
+            6,
+            3,
+            5
+         ],
+         [
+            7
+         ],
+         [
+            8
+         ],
+         [],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 352,
+               "flatIntVars": 371,
+               "flatBoolConstraints": 264,
+               "flatIntConstraints": 641,
+               "evaluatedReifiedConstraints": 176,
+               "evaluatedHalfReifiedConstraints": 264,
+               "eliminatedImplications": 88,
+               "method": "minimize",
+               "flatTime": 0.150069
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 6.482158548355103,
+         "runner": "github-action"
+      }
    }
 }
