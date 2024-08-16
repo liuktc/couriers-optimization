@@ -658,5 +658,246 @@
          "time_to_last_solution": 0.18215068054199218,
          "runner": "github-action"
       }
+   },
+   "vrp-lns95-triang-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4,
+            7
+         ],
+         [
+            6,
+            2
+         ],
+         [
+            8
+         ],
+         [],
+         [
+            3
+         ],
+         [
+            1,
+            5
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 600,
+               "flatIntVars": 447,
+               "flatBoolConstraints": 402,
+               "flatIntConstraints": 764,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 366,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.132792
+            },
+            "solver": {
+               "initTime": 0.00629572,
+               "solveTime": 0.000901668,
+               "solutions": 1,
+               "variables": 1047,
+               "propagators": 1166,
+               "propagations": 5356,
+               "nodes": 48,
+               "failures": 0,
+               "restarts": 0,
+               "peakDepth": 47
+            },
+            "solution": {
+               "nSolutions": 1
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.29445105743408206,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-triang-symm_amount-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            8
+         ],
+         [
+            6
+         ],
+         [
+            3
+         ],
+         [
+            2,
+            7
+         ],
+         [
+            1,
+            4
+         ],
+         [
+            5
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 600,
+               "flatIntVars": 447,
+               "flatBoolConstraints": 402,
+               "flatIntConstraints": 768,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 366,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.135494
+            },
+            "solver": {
+               "initTime": 0.00630931,
+               "solveTime": 0.00358494,
+               "solutions": 2,
+               "variables": 1047,
+               "propagators": 1170,
+               "propagations": 28073,
+               "nodes": 130,
+               "failures": 12,
+               "restarts": 4,
+               "peakDepth": 46
+            },
+            "solution": {
+               "nSolutions": 2
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.3059656791687012,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-triang-symm_packs-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [],
+         [
+            3
+         ],
+         [
+            6
+         ],
+         [
+            8,
+            1
+         ],
+         [
+            5,
+            7
+         ],
+         [
+            2,
+            4
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 744,
+               "flatIntVars": 495,
+               "flatBoolConstraints": 498,
+               "flatIntConstraints": 912,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 510,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.137397
+            },
+            "solver": {
+               "initTime": 0.00723955,
+               "solveTime": 0.00214928,
+               "solutions": 1,
+               "variables": 1239,
+               "propagators": 1410,
+               "propagations": 14684,
+               "nodes": 65,
+               "failures": 6,
+               "restarts": 2,
+               "peakDepth": 50
+            },
+            "solution": {
+               "nSolutions": 1
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.3078610858917237,
+         "runner": "github-action"
+      }
+   },
+   "vrp-lns95-triang-symm_all-gecode": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [],
+         [
+            3
+         ],
+         [
+            6
+         ],
+         [
+            8,
+            1
+         ],
+         [
+            5,
+            7
+         ],
+         [
+            2,
+            4
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 744,
+               "flatIntVars": 495,
+               "flatBoolConstraints": 498,
+               "flatIntConstraints": 916,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 510,
+               "eliminatedImplications": 72,
+               "method": "minimize",
+               "flatTime": 0.134906
+            },
+            "solver": {
+               "initTime": 0.00703517,
+               "solveTime": 0.00199478,
+               "solutions": 1,
+               "variables": 1239,
+               "propagators": 1414,
+               "propagations": 15142,
+               "nodes": 65,
+               "failures": 6,
+               "restarts": 2,
+               "peakDepth": 50
+            },
+            "solution": {
+               "nSolutions": 1
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.29912139701843266,
+         "runner": "github-action"
+      }
    }
 }
