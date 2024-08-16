@@ -253,6 +253,133 @@
          "runner": "github-action"
       }
    },
+   "vrp-lns50-gecode": {
+      "time": 181,
+      "optimal": true,
+      "obj": 286,
+      "sol": [
+         [
+            32,
+            39,
+            17
+         ],
+         [
+            37,
+            15,
+            21
+         ],
+         [
+            11,
+            6,
+            16
+         ],
+         [
+            8
+         ],
+         [
+            36
+         ],
+         [
+            9
+         ],
+         [
+            46,
+            43
+         ],
+         [
+            35,
+            44,
+            40
+         ],
+         [],
+         [
+            41,
+            22,
+            24
+         ],
+         [
+            10
+         ],
+         [
+            34,
+            23
+         ],
+         [
+            1,
+            20,
+            26,
+            18,
+            30,
+            2
+         ],
+         [
+            45,
+            3,
+            38,
+            31
+         ],
+         [
+            33,
+            13
+         ],
+         [
+            12,
+            29,
+            28
+         ],
+         [
+            47,
+            4
+         ],
+         [
+            19
+         ],
+         [
+            42,
+            27,
+            7
+         ],
+         [
+            14,
+            5,
+            25
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 9800,
+               "flatIntVars": 6968,
+               "flatBoolConstraints": 6800,
+               "flatIntConstraints": 11902,
+               "evaluatedReifiedConstraints": 1960,
+               "evaluatedHalfReifiedConstraints": 5900,
+               "eliminatedImplications": 1020,
+               "method": "minimize",
+               "flatTime": 0.741002
+            },
+            "solver": {
+               "initTime": 0.10531,
+               "solveTime": 180.467,
+               "solutions": 23,
+               "variables": 16768,
+               "propagators": 18702,
+               "propagations": 911737846,
+               "nodes": 1421381,
+               "failures": 668197,
+               "restarts": 2769,
+               "peakDepth": 963
+            },
+            "solution": {
+               "nSolutions": 23
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 181.49612063980103,
+         "runner": "github-action"
+      }
+   },
    "vrp-lns80-gecode": {
       "time": 13,
       "optimal": true,

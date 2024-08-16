@@ -21,11 +21,11 @@
 | $13$ | $\color{orange}\text{300 s (obj: 610)}$</br>$\color{orange}\text{vrp-lns95-symm-packs-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $14$ | $\color{orange}\text{300 s (obj: 715)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $15$ | $\color{orange}\text{300 s (obj: 659)}$</br>$\color{orange}\text{vrp-plain-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $16$ | $\color{green}\text{1 s (obj: 286)}$</br>$\color{green}\text{vrp-lns50-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $16$ | $\color{green}\text{1 s (obj: 286)}$</br>$\color{green}\text{vrp-lns90-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $17$ | $\color{orange}\text{300 s (obj: 1076)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $18$ | $\color{orange}\text{300 s (obj: 620)}$</br>$\color{orange}\text{vrp-lns95-symm-packs-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $19$ | $\color{green}\text{32 s (obj: 334)}$</br>$\color{green}\text{vrp-lns97-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $20$ | $\color{orange}\text{300 s (obj: 1059)}$</br>$\color{orange}\text{vrp-lns50-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $20$ | $\color{orange}\text{300 s (obj: 1059)}$</br>$\color{orange}\text{vrp-lns90-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $21$ | $\color{orange}\text{300 s (obj: 516)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 
 <!-- end-status -->

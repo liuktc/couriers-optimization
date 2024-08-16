@@ -351,6 +351,182 @@
          "runner": "github-action"
       }
    },
+   "vrp-lns50-gecode": {
+      "time": 300,
+      "optimal": false,
+      "obj": 394,
+      "sol": [
+         [
+            17,
+            62,
+            61,
+            1,
+            74,
+            45
+         ],
+         [
+            89,
+            75,
+            23,
+            72
+         ],
+         [
+            88,
+            14,
+            6,
+            70,
+            86,
+            64,
+            95
+         ],
+         [
+            50,
+            91,
+            84,
+            32
+         ],
+         [
+            92
+         ],
+         [
+            58,
+            21,
+            33,
+            24,
+            3,
+            73,
+            44,
+            65
+         ],
+         [
+            69,
+            35,
+            67,
+            81
+         ],
+         [
+            94,
+            10,
+            51,
+            2,
+            52,
+            26,
+            43,
+            11
+         ],
+         [
+            77,
+            79,
+            60,
+            25,
+            76,
+            9
+         ],
+         [
+            7,
+            42,
+            29
+         ],
+         [
+            37,
+            34,
+            36,
+            54
+         ],
+         [
+            78,
+            66,
+            80,
+            85,
+            16,
+            5,
+            57
+         ],
+         [
+            56,
+            90
+         ],
+         [
+            15,
+            83,
+            93,
+            13,
+            55
+         ],
+         [
+            87,
+            20,
+            27,
+            39,
+            18
+         ],
+         [
+            48,
+            4,
+            28,
+            40
+         ],
+         [
+            49,
+            82,
+            12,
+            71
+         ],
+         [
+            8,
+            68,
+            38
+         ],
+         [
+            22,
+            46,
+            19,
+            47,
+            53
+         ],
+         [
+            63,
+            30,
+            41,
+            59,
+            31
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 19400,
+               "flatIntVars": 13736,
+               "flatBoolConstraints": 13520,
+               "flatIntConstraints": 23422,
+               "evaluatedReifiedConstraints": 3880,
+               "evaluatedHalfReifiedConstraints": 11660,
+               "eliminatedImplications": 1980,
+               "method": "minimize",
+               "flatTime": 1.46745
+            },
+            "solver": {
+               "initTime": 0.225507,
+               "solveTime": 297.541,
+               "solutions": 70,
+               "variables": 33136,
+               "propagators": 36942,
+               "propagations": 904152496,
+               "nodes": 1692763,
+               "failures": 732260,
+               "restarts": 1683,
+               "peakDepth": 1970
+            },
+            "solution": {
+               "nSolutions": 70
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 299.3141406669617,
+         "runner": "github-action"
+      }
+   },
    "vrp-lns80-gecode": {
       "time": 300,
       "optimal": false,
