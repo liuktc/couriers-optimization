@@ -138,13 +138,13 @@ experiments_setup = [
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": [ _setLNSPercentage(95) ]
     },
-    {
-        "name": "vrp-lns95-symm_all-gecode",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_all.mzn"),
-        "solver": "gecode",
-        "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
-    },
+    # {
+    #     "name": "vrp-lns95-symm_all-gecode",
+    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_all.mzn"),
+    #     "solver": "gecode",
+    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
+    #     "preprocessing": [ _setLNSPercentage(95) ]
+    # },
     {
         "name": "vrp-lns95-triang-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-triang.mzn"),
@@ -166,13 +166,13 @@ experiments_setup = [
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": [ _setLNSPercentage(95), _preproCarryUpperBound ]
     },
-    {
-        "name": "vrp-lns95-triang-symm_all-gecode",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-triang-symm_all.mzn"),
-        "solver": "gecode",
-        "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95), _preproCarryUpperBound ]
-    },
+    # {
+    #     "name": "vrp-lns95-triang-symm_all-gecode",
+    #     "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-triang-symm_all.mzn"),
+    #     "solver": "gecode",
+    #     "solution_extractor_fn": _solutionExtractorFromForwardPath,
+    #     "preprocessing": [ _setLNSPercentage(95), _preproCarryUpperBound ]
+    # },
     {
         "name": "vrp-plain-chuffed",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-plain.mzn"),
@@ -186,6 +186,27 @@ experiments_setup = [
         "solver": "chuffed",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": []
+    },
+    {
+        "name": "vrp-luby-symm_amount-chuffed",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-luby-symm_amount.mzn"),
+        "solver": "chuffed",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-luby-symm_packs-chuffed",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-luby-symm_packs.mzn"),
+        "solver": "chuffed",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-luby-triang-chuffed",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-luby-triang.mzn"),
+        "solver": "chuffed",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _preproCarryUpperBound ]
     },
     {
         "name": "vrp-plain-or_tools",
