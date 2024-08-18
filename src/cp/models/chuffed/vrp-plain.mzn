@@ -19,8 +19,6 @@ array[LOCATIONS, LOCATIONS] of int: D;
 int: MIN_PATH = max(p in PACKS)(D[DEPOT, p] + D[p, DEPOT]);
 int: MAX_PATH = sum(d in LOCATIONS)(max(D[d, ..]));
 
-array[LOCATIONS] of int: MIN_PER_POS = [ min(D[i, ..]) | i in LOCATIONS ];
-
 
 
 % --- Decision variables ---
@@ -28,16 +26,12 @@ array[PACKS] of var COURIERS: assignments;
 array[COURIERS, LOCATIONS] of var LOCATIONS: path;
 
 % --- Auxiliary variables ---
-array[COURIERS] of var int: carry_load;
 array[COURIERS] of var int: carry_num;
 
 
 
 % --- Objective ---
 var MIN_PATH..MAX_PATH: obj;
-constraint implied_constraint(
-  obj >= max(c in COURIERS)( sum(p in PACKS where assignments[p] == c)(MIN_PER_POS[p]) + 2*MIN_PER_POS[DEPOT] )
-);
 constraint obj = max(c in COURIERS)( sum(j in LOCATIONS where path[c, j] != j)(D[j, path[c, j]]) );
 
 
@@ -48,8 +42,7 @@ constraint bin_packing_capa(l, assignments, s);
 
 % --- Auxiliary variables ---
 constraint forall(c in COURIERS)(
-  carry_load[c] = sum(p in PACKS where assignments[p] == c)(s[p])
-  /\ carry_num[c] = count(p in PACKS)(assignments[p] == c)
+  carry_num[c] = count(p in PACKS)(assignments[p] == c)
 );
 
 

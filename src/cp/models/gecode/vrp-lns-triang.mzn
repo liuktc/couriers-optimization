@@ -20,8 +20,6 @@ int: MAX_CARRY;
 int: MIN_PATH = max(p in PACKS)(D[DEPOT, p] + D[p, DEPOT]);
 int: MAX_PATH = sum(d in LOCATIONS)(max(D[d, ..]));
 
-array[LOCATIONS] of int: MIN_PER_POS = [ min(D[i, ..]) | i in LOCATIONS ];
-
 int: LNS_PERC;
 
 
@@ -37,9 +35,6 @@ array[COURIERS] of var 0..n: carry_num;
 
 % --- Objective ---
 var MIN_PATH..MAX_PATH: obj;
-constraint implied_constraint(
-  obj >= max(c in COURIERS)( sum(p in PACKS where assignments[p] == c)(MIN_PER_POS[p]) + 2*MIN_PER_POS[DEPOT] )
-);
 constraint obj = max(c in COURIERS)( sum(j in LOCATIONS where path[c, j] != j)(D[j, path[c, j]]) );
 
 
