@@ -1002,5 +1002,101 @@
          "time_to_last_solution": 4.072202178955078,
          "runner": "github-action"
       }
+   },
+   "vrp-symm_amount-or_tools": {
+      "time": 1,
+      "optimal": true,
+      "obj": 226,
+      "sol": [
+         [
+            1,
+            4
+         ],
+         [
+            2
+         ],
+         [
+            3,
+            5
+         ],
+         [
+            6,
+            8
+         ],
+         [],
+         [
+            7,
+            9
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 240,
+               "flatIntVars": 256,
+               "flatBoolConstraints": 180,
+               "flatIntConstraints": 443,
+               "evaluatedReifiedConstraints": 120,
+               "evaluatedHalfReifiedConstraints": 180,
+               "eliminatedImplications": 60,
+               "method": "minimize",
+               "flatTime": 0.136487
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 1.7821199245452881,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-or_tools": {
+      "time": 1,
+      "optimal": true,
+      "obj": 226,
+      "sol": [
+         [
+            2,
+            7,
+            3
+         ],
+         [
+            9,
+            6,
+            8
+         ],
+         [
+            5
+         ],
+         [
+            1
+         ],
+         [],
+         [
+            4
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 530,
+               "flatIntVars": 310,
+               "flatBoolConstraints": 408,
+               "flatIntConstraints": 673,
+               "evaluatedReifiedConstraints": 220,
+               "evaluatedHalfReifiedConstraints": 342,
+               "eliminatedImplications": 60,
+               "method": "minimize",
+               "flatTime": 0.141466
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 1.5161325607299805,
+         "runner": "github-action"
+      }
    }
 }

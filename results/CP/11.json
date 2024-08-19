@@ -2769,5 +2769,59 @@
          "time_to_last_solution": 216.1332112388611,
          "runner": "github-action"
       }
+   },
+   "vrp-symm_amount-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 11520,
+               "flatIntVars": 11684,
+               "flatBoolConstraints": 8640,
+               "flatIntConstraints": 20253,
+               "evaluatedReifiedConstraints": 5760,
+               "evaluatedHalfReifiedConstraints": 8640,
+               "eliminatedImplications": 2880,
+               "method": "minimize",
+               "flatTime": 1.46164
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 38276,
+               "flatIntVars": 14544,
+               "flatBoolConstraints": 32472,
+               "flatIntConstraints": 37953,
+               "evaluatedReifiedConstraints": 19424,
+               "evaluatedHalfReifiedConstraints": 17220,
+               "eliminatedImplications": 2880,
+               "method": "minimize",
+               "flatTime": 2.38478
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
    }
 }

@@ -2196,5 +2196,186 @@
          "time_to_last_solution": 273.0561854896545,
          "runner": "github-action"
       }
+   },
+   "vrp-symm_amount-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1462,
+      "sol": [
+         [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            13,
+            12,
+            14,
+            15
+         ],
+         [
+            16
+         ],
+         [],
+         [],
+         [
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            36
+         ],
+         [
+            31
+         ],
+         [],
+         [],
+         [],
+         [
+            32,
+            33,
+            34,
+            35,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            55
+         ],
+         [
+            47
+         ],
+         [],
+         [],
+         [
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            66
+         ],
+         [
+            63
+         ],
+         [],
+         [
+            64,
+            65,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79
+         ],
+         [
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93,
+            94
+         ],
+         [
+            95
+         ],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 7680,
+               "flatIntVars": 7796,
+               "flatBoolConstraints": 5760,
+               "flatIntConstraints": 13538,
+               "evaluatedReifiedConstraints": 3840,
+               "evaluatedHalfReifiedConstraints": 5760,
+               "eliminatedImplications": 1920,
+               "method": "minimize",
+               "flatTime": 0.912654
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 268.25615068054196,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 27292,
+               "flatIntVars": 9696,
+               "flatBoolConstraints": 23398,
+               "flatIntConstraints": 26231,
+               "evaluatedReifiedConstraints": 14311,
+               "evaluatedHalfReifiedConstraints": 11460,
+               "eliminatedImplications": 1920,
+               "method": "minimize",
+               "flatTime": 1.57814
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
    }
 }
