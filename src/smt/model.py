@@ -1,6 +1,5 @@
 from z3 import *
 import time
-from tqdm import tqdm
 
 def maximum(a):
     m = a[0]
@@ -16,6 +15,37 @@ def precedes(a1, a2):
         return Not(And(Not(a1[0]), a2[0]))
     return Or(And(a1[0], Not(a2[0])),
               And(a1[0] == a2[0], precedes(a1[1:], a2[1:])))
+    
+# -----------------------------------------------------------------------------%
+# Constrains the elements of 'path' to define a subcircuit where 'path[i] = j'
+# means that 'j' is the successor of 'i' and 'path[i] = i' means that 'i'
+# is not in the circuit.
+# assignments[i] = j means that packet 'i' is assigned to courier 'j'.
+# -----------------------------------------------------------------------------%
+def subcircuit(COURIERS, ITEMS,m,n, path, assignments, solver):
+    """ path = [| 3, 2, 4, 7, 5, 6, 1
+                | 1, 5, 3, 4, 6, 7, 2
+                |]; 
+                
+        assignments = [1, 2, 1, 1, 2, 2];
+    """
+    # Orders[i] is the order of item i
+    ORDERS = [[Int(f"order_{i}_{j}") for j in range(n + 1)] for i in COURIERS]
+    # All different constraints on orders
+    solver.add(Distinct(ORDERS))
+            
+    for i in COURIERS:
+        solver.add(And([And(ORDERS[i][j] <= n) for j in range(n + 1)])) 
+        solver.add(And([If(assignments[j] == i + 1,
+                           path[i][j] != j + 1,
+                           path[i][j] == j + 1) for j in range(n + 1)]))
+        solver.add(And([If(assignments[j] == i + 1,
+                           ORDERS[i][j] + 1 == ORDERS[i][path[i][j] - 1],
+                           ORDERS[i][j] == -j) for j in range(n + 1)])) 
+        
+           
+ 
+    
     
 def SMT(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, timeout=300):
     COURIERS = range(m)
@@ -44,10 +74,10 @@ def SMT(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, timeo
     for i in COURIERS:
         solver.add(COUNT[i] == Sum([If(X[i][j], 1, 0) for j in ITEMS]))
         solver.add(COUNT[i] >= 1)
-        solver.add(COUNT[i] <= n // 2)
+        # solver.add(COUNT[i] <= n // 2)
         
     
-    # Every item is delivered by exactly one courier
+    # Every item is delivered by exactly one courier    
     for j in ITEMS:
         solver.add(Sum([If(X[i][j], 1, 0) for i in COURIERS]) == 1)
         
@@ -68,10 +98,10 @@ def SMT(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, timeo
     print("Adding distance constraints")
     start = time.time()
     # Calculate the distance traveled by each courier
-    for i in tqdm(COURIERS):
+    for i in COURIERS:
         dist = Sum([
             Sum([If(And(X[i][j1], X[i][j2], ORDERING[j1] + 1 == ORDERING[j2]),D[j1][j2], 0) for j2 in ITEMS])
-            for j1 in tqdm(ITEMS)
+            for j1 in ITEMS
             ])
         dist += Sum([If(And(X[i][j], ORDERING[j] == 1), D[n][j], 0) for j in ITEMS])
         dist += Sum([If(And(X[i][j], ORDERING[j] == COUNT[i]), D[j][n], 0) for j in ITEMS])
@@ -138,6 +168,7 @@ def SMT(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, timeo
         model = solver.model()
         # print(model)
         result_objective = model[obj].as_long()
+        
         print(f"New optimal found: {result_objective}")
         print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
         print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
