@@ -131,7 +131,7 @@ def subcircuit_chatgpt(x, tag):
 
     return constraints
 
-def SMT_new(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, timeout=300):
+def SMT_new(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, timeout=300, **kwargs):
     DEPOT = n + 1
     COURIERS = range(m)
     ITEMS = range(n)
