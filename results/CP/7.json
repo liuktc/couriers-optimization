@@ -918,6 +918,166 @@
          "runner": "github-action"
       }
    },
+   "vrp-symm_amount-chuffed": {
+      "time": 126,
+      "optimal": true,
+      "obj": 167,
+      "sol": [
+         [
+            1,
+            3,
+            6,
+            8
+         ],
+         [
+            2,
+            9
+         ],
+         [
+            4,
+            11
+         ],
+         [
+            5,
+            13,
+            12,
+            15
+         ],
+         [
+            7,
+            14,
+            10
+         ],
+         [
+            16,
+            17
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1140,
+               "flatIntVars": 1030,
+               "flatBoolConstraints": 780,
+               "flatIntConstraints": 1623,
+               "evaluatedReifiedConstraints": 450,
+               "evaluatedHalfReifiedConstraints": 468,
+               "eliminatedImplications": 126,
+               "method": "minimize",
+               "flatTime": 0.179455
+            },
+            "solver": {
+               "nodes": 954618,
+               "failures": 900076,
+               "restarts": 50,
+               "variables": 49451,
+               "intVars": 1132,
+               "boolVariables": 48317,
+               "propagators": 1528,
+               "propagations": 348044990,
+               "peakDepth": 288,
+               "nogoods": 900076,
+               "backjumps": 43649,
+               "peakMem": 0.0,
+               "time": 126.552,
+               "initTime": 0.047,
+               "solveTime": 126.505,
+               "objective": 167,
+               "optTime": 126.505,
+               "baseMem": 0.0,
+               "trailMem": 0.28,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 50
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 126.75712111663819,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-chuffed": {
+      "time": 22,
+      "optimal": true,
+      "obj": 167,
+      "sol": [
+         [
+            17,
+            2,
+            9
+         ],
+         [
+            11,
+            12,
+            13,
+            7,
+            8
+         ],
+         [
+            10,
+            14,
+            16,
+            6,
+            15
+         ],
+         [
+            1,
+            3
+         ],
+         [
+            4
+         ],
+         [
+            5
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1702,
+               "flatIntVars": 1132,
+               "flatBoolConstraints": 1232,
+               "flatIntConstraints": 2061,
+               "evaluatedReifiedConstraints": 646,
+               "evaluatedHalfReifiedConstraints": 774,
+               "eliminatedImplications": 126,
+               "method": "minimize",
+               "flatTime": 0.195486
+            },
+            "solver": {
+               "nodes": 324296,
+               "failures": 204352,
+               "restarts": 130,
+               "variables": 56088,
+               "intVars": 1234,
+               "boolVariables": 54852,
+               "propagators": 1792,
+               "propagations": 89304881,
+               "peakDepth": 205,
+               "nogoods": 204352,
+               "backjumps": 97531,
+               "peakMem": 0.0,
+               "time": 22.127,
+               "initTime": 0.055,
+               "solveTime": 22.072,
+               "objective": 167,
+               "optTime": 22.072,
+               "baseMem": 0.0,
+               "trailMem": 0.28,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 130
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 22.356116348266603,
+         "runner": "github-action"
+      }
+   },
    "vrp-plain-or_tools": {
       "time": 300,
       "optimal": false,

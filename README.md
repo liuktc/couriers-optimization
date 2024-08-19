@@ -16,16 +16,16 @@
 | $8$ | $\color{green}\text{0 s (obj: 186)}$</br>$\color{green}\text{vrp-luby-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $9$ | $\color{green}\text{0 s (obj: 436)}$</br>$\color{green}\text{vrp-luby-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $10$ | $\color{green}\text{0 s (obj: 244)}$</br>$\color{green}\text{vrp-luby-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $11$ | $\color{orange}\text{300 s (obj: 451)}$</br>$\color{orange}\text{vrp-lns95-triang-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $11$ | $\color{orange}\text{300 s (obj: 490)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $12$ | $\color{green}\text{77 s (obj: 346)}$</br>$\color{green}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $13$ | $\color{orange}\text{300 s (obj: 590)}$</br>$\color{orange}\text{vrp-lns95-triang-symm-all-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $14$ | $\color{orange}\text{300 s (obj: 627)}$</br>$\color{orange}\text{vrp-lns95-triang-symm-amount-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $13$ | $\color{orange}\text{300 s (obj: 610)}$</br>$\color{orange}\text{vrp-lns95-symm-packs-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $14$ | $\color{orange}\text{300 s (obj: 715)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $15$ | $\color{orange}\text{300 s (obj: 659)}$</br>$\color{orange}\text{vrp-plain-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $16$ | $\color{green}\text{1 s (obj: 286)}$</br>$\color{green}\text{vrp-lns90-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $17$ | $\color{orange}\text{300 s (obj: 1050)}$</br>$\color{orange}\text{vrp-lns95-triang-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $18$ | $\color{orange}\text{300 s (obj: 548)}$</br>$\color{orange}\text{vrp-lns95-triang-symm-packs-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $17$ | $\color{orange}\text{300 s (obj: 1076)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $18$ | $\color{orange}\text{300 s (obj: 620)}$</br>$\color{orange}\text{vrp-lns95-symm-packs-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $19$ | $\color{green}\text{32 s (obj: 334)}$</br>$\color{green}\text{vrp-lns97-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $20$ | $\color{orange}\text{300 s (obj: 1059)}$</br>$\color{orange}\text{vrp-lns90-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $21$ | $\color{orange}\text{300 s (obj: 511)}$</br>$\color{orange}\text{vrp-lns95-triang-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $21$ | $\color{orange}\text{300 s (obj: 516)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 
 <!-- end-status -->

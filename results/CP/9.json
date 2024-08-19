@@ -935,6 +935,165 @@
          "runner": "github-action"
       }
    },
+   "vrp-symm_amount-chuffed": {
+      "time": 0,
+      "optimal": true,
+      "obj": 436,
+      "sol": [
+         [
+            1,
+            4,
+            2,
+            3,
+            6
+         ],
+         [
+            5,
+            7
+         ],
+         [],
+         [],
+         [],
+         [
+            10,
+            9,
+            11,
+            13,
+            12
+         ],
+         [],
+         [
+            8
+         ],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1500,
+               "flatIntVars": 1342,
+               "flatBoolConstraints": 1020,
+               "flatIntConstraints": 2145,
+               "evaluatedReifiedConstraints": 590,
+               "evaluatedHalfReifiedConstraints": 620,
+               "eliminatedImplications": 170,
+               "method": "minimize",
+               "flatTime": 0.199143
+            },
+            "solver": {
+               "nodes": 7458,
+               "failures": 686,
+               "restarts": 19,
+               "variables": 92671,
+               "intVars": 1482,
+               "boolVariables": 91187,
+               "propagators": 2026,
+               "propagations": 387010,
+               "peakDepth": 352,
+               "nogoods": 686,
+               "backjumps": 275,
+               "peakMem": 0.0,
+               "time": 0.222,
+               "initTime": 0.081,
+               "solveTime": 0.141,
+               "objective": 436,
+               "optTime": 0.14,
+               "baseMem": 0.0,
+               "trailMem": 0.63,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 19
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.4521039505004883,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-chuffed": {
+      "time": 1,
+      "optimal": true,
+      "obj": 436,
+      "sol": [
+         [
+            6,
+            7,
+            9,
+            10
+         ],
+         [
+            1,
+            2,
+            3,
+            4
+         ],
+         [],
+         [],
+         [],
+         [
+            5
+         ],
+         [
+            13
+         ],
+         [
+            8
+         ],
+         [
+            11
+         ],
+         [
+            12
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 2178,
+               "flatIntVars": 1472,
+               "flatBoolConstraints": 1556,
+               "flatIntConstraints": 2685,
+               "evaluatedReifiedConstraints": 812,
+               "evaluatedHalfReifiedConstraints": 1010,
+               "eliminatedImplications": 170,
+               "method": "minimize",
+               "flatTime": 0.218224
+            },
+            "solver": {
+               "nodes": 22236,
+               "failures": 14455,
+               "restarts": 26,
+               "variables": 99922,
+               "intVars": 1612,
+               "boolVariables": 98308,
+               "propagators": 2326,
+               "propagations": 3954420,
+               "peakDepth": 255,
+               "nogoods": 14455,
+               "backjumps": 1580,
+               "peakMem": 0.0,
+               "time": 1.21,
+               "initTime": 0.093,
+               "solveTime": 1.117,
+               "objective": 436,
+               "optTime": 1.115,
+               "baseMem": 0.0,
+               "trailMem": 0.63,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 26
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 1.4681375675201416,
+         "runner": "github-action"
+      }
+   },
    "vrp-plain-or_tools": {
       "time": 300,
       "optimal": false,
