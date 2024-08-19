@@ -145,7 +145,21 @@ experiments_setup = [
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": []
-    }
+    },
+    {
+        "name": "vrp-symm_amount-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_amount.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-symm_packs-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_packs.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
 ]
 
 
