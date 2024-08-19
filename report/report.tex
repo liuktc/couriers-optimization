@@ -1,9 +1,12 @@
 \documentclass{article}
+\usepackage{amsmath, amssymb}
 \usepackage[pdfusetitle]{hyperref}
 \usepackage[all]{hypcap} % Links hyperref to object top and not caption
 \usepackage[nameinlink]{cleveref}   
 \usepackage{array, makecell, multirow, booktabs}
 \hypersetup{ colorlinks, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black, linktoc=all }
+\usepackage{biblatex}
+\addbibresource{references.bib}
 
 \let\endtitlepage\relax
 
@@ -28,5 +31,7 @@
     \input{./sections/sat.tex}
     \input{./sections/smt.tex}
     \input{./sections/mip.tex}
+
+    \printbibliography[heading=bibintoc]
 
 \end{document}

@@ -3,11 +3,71 @@
 
 \subsection{Decision variables}
 
+The CP model relies on the following variables:
+\begin{itemize}
+    \item For each package $p$, $A_p \in \{ 1, \dots, m \}$ (\texttt{assignments[p]} in MiniZinc) indicates which courier delivers it. More specifically, $A_p = c$ iff the package $p$ is delivered by the courier $c$.
+    
+    \item For each courier $c$, $P_{c, d} \in \{ 1, \dots, n+1 \}$ for $d \in \{ 1, \dots, n+1 \}$ (\texttt{path[c, d]} in MiniZinc) models the path taken by the courier $c$. The path is defined such that $P_{j, d_1} = d_1$ iff the location $d_1$ is not part of the route of $c$ and $P_{c, d_1} = d_2$ iff $d_2$ is visited immediately after $d_1$ in the route of $c$. In other words, each relevant location indicates which is its successor and the overall route is defined as a Hamiltonian cycle that starts from $n+1$ (i.e., the depot).
+\end{itemize}
+
+
 
 \subsection{Objective function}
 
 
+
 \subsection{Constraints}
 
+To impose the capacity limits of each courier, the following constraint can be defined:
+\begin{equation}
+    \forall c \in \{ 1, \dots, m \}: \sum_{p \in \{1, \dots, n\}: A_p = c} s_p \leq l_c 
+\end{equation}
+In MiniZinc, the global constraint \texttt{bin\_packing\_capa} also models this constraint. In our experiments, we did not notice significant differences between the two formulations and decided to use the latter following the best practice of preferring global constraints.
+
+To model the route, the following constraints have to be imposed:
+\begin{equation}
+    \label{eq:cp_constr_route_depot}
+    \forall c \in \{ 1, \dots, m \}: 
+    \begin{cases}
+        P_{c, n+1} = n+1    & \text{if $\nexists p \in \{ 1, \dots, n \}: A_p = c$} \\ 
+        P_{c, n+1} \neq n+1 & \text{if $\exists p \in \{ 1, \dots, n \}: A_p = c$} 
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+    \label{eq:cp_constr_route_packs}
+    \forall c \in \{ 1, \dots, m \},
+    \forall p \in \{ 1, \dots, n \}: 
+    \begin{cases}
+        P_{c, p} = p    & \text{if $A_p \neq c$} \\
+        P_{c, p} \neq p & \text{if $A_p = c$} 
+    \end{cases}
+\end{equation}
+
+The constraint defined in \Cref{eq:cp_constr_route_depot} imposes that, for each courier, the depot has a successor only if that courier delivers at least a package. On the same note, \Cref{eq:cp_constr_route_packs} imposes that only the packages delivered by a specific courier have a successor in the route.
+Moreover, it is necessary to impose that the route defined by $P_c$ is a Hamiltonian cycle that passes through the relevant destinations. This can be done by constraining all the elements of $P_c$ to be different and by defining a subtour elimination constraint (e.g., Miller-Tucker-Zemlin \cite{mtz_subtour}). In MiniZinc, this can be easily modelled by using the global constraint \texttt{subcircuit}.
+
+
+\subsubsection{Symmetry breaking constraints}
+
+The most notable symmetry in this problem is between couriers with the same capacity. In fact, as the assignments between two couriers with the same capacity are interchangeable, it is reasonable to fix an ordering and avoid redundancies during search. We experimented with two approaches: 
+\begin{itemize}
+    \item By imposing an ordering on the amount of assigned packages:
+        \begin{equation}
+            \forall c_1, c_2 \in \{ 1, \dots, m \}: (c_1 < c_2 \land l_{c_1} = l_{c_2}) \Rightarrow Q_{c_1} \leq Q_{c_2}
+        \end{equation}
+        where $Q_c$ is the amount of packages delivered by the courier $c$.
+    \item By imposing an ordering on indexes of the assigned packages:
+        \begin{equation}
+            \forall c_1, c_2 \in \{ 1, \dots, m \}: (c_1 < c_2 \land l_{c_1} = l_{c_2}) \Rightarrow A_{c_1} <_\texttt{lex} A_{c_2}
+        \end{equation}
+        where $A_c$ is a vector containing the packages delivered by the courier $c$ (in practice, it is a vector of $n$ elements where the $i$-th position is 0 if the package $i$ is not in the route and $i$ if it is. An alternative formulation for MiniZinc uses a list comprehension and the \texttt{deopt} operator, but we observed that this slows down the model).
+\end{itemize}
+
+Moreover, we experimented with a stronger version of these constraints that is applied between two couriers that satisfy the following condition:
+\begin{equation}
+    \max\left\{ L_{c_1}, L_{c_2} \right\} \leq \min\left\{ l_{c_1}, l_{c_2} \right\}
+\end{equation}
+where $L_c$ is the actual load carried by the courier $c$.
 
 \subsection{Validation}
