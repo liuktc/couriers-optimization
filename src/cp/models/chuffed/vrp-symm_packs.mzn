@@ -1,5 +1,5 @@
 include "globals.mzn";
-include "gecode.mzn";
+include "chuffed.mzn";
 
 
 
@@ -16,11 +16,8 @@ set of int: LOCATIONS = 1..DEPOT;
 array[COURIERS] of int: l;
 array[PACKS] of int: s;
 array[LOCATIONS, LOCATIONS] of int: D;
-int: MAX_CARRY;
 int: MIN_PATH = max(p in PACKS)(D[DEPOT, p] + D[p, DEPOT]);
 int: MAX_PATH = sum(d in LOCATIONS)(max(D[d, ..]));
-
-int: LNS_PERC;
 
 
 
@@ -31,6 +28,7 @@ array[COURIERS, LOCATIONS] of var LOCATIONS: path;
 % --- Auxiliary variables ---
 array[COURIERS] of var 0..n: carry_num;
 array[COURIERS, PACKS] of var 0..n: packs_per_courier;
+
 
 
 % --- Objective ---
@@ -53,7 +51,6 @@ constraint forall(c in COURIERS)(
   /\ forall(p in PACKS where assignments[p] == c)(packs_per_courier[c, p] = p)
 );
 
-
 % --- Path related constraints ---
 constraint forall(c in COURIERS)(
   if carry_num[c] > 0 then 
@@ -74,19 +71,6 @@ constraint forall(c in COURIERS)(
 );
 
 
-% --- Maximum number of deliverable packages per courier ---
-constraint symmetry_breaking_constraint(
-  forall(c in COURIERS)(carry_num[c] <= MAX_CARRY)
-);
-
-
-% --- Ordering on the amount of delivered packages ---
-constraint symmetry_breaking_constraint(
-  forall(c1, c2 in COURIERS where c1 < c2 /\ l[c1] == l[c2])(
-      carry_num[c1] <= carry_num[c2]
-  )
-);
-
 % --- Ordering on the index of the delivered packages ---
 constraint symmetry_breaking_constraint(
   forall(c1, c2 in COURIERS where c1 < c2 /\ l[c1] == l[c2])(
@@ -95,13 +79,12 @@ constraint symmetry_breaking_constraint(
 );
 
 
+
 solve 
   :: seq_search([
-      int_search(assignments, dom_w_deg, indomain_random),
+      int_search(assignments, first_fail, indomain_split),
       seq_search([ 
-        int_search(path[c, ..], first_fail, indomain_random)
+        int_search(path[c, ..], first_fail, indomain_split)
       | c in reverse(arg_sort(l)) ]),
   ])
-  :: restart_luby( n )
-  :: relax_and_reconstruct(assignments, if n <= 10 then 0 else LNS_PERC endif)
 minimize obj;
