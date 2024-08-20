@@ -1,4 +1,34 @@
 {
+   "smt_first": {
+      "time": 14,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4
+         ],
+         [
+            1,
+            6,
+            2
+         ],
+         [
+            3
+         ],
+         [
+            7
+         ],
+         [
+            5
+         ],
+         [
+            8
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "test1": {
       "time": 300,
       "optimal": false,
