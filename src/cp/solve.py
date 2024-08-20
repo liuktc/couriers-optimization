@@ -160,6 +160,27 @@ experiments_setup = [
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": []
     },
+    {
+        "name": "vrp-luby-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-luby.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-luby-symm_amount-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-luby-symm_amount.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-luby-symm_packs-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-luby-symm_packs.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
 ]
 
 
