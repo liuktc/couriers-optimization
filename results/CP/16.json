@@ -1910,5 +1910,324 @@
          "time_to_last_solution": 298.5171497268677,
          "runner": "github-action"
       }
+   },
+   "vrp-luby-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1006,
+      "sol": [
+         [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            11
+         ],
+         [
+            9,
+            10,
+            12,
+            13,
+            14,
+            15,
+            17,
+            18,
+            21,
+            25,
+            23,
+            16,
+            20,
+            19,
+            22
+         ],
+         [
+            24,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            36,
+            38,
+            35,
+            34,
+            37,
+            41
+         ],
+         [
+            39,
+            40,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+         ],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 3840,
+               "flatIntVars": 3908,
+               "flatBoolConstraints": 2880,
+               "flatIntConstraints": 6781,
+               "evaluatedReifiedConstraints": 1920,
+               "evaluatedHalfReifiedConstraints": 2880,
+               "eliminatedImplications": 960,
+               "method": "minimize",
+               "flatTime": 0.488796
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 288.3021187324524,
+         "runner": "github-action"
+      }
+   },
+   "vrp-luby-symm_amount-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 575,
+      "sol": [
+         [
+            1,
+            2,
+            3,
+            6,
+            4,
+            5,
+            8,
+            7
+         ],
+         [
+            9
+         ],
+         [],
+         [],
+         [
+            16
+         ],
+         [
+            21
+         ],
+         [
+            10,
+            11,
+            12,
+            30,
+            13,
+            18,
+            14,
+            22
+         ],
+         [
+            34
+         ],
+         [],
+         [
+            42
+         ],
+         [
+            43
+         ],
+         [
+            15,
+            17,
+            20,
+            19,
+            33,
+            29,
+            23,
+            24
+         ],
+         [],
+         [],
+         [
+            45
+         ],
+         [
+            25,
+            26,
+            27,
+            28,
+            31,
+            32,
+            35,
+            38
+         ],
+         [],
+         [],
+         [
+            36,
+            37,
+            39,
+            40,
+            41,
+            44,
+            46,
+            47
+         ],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 3840,
+               "flatIntVars": 3908,
+               "flatBoolConstraints": 2880,
+               "flatIntConstraints": 6818,
+               "evaluatedReifiedConstraints": 1920,
+               "evaluatedHalfReifiedConstraints": 2880,
+               "eliminatedImplications": 960,
+               "method": "minimize",
+               "flatTime": 0.487916
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 295.0541356601715,
+         "runner": "github-action"
+      }
+   },
+   "vrp-luby-symm_packs-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 850,
+      "sol": [
+         [
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            15
+         ],
+         [
+            19,
+            20,
+            21,
+            22,
+            27,
+            31,
+            28,
+            29,
+            26,
+            23,
+            25,
+            30,
+            24,
+            35
+         ],
+         [
+            33,
+            34,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42
+         ],
+         [],
+         [
+            18
+         ],
+         [
+            32
+         ],
+         [
+            4
+         ],
+         [
+            17
+         ],
+         [
+            46
+         ],
+         [
+            16
+         ],
+         [
+            14
+         ],
+         [
+            3
+         ],
+         [
+            45
+         ],
+         [],
+         [
+            13
+         ],
+         [
+            2
+         ],
+         [
+            44
+         ],
+         [
+            47
+         ],
+         [
+            1
+         ],
+         [
+            43
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 13468,
+               "flatIntVars": 4848,
+               "flatBoolConstraints": 11494,
+               "flatIntConstraints": 13079,
+               "evaluatedReifiedConstraints": 7063,
+               "evaluatedHalfReifiedConstraints": 5700,
+               "eliminatedImplications": 960,
+               "method": "minimize",
+               "flatTime": 0.754479
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 293.4071401901245,
+         "runner": "github-action"
+      }
    }
 }
