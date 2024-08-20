@@ -1,32 +1,122 @@
 {
-  "smt_first": {
-    "time": 14,
-    "optimal": true,
-    "obj": 322,
-    "sol": [
-      [
-        4
+   "plain": {
+      "time": 1,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            1
+         ],
+         [
+            6
+         ],
+         [
+            5
+         ],
+         [
+            7,
+            8
+         ],
+         [
+            4
+         ],
+         [
+            2,
+            3
+         ]
       ],
-      [
-        1,
-        6,
-        2
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "penalty": {
+      "time": 300,
+      "optimal": false,
+      "obj": 322,
+      "sol": [
+         [
+            8,
+            1
+         ],
+         [
+            5
+         ],
+         [
+            7
+         ],
+         [
+            3
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            6
+         ]
       ],
-      [
-        3
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain_symm": {
+      "time": 1,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            7
+         ],
+         [
+            1
+         ],
+         [
+            8,
+            4
+         ],
+         [
+            5
+         ],
+         [
+            6,
+            3
+         ],
+         [
+            2
+         ]
       ],
-      [
-        7
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt_first": {
+      "time": 14,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4
+         ],
+         [
+            1,
+            6,
+            2
+         ],
+         [
+            3
+         ],
+         [
+            7
+         ],
+         [
+            5
+         ],
+         [
+            8
+         ]
       ],
-      [
-        5
-      ],
-      [
-        8
-      ]
-    ],
-    "_extras": {
-      "runner": "github-action"
-    }
-  }
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
 }
