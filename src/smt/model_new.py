@@ -261,9 +261,9 @@ def SMT_new(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, t
         
         result = {
             "time": math.ceil(time.time() - start_timestamp),
-            "optimal": "",
-            "obj": "",
-            "sol": ""
+            "optimal": False,
+            "obj": None,
+            "sol": None
         }
         if model is not None:
             if result["time"] >= timeout:
@@ -291,6 +291,14 @@ def SMT_new(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, t
             
         return result
     except z3types.Z3Exception as e:
+        return  {
+            "time": timeout,
+            "optimal": False,
+            "obj": None,
+            "sol": None
+        }
+        
+    except Exception as e:
         return  {
             "time": timeout,
             "optimal": False,
