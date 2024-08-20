@@ -1,11 +1,38 @@
 {
-  "smt_first": {
-    "time": 342,
-    "optimal": false,
-    "obj": null,
-    "sol": null,
-    "_extras": {
-      "runner": "github-action"
-    }
-  }
+   "plain": {
+      "time": 339,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "penalty": {
+      "time": 367,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain_symm": {
+      "time": 423,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt_first": {
+      "time": 342,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
 }

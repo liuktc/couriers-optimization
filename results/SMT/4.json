@@ -1,38 +1,146 @@
 {
-  "smt_first": {
-    "time": 37,
-    "optimal": true,
-    "obj": 220,
-    "sol": [
-      [
-        10
+   "plain": {
+      "time": 3,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            1
+         ],
+         [
+            4
+         ],
+         [
+            5,
+            6
+         ],
+         [
+            7
+         ],
+         [
+            10
+         ],
+         [
+            8
+         ],
+         [
+            2
+         ],
+         [
+            9,
+            3
+         ]
       ],
-      [
-        1
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "penalty": {
+      "time": 300,
+      "optimal": false,
+      "obj": 220,
+      "sol": [
+         [
+            1
+         ],
+         [
+            8
+         ],
+         [
+            3,
+            10
+         ],
+         [
+            2,
+            9
+         ],
+         [
+            4
+         ],
+         [
+            5
+         ],
+         [
+            7
+         ],
+         [
+            6
+         ]
       ],
-      [
-        7
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain_symm": {
+      "time": 2,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            1
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [
+            6
+         ],
+         [
+            10,
+            2
+         ],
+         [
+            7
+         ],
+         [
+            4
+         ],
+         [
+            5,
+            3
+         ]
       ],
-      [
-        8
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt_first": {
+      "time": 37,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            10
+         ],
+         [
+            1
+         ],
+         [
+            7
+         ],
+         [
+            8
+         ],
+         [
+            4
+         ],
+         [
+            5,
+            6,
+            3
+         ],
+         [
+            2
+         ],
+         [
+            9
+         ]
       ],
-      [
-        4
-      ],
-      [
-        5,
-        6,
-        3
-      ],
-      [
-        2
-      ],
-      [
-        9
-      ]
-    ],
-    "_extras": {
-      "runner": "github-action"
-    }
-  }
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
 }
