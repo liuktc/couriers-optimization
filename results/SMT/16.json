@@ -1,4 +1,13 @@
 {
+   "smt_first": {
+      "time": 303,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "test1": {
       "time": 300,
       "optimal": false,
