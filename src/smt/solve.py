@@ -1,6 +1,7 @@
-from .model_arrays import SMT_array
 from .model_plain import SMT_plain
 from .model_penalty import SMT_penalty
+from .model_twosolver import SMT_twosolver 
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -24,6 +25,12 @@ experiments = [
         "symmetry_breaking": True,
         "implied_constraints": False
     },
+    {
+        "name": "twosolver",
+        "model": SMT_twosolver,
+        "symmetry_breaking": False,
+        "implied_constraints": False
+    }
 ]
 
 def solve(instance, timeout, cache={}, **kwargs):

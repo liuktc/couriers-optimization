@@ -1,6 +1,7 @@
-from model_arrays import SMT_array
-from model_plain import SMT_plain
-from model_penalty import SMT_penalty
+from .model_arrays import SMT_array
+from .model_plain import SMT_plain
+from .model_penalty import SMT_penalty
+from .model_twosolver import SMT_twosolver
 
 import logging
 logger = logging.getLogger(__name__)
@@ -13,23 +14,17 @@ experiments = [
         "implied_constraints": False
     },
     {
-        "name": "penalty",
-        "model": SMT_penalty,
+        "name": "twosolver",
+        "model": SMT_twosolver,
         "symmetry_breaking": False,
         "implied_constraints": False
-    },
-    {
-        "name": "plain_symm",
-        "model": SMT_plain,
-        "symmetry_breaking": True,
-        "implied_constraints": False
-    },
+    }
 ]
 
 def solve(instance, timeout, cache={}, **kwargs):
     results = {}
     
-    for experiment in experiments[:1]:
+    for experiment in experiments[1:2]:
         logger.info(f"Starting model {experiment['name']}")
         name, model, symmetry_breaking, implied_constraints = experiment["name"], experiment["model"], experiment["symmetry_breaking"], experiment["implied_constraints"]
 
@@ -79,7 +74,7 @@ if __name__ == "__main__":
     
     instances = [ (i+1, parseInstanceFile(os.path.join("../instances", f))) for i, f in enumerate(sorted(os.listdir("../instances"))) ]
     
-    for instance_number, instance in instances[5:6]:
+    for instance_number, instance in instances[12:13]:
         print(instance)
-        print(solve(instance, timeout=30))
+        print(solve(instance, timeout=300))
     

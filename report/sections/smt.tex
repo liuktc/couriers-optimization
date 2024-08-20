@@ -1,13 +1,28 @@
 \section{SMT model}
 
+The SMT model is based on the CP model, and follows the same definition of paths of the couriers. 
 
 \subsection{Decision variables}
 
+The SMT model relies on the following decision variables, where boolean variables are from the Propositional Logic Theory, and integer variables are from LIA Theory.
+
+\begin{itemize}
+    \item For each package $j$, $A_j \in \{1, \dots, m\}$ (\texttt{ASSIGNMENTS[j]} in Z3) indicates which courier delivers package $j$. More specifically, $A_j = i$ iff the courier $i$ delivers package $j$.
+    
+    \item For each courier $i$, $P_{i,d} \in \{1, \dots, n + 1\}$ for $d \in \{1, \dots, n + 1\}$ (\texttt{PATH[i][d]} in Z3) models the path taken by the courier $i$. The path is defined such that $P_{i, d_1} = d_1$ iff the location $d_1$ is not part of the route of the courier $i$ and $P_{i, d_1} = d_2$ iff $d_2$ is visited immediately after $d_1$ in the route of $c$. In other words, each relevant location indicates which is its successor and the overall route is defined as a Hamiltonian cycle that starts from $n+1$ (i.e., the depot).
+
+    \item For each courier $i$, $C_i \in \mathbf{N}$ (\texttt{COUNT[i]} in Z3) models the number of packages delivered by courier $i$.
+\end{itemize}
 
 \subsection{Objective function}
+The objective function is defined as follows:
+
+\[ (\Sum_{j1 \in \{1, \dots, n\} \Sum_{j2 \in \{1, \dots, n\} f(j1, j2)) +  \]
 
 
 \subsection{Constraints}
+
+
 
 
 \subsection{Validation}
