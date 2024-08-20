@@ -134,7 +134,7 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
             model = solver.model()
             result_objective = model[obj].as_long()
             
-            print(f"New optimal found: {result_objective}")
+            """ print(f"New optimal found: {result_objective}")
             print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
             print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
             print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
@@ -147,7 +147,7 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
             print("PACKS_PER_COURIER = ")
             for i in COURIERS:
                 row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                print(row)
+                print(row) """
 
             solver.pop()
             solver.push()

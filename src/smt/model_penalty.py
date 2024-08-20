@@ -126,13 +126,13 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
         start_timestamp = time.time()
         solver.push()    
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        print(f"Timeout = {millisecs_left(start_timestamp, timeout_timestamp)} ms = {millisecs_left(start_timestamp, timeout_timestamp) / 1000} s")
+
         model = None
         while solver.check() == sat:
             model = solver.model()
             result_objective = model[obj].as_long() - model.eval(sum_abs_diff).as_long()
             
-            print(f"New optimal found: {result_objective}")
+            """ print(f"New optimal found: {result_objective}")
             print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
             print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
             print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
@@ -150,7 +150,7 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
             print("PACKS_PER_COURIER = ")
             for i in COURIERS:
                 row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                print(row)
+                print(row) """
 
             solver.pop()
             solver.push()
