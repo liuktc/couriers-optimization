@@ -74,7 +74,7 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
                 for j1 in ITEMS
                 ])
             dist += Sum([If(PATH[i][j] == n + 1, D[j][n], 0) for j in range(DEPOT)])
-            dist += Sum([If(j == PATH[i][n], D[n][j], 0) for j in range(DEPOT)])
+            dist += Sum([If(j + 1 == PATH[i][n], D[n][j], 0) for j in range(DEPOT)])
             solver.add(DISTANCES[i] == dist)
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 

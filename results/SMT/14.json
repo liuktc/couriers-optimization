@@ -1,37 +1,11 @@
 {
-   "smt_first": {
-      "time": 300,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "test1": {
-      "time": 300,
-      "optimal": false,
-      "obj": 14,
-      "sol": [
-         [
-            1
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "test2": {
-      "time": 300,
-      "optimal": false,
-      "obj": 16,
-      "sol": [
-         [
-            1
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   }
+  "smt_first": {
+    "time": 300,
+    "optimal": false,
+    "obj": null,
+    "sol": null,
+    "_extras": {
+      "runner": "github-action"
+    }
+  }
 }

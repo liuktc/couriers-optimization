@@ -33,13 +33,13 @@ def main(args):
     if subfolder.startswith('.'):
       # Skip hidden folders.
       continue
-    folder = results_folder + subfolder
+    folder = os.path.join(results_folder, subfolder)
     print(f'\nChecking results in {folder} folder')
     for results_file in sorted(os.listdir(folder)):
       if results_file.startswith('.'):
         # Skip hidden folders.
         continue
-      results = read_json_file(folder + '/' + results_file)
+      results = read_json_file(folder + os.sep + results_file)
       print(f'\tChecking results for instance {results_file}')
       inst_number = re.search('\d+', results_file).group()
       if len(inst_number) == 1:
@@ -103,7 +103,7 @@ def main(args):
         if i < 6:
           if result['optimal']:
             if result['obj'] != OPT[i]:
-              errors += [f"{header}: claimed optimal value {result['obj']} inconsistent with actual optimal value {OPTS[i]})"]
+              errors += [f"{header}: claimed optimal value {result['obj']} inconsistent with actual optimal value {OPT[i]})"]
           else:
             warnings += [f"{header}: instance {inst_number} not solved to optimality"]
   print('\nCheck terminated.')

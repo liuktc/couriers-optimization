@@ -1,59 +1,33 @@
 {
-   "smt_first": {
-      "time": 15,
-      "optimal": true,
-      "obj": 226,
-      "sol": [
-         [
-            1
-         ],
-         [
-            9,
-            7,
-            5
-         ],
-         [
-            4
-         ],
-         [
-            2
-         ],
-         [
-            8
-         ],
-         [
-            6,
-            3
-         ]
+  "smt_first": {
+    "time": 15,
+    "optimal": true,
+    "obj": 226,
+    "sol": [
+      [
+        1
       ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "test1": {
-      "time": 300,
-      "optimal": false,
-      "obj": 14,
-      "sol": [
-         [
-            1
-         ]
+      [
+        9,
+        7,
+        5
       ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "test2": {
-      "time": 300,
-      "optimal": false,
-      "obj": 16,
-      "sol": [
-         [
-            1
-         ]
+      [
+        4
       ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   }
+      [
+        2
+      ],
+      [
+        8
+      ],
+      [
+        6,
+        3
+      ]
+    ],
+    "_extras": {
+      "runner": "github-action"
+    }
+  }
 }

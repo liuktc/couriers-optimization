@@ -2,20 +2,54 @@ from model_arrays import SMT_array
 from model_plain import SMT_plain
 from model_penalty import SMT_penalty
 
-models = {
-    "plain": SMT_plain,
-    "penalty": SMT_penalty
-}
+import logging
+logger = logging.getLogger(__name__)
 
-def solve(instance, timeout, **kwargs):
+experiments = [
+    {
+        "name": "plain",
+        "model": SMT_plain,
+        "symmetry_breaking": False,
+        "implied_constraints": False
+    },
+    {
+        "name": "penalty",
+        "model": SMT_penalty,
+        "symmetry_breaking": False,
+        "implied_constraints": False
+    },
+    {
+        "name": "plain_symm",
+        "model": SMT_plain,
+        "symmetry_breaking": True,
+        "implied_constraints": False
+    },
+]
+
+def solve(instance, timeout, cache={}, **kwargs):
     results = {}
     
-    for model_name, model in models.items():
-        results[model_name] = model(instance["m"], instance["n"], instance["l"], instance["s"], instance["D"], timeout=timeout,**kwargs)
+    for experiment in experiments[:1]:
+        logger.info(f"Starting model {experiment['name']}")
+        name, model, symmetry_breaking, implied_constraints = experiment["name"], experiment["model"], experiment["symmetry_breaking"], experiment["implied_constraints"]
+
+        # Check if result is in cache
+        if name in cache:
+            logger.info(f"Cache hit")
+            results[name] = cache[name]
+            continue
+        
+        results[name] = model(instance["m"],
+                              instance["n"],
+                              instance["l"],
+                              instance["s"],
+                              instance["D"],
+                              timeout=timeout,
+                              implied_constraints=implied_constraints,
+                              symmetry_breaking=symmetry_breaking,
+                              **kwargs)
         
     return results
-    
-
 import re
 
 def __cleanLine(line):
@@ -45,7 +79,7 @@ if __name__ == "__main__":
     
     instances = [ (i+1, parseInstanceFile(os.path.join("../instances", f))) for i, f in enumerate(sorted(os.listdir("../instances"))) ]
     
-    for instance_number, instance in instances[6:7]:
+    for instance_number, instance in instances[5:6]:
         print(instance)
         print(solve(instance, timeout=30))
     
