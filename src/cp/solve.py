@@ -130,7 +130,35 @@ experiments_setup = [
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": [ _setLNSPercentage(95) ]
     },
-    
+    {
+        "name": "vrp-plain-ff-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-plain-ff.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
+        "name": "vrp-lns95-ff-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-ff.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95) ]
+    },
+    {
+        "name": "vrp-lns95-symm_amount-ff-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_amount-ff.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95) ]
+    },
+    {
+        "name": "vrp-lns95-symm_packs-ff-gecode",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_packs-ff.mzn"),
+        "solver": "gecode",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [ _setLNSPercentage(95) ]
+    },
+
     {
         "name": "vrp-plain-chuffed",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-plain.mzn"),

@@ -29,7 +29,6 @@ array[COURIERS, LOCATIONS] of var LOCATIONS: path;
 
 % --- Auxiliary variables ---
 array[COURIERS] of var 0..n: carry_num;
-array[COURIERS, PACKS] of var 0..n: packs_per_courier;
 
 
 
@@ -46,11 +45,6 @@ constraint bin_packing_capa(l, assignments, s);
 % --- Auxiliary variables ---
 constraint forall(c in COURIERS)(
   carry_num[c] = count(p in PACKS)(assignments[p] == c)
-);
-
-constraint forall(c in COURIERS)(
-  forall(p in PACKS where assignments[p] != c)(packs_per_courier[c, p] = 0)
-  /\ forall(p in PACKS where assignments[p] == c)(packs_per_courier[c, p] = p)
 );
 
 
@@ -81,18 +75,11 @@ constraint symmetry_breaking_constraint(
   )
 );
 
-% --- Ordering on the index of the delivered packages ---
-constraint symmetry_breaking_constraint(
-  forall(c1, c2 in COURIERS where c1 < c2 /\ l[c1] == l[c2])(
-    lex_less( packs_per_courier[c1, ..], packs_per_courier[c2, ..] )
-  )
-);
-
 
 
 solve 
   :: seq_search([
-      int_search(assignments, dom_w_deg, indomain_random),
+      int_search(assignments, first_fail, indomain_random),
       seq_search([ 
         int_search(path[c, ..], first_fail, indomain_random)
       | c in reverse(arg_sort(l)) ]),
