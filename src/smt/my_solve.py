@@ -40,7 +40,7 @@ if __name__ == "__main__":
     
     instances = [ (i+1, parseInstanceFile(os.path.join("../instances", f))) for i, f in enumerate(sorted(os.listdir("../instances"))) ]
     
-    for instance_number, instance in instances[0:1]:
+    for instance_number, instance in instances[6:7]:
         print(instance)
         print(solve(instance, timeout=10))
     

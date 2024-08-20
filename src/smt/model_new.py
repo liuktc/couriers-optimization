@@ -230,11 +230,11 @@ def SMT_new(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, t
         solver.add(obj <= upper_bound)
         
         
-        timeout_timestamp = time.time() + timeout*1000
+        timeout_timestamp = time.time() + timeout
         start_timestamp = time.time()
         solver.push()    
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        
+                
         model = None
         while solver.check() == sat:
             model = solver.model()
@@ -267,6 +267,7 @@ def SMT_new(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, t
         }
         if model is not None:
             if result["time"] >= timeout:
+                result["time"] = timeout
                 result["optimal"] = False
             else:
                 result["optimal"] = True
@@ -289,7 +290,14 @@ def SMT_new(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, t
             result["sol"] = solution
             
         return result
-    except z3.z3types.Z3Exception as e:
+    except z3types.Z3Exception as e:
+        return  {
+            "time": "",
+            "optimal": "",
+            "obj": "",
+            "sol": ""
+        }
+    except Exception as e:
         return  {
             "time": "",
             "optimal": "",
