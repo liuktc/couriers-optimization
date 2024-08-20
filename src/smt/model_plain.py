@@ -1,6 +1,6 @@
 from z3 import *
 import time
-from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
+from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
     
 def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
     try:
