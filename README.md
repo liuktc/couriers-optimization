@@ -18,7 +18,7 @@
 | $10$ | $\color{green}\text{0 s (obj: 244)}$</br>$\color{green}\text{vrp-luby-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $11$ | $\color{orange}\text{300 s (obj: 490)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $12$ | $\color{green}\text{77 s (obj: 346)}$</br>$\color{green}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
-| $13$ | $\color{orange}\text{300 s (obj: 610)}$</br>$\color{orange}\text{vrp-lns95-symm-packs-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
+| $13$ | $\color{orange}\text{300 s (obj: 574)}$</br>$\color{orange}\text{vrp-lns90-symm-amount-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $14$ | $\color{orange}\text{300 s (obj: 715)}$</br>$\color{orange}\text{vrp-lns95-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $15$ | $\color{orange}\text{300 s (obj: 659)}$</br>$\color{orange}\text{vrp-plain-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
 | $16$ | $\color{green}\text{1 s (obj: 286)}$</br>$\color{green}\text{vrp-lns90-gecode}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | $\color{red}\text{Inconsistent}$ | 
