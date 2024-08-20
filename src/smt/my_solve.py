@@ -1,14 +1,19 @@
-from model import SMT
 from model_arrays import SMT_array
-from model_new import SMT_new
+from model_plain import SMT_plain
+from model_penalty import SMT_penalty
+
+models = {
+    "plain": SMT_plain,
+    "penalty": SMT_penalty
+}
 
 def solve(instance, timeout, **kwargs):
-    res_dict = SMT_new(instance["m"], instance["n"], instance["l"], instance["s"], instance["D"], timeout=timeout,**kwargs)
-    # return SMT(instance["m"], instance["n"], instance["l"], instance["s"], instance["D"], timeout=timeout,**kwargs)
-    # return SMT_array(instance["m"], instance["n"], instance["l"], instance["s"], instance["D"], timeout=timeout,**kwargs)
-    return {
-        "smt_first": res_dict,
-    }
+    results = {}
+    
+    for model_name, model in models.items():
+        results[model_name] = model(instance["m"], instance["n"], instance["l"], instance["s"], instance["D"], timeout=timeout,**kwargs)
+        
+    return results
     
 
 import re
@@ -42,5 +47,5 @@ if __name__ == "__main__":
     
     for instance_number, instance in instances[6:7]:
         print(instance)
-        print(solve(instance, timeout=10))
+        print(solve(instance, timeout=30))
     
