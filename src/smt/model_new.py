@@ -289,10 +289,10 @@ def SMT_new(m, n, l, s, D, implied_constraints=False, simmetry_breaking=False, t
             result["sol"] = solution
             
         return result
-    except z3.z3types.Z3Exception as e:
+    except z3types.Z3Exception as e:
         return  {
-            "time": "",
-            "optimal": "",
-            "obj": "",
-            "sol": ""
+            "time": timeout,
+            "optimal": False,
+            "obj": None,
+            "sol": None
         }
