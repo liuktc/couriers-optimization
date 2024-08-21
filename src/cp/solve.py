@@ -31,7 +31,7 @@ def _setLNSPercentage(percentage):
     return __set
 
 
-experiments_setup = [
+experiments_gecode = [
     {
         "name": "vrp-plain-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-plain.mzn"),
@@ -158,7 +158,9 @@ experiments_setup = [
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": [ _setLNSPercentage(95) ]
     },
+]
 
+experiments_chuffed = [
     {
         "name": "vrp-plain-chuffed",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-plain.mzn"),
@@ -180,7 +182,9 @@ experiments_setup = [
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": []
     },
+]
 
+experiments_or_tools = [
     {
         "name": "vrp-plain-or_tools",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-plain.mzn"),
@@ -203,27 +207,34 @@ experiments_setup = [
         "preprocessing": []
     },
     {
-        "name": "vrp-luby-or_tools",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-luby.mzn"),
+        "name": "vrp-plain-ff-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-plain-ff.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": []
     },
     {
-        "name": "vrp-luby-symm_amount-or_tools",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-luby-symm_amount.mzn"),
+        "name": "vrp-symm_amount-ff-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_amount-ff.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": []
     },
     {
-        "name": "vrp-luby-symm_packs-or_tools",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-luby-symm_packs.mzn"),
+        "name": "vrp-symm_packs-ff-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_packs-ff.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
         "preprocessing": []
     },
 ]
+
+
+experiments_setup = (
+    experiments_gecode +
+    experiments_chuffed +
+    experiments_or_tools
+)
 
 
 def solve(instance, timeout, cache={}, random_seed=42):

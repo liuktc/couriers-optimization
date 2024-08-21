@@ -25,7 +25,7 @@ array[PACKS] of var COURIERS: assignments;
 array[COURIERS, LOCATIONS] of var LOCATIONS: path;
 
 % --- Auxiliary variables ---
-array[COURIERS] of var 0..n: carry_num;
+array[COURIERS] of var int: carry_num;
 
 
 
@@ -65,21 +65,12 @@ constraint forall(c in COURIERS)(
 );
 
 
-% --- Ordering on the amount of delivered packages ---
-constraint symmetry_breaking_constraint(
-  forall(c1, c2 in COURIERS where c1 < c2 /\ l[c1] == l[c2])(
-      carry_num[c1] <= carry_num[c2]
-  )
-);
-
-
 
 solve 
   :: seq_search([
-      int_search(assignments, dom_w_deg, indomain_random),
+      int_search(assignments, first_fail, indomain_split),
       seq_search([ 
-        int_search(path[c, ..], first_fail, indomain_random)
+        int_search(path[c, ..], first_fail, indomain_split)
       | c in reverse(arg_sort(l)) ]),
   ])
-  :: restart_luby( n )
 minimize obj;
