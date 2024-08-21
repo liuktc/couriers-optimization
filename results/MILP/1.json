@@ -1,0 +1,38 @@
+{
+   "initial-model_scip": {
+      "time": 0,
+      "optimal": false,
+      "obj": 0,
+      "sol": [
+         [],
+         []
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "implied-model_scip": {
+      "time": 0,
+      "optimal": false,
+      "obj": 0,
+      "sol": [
+         [],
+         []
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "symmetry-model_scip": {
+      "time": 0,
+      "optimal": false,
+      "obj": 0,
+      "sol": [
+         [],
+         []
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
+}
