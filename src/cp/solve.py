@@ -64,7 +64,7 @@ experiments_setup = [
 ]
 
 
-def solve(instance, timeout, cache={}, random_seed=42):
+def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     instance_path = os.path.join(pathlib.Path(__file__).parent.resolve(), ".instance.dzn")
     with open(instance_path, "w") as f:
         f.write( parseInstanceForMinizinc(instance) )

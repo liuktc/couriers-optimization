@@ -52,7 +52,7 @@ jobs:
           
       - name: Generate results
         run: |
-          docker run -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo \
+          docker run -e AMPLKEY_UUID=${secrets.AMPL_KEY} -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo \
             --runner-label="github-action" \
             --verbose \
             --timeout=300 \

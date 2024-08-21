@@ -2,21 +2,23 @@ import os
 import json
 import time
 import numpy as np
+import logging 
 from amplpy import AMPL, add_to_path
+
+logger = logging.getLogger(__name__)
 
 # Lista dei solver da testare, da aggiungerene altri e/o da testare modificadone parametri -> con highs non so cosa succeda...
 SOLVERS = ['cbc', 'scip', 'highs']
 
-def run_ampl_model(model_file, data_file, solver):
+def run_ampl_model(model_file, data_file, solver, timeout):
     
     add_to_path(r'c:/Users/cmaio/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/AMPL IDE.lnk') #Damodificareperreproducibilità
     ampl = AMPL()
-    
     try:
         ampl.read(model_file)
         ampl.readData(data_file)
         ampl.setOption('solver', solver)
-        ampl.setOption(solver + '_options', 'timelimit=300')
+        ampl.setOption(solver + '_options', f'timelimit={timeout}')
         
         #DA MOGLIORARE
         #if solver == 'cbc':
@@ -80,7 +82,7 @@ def run_ampl_model(model_file, data_file, solver):
         return {
             "time": int(solve_time),
             "optimal": is_optimal,
-            "obj": objective,
+            "obj": int(objective),
             "sol": solution,
             #'iterations' : iterations,
             #'nodes' : nodes,
@@ -88,9 +90,9 @@ def run_ampl_model(model_file, data_file, solver):
             #'cuts' : cuts
         }
     except Exception as e:
-        print(f"Error with solver {solver}: {str(e)}")
+        print(f"Error with solver {solver} and model {model_file}: {str(e)}")
         return {
-            "time": 300,
+            "time": timeout,
             "optimal": False,
             "obj": None,
             "sol": None
@@ -98,40 +100,76 @@ def run_ampl_model(model_file, data_file, solver):
     finally:
         ampl.close()
 
-#DA CAPIRE SE EFFETTIVAMENTE CHIAVE DEL DIZIONARIO DEVE ESSERE MODELLO-SOLVER (E IN QUESTO CASO DOVREBBERO QUINDI ESSERE 6)
-#ORA COME ORA LE CHIAVI SONO SOLTANTO I MODELLI
-def test_model(model_file, data_dir, num_instance):
-    instance = sorted([f for f in os.listdir(data_dir) if f.endswith('.dat')])[num_instance]
-    data_file = os.path.join(data_dir, instance)
-    model_results = {}
-    for solver in SOLVERS:
-        print(f"  Using solver: {solver}")
-        result = run_ampl_model(model_file, data_file, solver)
-        model_results[solver] = result
+models_setup = [
+    {
+        "name": "initial-model",
+        "model_path": "src/milp/models/initial_model.mod",
+    },
+    {
+        "name": "model-with-implied-constraint",
+        "model_path": "src/milp/models/model_with_implied_constraint.mod",
+    },
+    {
+        "name": "model-with-symmetry-breaking-constraint",
+        "model_path": "src/milp/models/model_with_symmetry_breaking.mod",
+    },
+]
 
-    return model_results
 
-def main():
-    model_dir = 'src/milp/models/'
-    models_file = ['initial_model.mod', 'model_with_implied_constraint.mod', 'model_with_symmetry_breaking.mod']
-    data_dir = 'src/milp/data'  
-    results_dir = 'results/MILP'
-    num_instances = 10
+def solve(instance, instance_number, timeout, cache={}, random_seed = 42):
+    
+    data_dir = 'src/milp/data'
+    data_instance = sorted([f for f in os.listdir(data_dir) if f.endswith('.dat')])[instance_number-1]
+    data_file = os.path.join(data_dir, data_instance)
+    
+    out_results = {}
+
+    for model in models_setup:
+        for solver in SOLVERS:
+            logger.info(f"Starting model {model['name']} with {solver}")
+
+            # Check if result is in cache
+            if model["name"] in cache:
+                logger.info(f"Cache hit")
+                out_results[model["name"]] = cache[model["name"]]
+                continue
+        
+        # Solve instance
+            result = run_ampl_model(
+                model_file = model["model_path"],
+                data_file = data_file,
+                solver = solver,
+                timeout = timeout
+            )
+            
+            out_results[model['name'] + ' using ' + solver] = result
+    return out_results
+
+
+
+#def main():
+    #model_dir = 'src/milp/models/'
+    #models_file = ['initial_model.mod', 'model_with_implied_constraint.mod', 'model_with_symmetry_breaking.mod']
+    #data_dir = 'src/milp/data'  
+    #results_dir = 'results/MILP'
+    #num_instances = 1
     
     #Salva i risultati nei file json specificati per istanza
-    for i in range(1,num_instances+1):
-        print(f'Testing on instance number {i}')
-        models_result = {}
-        for model_file in models_file:
-            percorso_model = os.path.join(model_dir, model_file)
-            print(f'Testing on model: {model_file}')
-            results = test_model(percorso_model, data_dir, i-1)
-            models_result[model_file] = results
-        percorso = os.path.join(results_dir, f'{i}.json')
-        with open(percorso, 'w') as f:
-            json.dump(models_result, f, indent=2)
+    #for i in range(1,num_instances+1):
+        #print(f'Testing on instance number {i}')
+        #models_result = {}
+        #for model_file in models_file:
+            #percorso_model = os.path.join(model_dir, model_file)
+            #for solver in SOLVERS: 
+                #print(f'Testing on model: {model_file} with solver {solver}')
+                #results = test_model(percorso_model, data_dir, i-1, solver)
+                #models_result[model_file + ' using ' + solver] = results
+        #percorso = os.path.join(results_dir, f'{i}.json')
+        #with open(percorso, 'w') as f:
+            #json.dump(models_result, f, indent=2)
     
-    print(f"Test completati. Risultati salvati nell'apposita directory.")
+    #print(f"Test completati. Risultati salvati nell'apposita directory.")
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    solve(instance=' ', instance_number = 1, timeout=300)
+    

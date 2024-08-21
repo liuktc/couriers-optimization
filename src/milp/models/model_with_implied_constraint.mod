@@ -11,8 +11,8 @@ param l{COURIERS} integer; #array of capacity of each coureirs
 param s{PACKS} integer; #array of size of each packs
 param D{i in NODES, j in NODES} integer; #matrix of distances
 
-#param UpperBound := sum{i in NODES, j in NODES} D[i,j]; 
-#param LowerBound := 0;
+param UpperBound := sum{i in NODES, j in NODES} D[i,j]; 
+param LowerBound := max{i in PACKS}(D[DEPOT,i] + D[i,DEPOT]);
 
 #####################
 
@@ -22,16 +22,10 @@ var A{i in PACKS, k in COURIERS} binary;
 var X{i in NODES, j in NODES, k in COURIERS} binary;
 #var u[i,k] used of the soubtur elimination following the MTZ approach
 var u{i in PACKS, k in COURIERS} >= 0;
-#MaxDistance of each courier
-#var MaxDistance >= 0;
 
 minimize ObjectiveMaxDistance: 
 	max{k in COURIERS} sum{i in NODES, j in NODES} D[i,j]*X[i,j,k];
 #####################
-
-#DefinitionOfMaxDistance (as the variable that is greater than all the distances cover by the couriers)
-#subject to DefineMaxDistance {k in COURIERS}:
-	#MaxDistance >= sum{i in NODES, j in NODES} D[i,j]*X[i,j,k];
 
 #link XY constraints
 subject to LinkXY1{i in PACKS, k in COURIERS}:
@@ -75,11 +69,11 @@ subject to SubtourElimination{i in PACKS, j in PACKS, k in COURIERS}:
     u[i,k] - u[j,k] + n * X[i,j,k] <= n - 1;
     
 #Objective boundaries constraints
-#subject to UpBound:
-	#MaxDistance <= UpperBound;
+subject to UpBound:
+	max{k in COURIERS} sum{i in NODES, j in NODES} D[i,j]*X[i,j,k] <= UpperBound;
 	
-#subject to LowBound:
-	#MaxDistance >= LowerBound;	
+subject to LowBound:
+	max{k in COURIERS} sum{i in NODES, j in NODES} D[i,j]*X[i,j,k] >= LowerBound;
 
 #Adding 2 constraints, the implied one and the symmetry breaking one
 #each couriers has to bring at least one package
