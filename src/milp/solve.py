@@ -1,7 +1,6 @@
 import os
 import json
 import time
-import numpy as np
 import logging 
 from amplpy import AMPL, add_to_path
 
@@ -13,7 +12,7 @@ SOLVERS = ['scip']
 
 def run_ampl_model(model_file, data_file, solver, timeout):
     
-    add_to_path(r'c:/Users/cmaio/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/AMPL IDE.lnk') #Damodificareperreproducibilità
+    #add_to_path(r'c:/Users/cmaio/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/AMPL IDE.lnk') #Damodificareperreproducibilità
     ampl = AMPL()
     try:
         ampl.read(model_file)
