@@ -27,7 +27,7 @@ def main(args):
         results = read_json_file(folder + os.sep + results_file)
         new_results = {}
         for solver, result in results.items():
-            if not 'test' in solver:
+            if solver != "plain":
                 new_results[solver] = result
             else:
                 print(f"Skipping {solver}")

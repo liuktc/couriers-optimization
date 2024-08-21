@@ -1,6 +1,6 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
+from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
 # from tqdm import tqdm
   
     
@@ -56,11 +56,11 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         # Count constraints
         for i in COURIERS:
             solver.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
-            # solver_assignment.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
+            solver_assignment.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
           
         # Subcircuit constraints  
-        for i in COURIERS:
-            solver.add(subcircuit(PATH[i], i))
+        """ for i in COURIERS:
+            solver.add(subcircuit(PATH[i], i)) """
                             
         # Total weight constraints
         for i in COURIERS:
@@ -101,7 +101,10 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         # Implied constraints
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                
+        if implied_constraints:
+            for i in COURIERS:
+                solver.add(COUNT[i] > 0)
+                solver_assignment.add(COUNT[i] > 0)
                     
                 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,7 +120,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         # Search strategy
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
+        """ lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
         
         max_distances = [max(D[i][:-1]) for i in range(n)]
         max_distances.sort()
@@ -127,7 +130,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
 
         solver.add(obj >= lower_bound)
-        solver.add(obj <= upper_bound)
+        solver.add(obj <= upper_bound) """
         
         
         timeout_timestamp = time.time() + timeout
@@ -136,12 +139,20 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
         solver_assignment.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
         
+        print(f"Start solving")
+        
+        # write the smt2 file to file
+        with open('smt2.smt2', 'w') as f:
+            f.write(solver.to_smt2())
+        
+        
+        
         model = None
         while solver_assignment.check() == sat:
             model_assignment = solver_assignment.model()
             result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
             
-            # print(f"Result assignment = {result_assignment}")
+            print(f"Result assignment = {result_assignment}")
             solver.push()
             solver_assignment.push()
             for j in ITEMS:
@@ -153,10 +164,12 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                 break
             
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
+            
+            start = time.time()
             if solver.check() == sat:
                 model = solver.model()
                 result_objective = model[obj].as_long()
-                print("Found a new solution with objective value", result_objective)
+                print(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
                 solver.pop()
                 
                 solver.add(obj < result_objective)

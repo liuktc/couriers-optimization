@@ -49,7 +49,8 @@ def subcircuit(x, tag):
     n = len(S)
 
     # Variables
-    order = IntVector(f'order_{tag}', n)
+    # order = IntVector(f'order_{tag}', n)
+    order = Array(f"order_{tag}", IntSort(), IntSort())
     ins = [Bool(f'ins_{i}_{tag}') for i in S]
     for i in S:
         ins[i] = (x[i] != i + 1)
@@ -74,7 +75,8 @@ def subcircuit(x, tag):
     non_empty_conditions = []
 
     # The firstin node is numbered 1.
-    non_empty_conditions.append(get_element_at_index(order, firstin) == 1)
+    # non_empty_conditions.append(get_element_at_index(order, firstin) == 1)
+    non_empty_conditions.append(Select(order, firstin) == 1)
 
     # The lastin node is greater than firstin.
     non_empty_conditions.append(lastin > firstin)
@@ -88,12 +90,19 @@ def subcircuit(x, tag):
 
     # The successor of each node except where it is firstin is
     # numbered one more than the predecessor.
-    non_empty_conditions.append(And([Implies(And(ins[i], x[i] - 1 != firstin), 
-                                             get_element_at_index(order, x[i] - 1) == get_element_at_index(order, i) + 1)
+    #non_empty_conditions.append(And([Implies(And(ins[i], x[i] - 1 != firstin), 
+    #                                         get_element_at_index(order, x[i] - 1) == get_element_at_index(order, i) + 1)
+    #                                 for i in S]))
+
+    non_empty_conditions.append(And([Implies(And(ins[i], x[i] - 1 != firstin),
+                                             Select(order, x[i] - 1) == Select(order, i) + 1)
                                      for i in S]))
 
     # Each node that is not in is numbered after the lastin node.
-    non_empty_conditions.append(And([Or(ins[i], get_element_at_index(order, lastin) < get_element_at_index(order, i))
+    # non_empty_conditions.append(And([Or(ins[i], get_element_at_index(order, lastin) < get_element_at_index(order, i))
+    #                                  for i in S]))
+
+    non_empty_conditions.append(And([Or(ins[i], Select(order, lastin) < Select(order, i))
                                       for i in S]))
 
     constraints.append(Implies(Not(empty), And(non_empty_conditions)))
