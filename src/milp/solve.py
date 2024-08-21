@@ -2,6 +2,7 @@ import os
 import json
 import time
 import logging 
+import pathlib
 from amplpy import AMPL, add_to_path
 
 logger = logging.getLogger(__name__)
@@ -103,22 +104,22 @@ def run_ampl_model(model_file, data_file, solver, timeout):
 models_setup = [
     {
         "name": "initial-model",
-        "model_path": "src/milp/models/initial_model.mod",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/initial_model.mod"),
     },
     {
-        "name": "model-with-implied-constraint",
-        "model_path": "src/milp/models/model_with_implied_constraint.mod",
+        "name": "implied-model",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_implied_constraint.mod"),
     },
     {
-        "name": "model-with-symmetry-breaking-constraint",
-        "model_path": "src/milp/models/model_with_symmetry_breaking.mod",
+        "name": "symmetry-model",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_symmetry_breaking.mod"),
     },
 ]
 
 
 def solve(instance, instance_number, timeout, cache={}, random_seed = 42):
     
-    data_dir = 'src/milp/data'
+    data_dir = os.path.join(pathlib.Path(__file__).parent.resolve(), './data')
     data_instance = sorted([f for f in os.listdir(data_dir) if f.endswith('.dat')])[instance_number-1]
     data_file = os.path.join(data_dir, data_instance)
     
@@ -127,11 +128,11 @@ def solve(instance, instance_number, timeout, cache={}, random_seed = 42):
     for model in models_setup:
         for solver in SOLVERS:
             logger.info(f"Starting model {model['name']} with {solver}")
-
+            model_str = model['name'] + '_' + solver
             # Check if result is in cache
-            if model["name"] in cache:
+            if model_str in cache:
                 logger.info(f"Cache hit")
-                out_results[model["name"]] = cache[model["name"]]
+                out_results[model_str] = cache[model_str]
                 continue
         
         # Solve instance
@@ -142,7 +143,7 @@ def solve(instance, instance_number, timeout, cache={}, random_seed = 42):
                 timeout = timeout
             )
             
-            out_results[model['name'] + ' using ' + solver] = result
+            out_results[model_str] = result
     return out_results
 
 
