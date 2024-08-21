@@ -1,7 +1,7 @@
-from .model_arrays import SMT_array
-from .model_plain import SMT_plain
-from .model_penalty import SMT_penalty
-from .model_twosolver import SMT_twosolver
+# from model_arrays import SMT_array
+# from model_plain import SMT_plain
+# from model_penalty import SMT_penalty
+from model_twosolver import SMT_twosolver
 
 import logging
 logger = logging.getLogger(__name__)
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 experiments = [
     {
         "name": "plain",
-        "model": SMT_plain,
+        #"model": SMT_plain,
         "symmetry_breaking": False,
         "implied_constraints": False
     },
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     
     instances = [ (i+1, parseInstanceFile(os.path.join("../instances", f))) for i, f in enumerate(sorted(os.listdir("../instances"))) ]
     
-    for instance_number, instance in instances[12:13]:
+    for instance_number, instance in instances[10:11]:
         print(instance)
         print(solve(instance, timeout=300))
     

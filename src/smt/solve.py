@@ -30,6 +30,12 @@ experiments = [
         "model": SMT_twosolver,
         "symmetry_breaking": False,
         "implied_constraints": False
+    },
+    {
+        "name": "twosolver_symm",
+        "model": SMT_twosolver,
+        "symmetry_breaking": True,
+        "implied_constraints": False
     }
 ]
 

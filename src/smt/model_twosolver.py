@@ -1,6 +1,8 @@
 from z3 import *
 import time
 from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
+from tqdm import tqdm
+  
     
 def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
     try:
@@ -30,7 +32,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         
         PACKS_PER_COURIER = [[Int(f"packs_per_courier_{j}_{i}") for j in ITEMS] for i in COURIERS]
         
-        for i in COURIERS:
+        for i in tqdm(COURIERS):
             for j in ITEMS:
                 solver.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
                 # solver_assignment.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
@@ -38,7 +40,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         solver.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
         solver_assignment.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
                 
-        for i in COURIERS:
+        for i in tqdm(COURIERS):
             for j in ITEMS:
                 solver.add(If(ASSIGNMENTS[j] == i + 1, PATH[i][j] != j + 1, PATH[i][j] == j + 1))
                 
@@ -48,25 +50,25 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                 if j == DEPOT - 1:
                    solver.add(Implies(COUNT[i] > 0,PATH[i][j] != n + 1))
         
-        for i in COURIERS:
+        for i in tqdm(COURIERS):
             solver.add(Distinct(PATH[i]))
         
         # Count constraints
-        for i in COURIERS:
+        for i in tqdm(COURIERS):
             solver.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
             # solver_assignment.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
           
         # Subcircuit constraints  
-        for i in COURIERS:
+        for i in tqdm(COURIERS):
             solver.add(subcircuit(PATH[i], i))
                             
         # Total weight constraints
-        for i in COURIERS:
+        for i in tqdm(COURIERS):
             solver.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
             solver_assignment.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
                         
         # Calculate the distance traveled by each courier
-        for i in COURIERS: 
+        for i in tqdm(COURIERS): 
             dist = Sum([
                 Sum([If(And(ASSIGNMENTS[j1] == i + 1,
                             ASSIGNMENTS[j2] == i + 1, 
@@ -139,6 +141,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             model_assignment = solver_assignment.model()
             result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
             
+            print(f"Result assignment = {result_assignment}")
             solver.push()
             solver_assignment.push()
             for j in ITEMS:
