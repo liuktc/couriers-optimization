@@ -26,6 +26,15 @@
          "runner": "github-action"
       }
    },
+   "twosolver": {
+      "time": 1,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "smt_first": {
       "time": 308,
       "optimal": false,

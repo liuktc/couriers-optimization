@@ -128,6 +128,43 @@
          "runner": "github-action"
       }
    },
+   "twosolver": {
+      "time": 300,
+      "optimal": false,
+      "obj": 535,
+      "sol": [
+         [],
+         [],
+         [
+            8
+         ],
+         [],
+         [
+            3
+         ],
+         [],
+         [],
+         [
+            12
+         ],
+         [],
+         [
+            2,
+            10,
+            6,
+            7,
+            5,
+            9,
+            13,
+            4,
+            11,
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "smt_first": {
       "time": 199,
       "optimal": true,
