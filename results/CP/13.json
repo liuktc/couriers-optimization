@@ -2245,5 +2245,248 @@
          "time_to_last_solution": 239.67413303756715,
          "runner": "github-action"
       }
+   },
+   "vrp-plain-ff-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1502,
+      "sol": [
+         [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            22,
+            19,
+            14,
+            16,
+            20,
+            13,
+            8,
+            9,
+            10,
+            11,
+            12,
+            21,
+            15,
+            17,
+            18,
+            23,
+            25,
+            44
+         ],
+         [
+            24,
+            26,
+            29,
+            33,
+            34,
+            42,
+            43,
+            45,
+            46,
+            47
+         ],
+         [
+            27,
+            28,
+            30,
+            31,
+            32,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 576,
+               "flatIntVars": 627,
+               "flatBoolConstraints": 432,
+               "flatIntConstraints": 1018,
+               "evaluatedReifiedConstraints": 288,
+               "evaluatedHalfReifiedConstraints": 432,
+               "eliminatedImplications": 144,
+               "method": "minimize",
+               "flatTime": 0.187258
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 122.31013756752014,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_amount-ff-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1518,
+      "sol": [
+         [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            22,
+            19,
+            20,
+            16,
+            14,
+            13,
+            8,
+            9,
+            10,
+            11,
+            12,
+            21,
+            15,
+            25,
+            17,
+            18,
+            23,
+            44
+         ],
+         [
+            24,
+            26,
+            29,
+            33,
+            34,
+            42,
+            43,
+            45,
+            46,
+            47
+         ],
+         [
+            27,
+            28,
+            30,
+            31,
+            32,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 576,
+               "flatIntVars": 627,
+               "flatBoolConstraints": 432,
+               "flatIntConstraints": 1019,
+               "evaluatedReifiedConstraints": 288,
+               "evaluatedHalfReifiedConstraints": 432,
+               "eliminatedImplications": 144,
+               "method": "minimize",
+               "flatTime": 0.191688
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 293.27614901161195,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-ff-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1672,
+      "sol": [
+         [
+            2,
+            3,
+            4,
+            5,
+            6,
+            22,
+            11,
+            8,
+            18,
+            17,
+            10,
+            19,
+            20,
+            16,
+            26,
+            23,
+            15,
+            24,
+            21,
+            12,
+            9,
+            7,
+            13,
+            14,
+            44
+         ],
+         [
+            25,
+            27,
+            28,
+            29,
+            30,
+            32,
+            33,
+            34,
+            35,
+            37,
+            38,
+            39,
+            40
+         ],
+         [
+            1,
+            31,
+            36,
+            41,
+            42,
+            43,
+            45,
+            46,
+            47
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1183,
+               "flatIntVars": 768,
+               "flatBoolConstraints": 896,
+               "flatIntConstraints": 1535,
+               "evaluatedReifiedConstraints": 427,
+               "evaluatedHalfReifiedConstraints": 855,
+               "eliminatedImplications": 144,
+               "method": "minimize",
+               "flatTime": 0.206544
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 256.16914877319334,
+         "runner": "github-action"
+      }
    }
 }

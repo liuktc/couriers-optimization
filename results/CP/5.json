@@ -1141,5 +1141,110 @@
          "time_to_last_solution": 0.12315521049499512,
          "runner": "github-action"
       }
+   },
+   "vrp-plain-ff-or_tools": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 32,
+               "flatIntVars": 38,
+               "flatBoolConstraints": 24,
+               "flatIntConstraints": 63,
+               "evaluatedReifiedConstraints": 16,
+               "evaluatedHalfReifiedConstraints": 24,
+               "eliminatedImplications": 8,
+               "method": "minimize",
+               "flatTime": 0.115659
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.12711086463928223,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_amount-ff-or_tools": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 32,
+               "flatIntVars": 38,
+               "flatBoolConstraints": 24,
+               "flatIntConstraints": 63,
+               "evaluatedReifiedConstraints": 16,
+               "evaluatedHalfReifiedConstraints": 24,
+               "eliminatedImplications": 8,
+               "method": "minimize",
+               "flatTime": 0.113756
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.12432210350036621,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-ff-or_tools": {
+      "time": 0,
+      "optimal": true,
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 50,
+               "flatIntVars": 44,
+               "flatBoolConstraints": 36,
+               "flatIntConstraints": 81,
+               "evaluatedReifiedConstraints": 16,
+               "evaluatedHalfReifiedConstraints": 42,
+               "eliminatedImplications": 8,
+               "method": "minimize",
+               "flatTime": 0.114091
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 0.1252737045288086,
+         "runner": "github-action"
+      }
    }
 }

@@ -1662,5 +1662,169 @@
          "time_to_last_solution": 286.8031358985901,
          "runner": "github-action"
       }
+   },
+   "vrp-plain-ff-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 408,
+      "sol": [
+         [
+            12,
+            11,
+            1,
+            4,
+            14,
+            7,
+            3,
+            10,
+            6,
+            8,
+            17,
+            2,
+            5,
+            9
+         ],
+         [
+            13,
+            16,
+            15
+         ],
+         [],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 432,
+               "flatIntVars": 456,
+               "flatBoolConstraints": 324,
+               "flatIntConstraints": 775,
+               "evaluatedReifiedConstraints": 216,
+               "evaluatedHalfReifiedConstraints": 324,
+               "eliminatedImplications": 108,
+               "method": "minimize",
+               "flatTime": 0.16243
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 142.97129802322388,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_amount-ff-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 251,
+      "sol": [
+         [
+            4,
+            1,
+            2,
+            7,
+            3
+         ],
+         [
+            5,
+            6
+         ],
+         [
+            8,
+            9
+         ],
+         [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+         ],
+         [],
+         [
+            16,
+            17
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 432,
+               "flatIntVars": 456,
+               "flatBoolConstraints": 324,
+               "flatIntConstraints": 779,
+               "evaluatedReifiedConstraints": 216,
+               "evaluatedHalfReifiedConstraints": 324,
+               "eliminatedImplications": 108,
+               "method": "minimize",
+               "flatTime": 0.165473
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 161.89534880638124,
+         "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-ff-or_tools": {
+      "time": 300,
+      "optimal": false,
+      "obj": 403,
+      "sol": [
+         [
+            12,
+            13,
+            4,
+            14,
+            7,
+            3,
+            10,
+            6,
+            8,
+            2,
+            5,
+            9
+         ],
+         [],
+         [
+            17
+         ],
+         [
+            1,
+            11,
+            15
+         ],
+         [],
+         [
+            16
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 994,
+               "flatIntVars": 558,
+               "flatBoolConstraints": 776,
+               "flatIntConstraints": 1217,
+               "evaluatedReifiedConstraints": 412,
+               "evaluatedHalfReifiedConstraints": 630,
+               "eliminatedImplications": 108,
+               "method": "minimize",
+               "flatTime": 0.172826
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 289.67814781951904,
+         "runner": "github-action"
+      }
    }
 }
