@@ -141,7 +141,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             model_assignment = solver_assignment.model()
             result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
             
-            print(f"Result assignment = {result_assignment}")
+            # print(f"Result assignment = {result_assignment}")
             solver.push()
             solver_assignment.push()
             for j in ITEMS:
