@@ -25,7 +25,7 @@ jobs:
       - name: Build Dockerfile
         run: |
           cd ${GITHUB_WORKSPACE}/src
-          docker build . -t cdmo
+          docker build . -t cdmo --build-arg="AMPL_KEY=${{AMPL_KEY}}"
 
 
       - name: Set env for methods to run (main)
@@ -52,7 +52,7 @@ jobs:
           
       - name: Generate results
         run: |
-          docker run -e AMPLKEY_UUID=${{secrets.AMPL_KEY}} -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo \
+          docker run -v ${GITHUB_WORKSPACE}/results:/cdmo/results cdmo \
             --runner-label="github-action" \
             --verbose \
             --timeout=300 \
