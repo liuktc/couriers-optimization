@@ -4,25 +4,48 @@ The SMT model is based on the CP model, and follows the same definition of paths
 
 \subsection{Decision variables}
 
-The SMT model relies on the following decision variables, where boolean variables are from the Propositional Logic Theory, and integer variables are from LIA Theory.
+The SMT model relies on the following decision variables, where boolean variables are from the Propositional Logic Theory, and integer variables are from LIA Theory. To solve this, two kind of model are proposed:
+
+\item \texttt{plain}: Z3 solver with all the constraints below and nothing else.
+\item \texttt{two_solver}: two Z3 solvers, where the first one finds the assignments of the packages ($A_j$) and the second finds the route ($P_{i,j}$) given the assignment of packages found by the previous solver. In this way, we have specified Z3 what part of the solution to find first. 
 
 \begin{itemize}
     \item For each package $j$, $A_j \in \{1, \dots, m\}$ (\texttt{ASSIGNMENTS[j]} in Z3) indicates which courier delivers package $j$. More specifically, $A_j = i$ iff the courier $i$ delivers package $j$.
     
     \item For each courier $i$, $P_{i,d} \in \{1, \dots, n + 1\}$ for $d \in \{1, \dots, n + 1\}$ (\texttt{PATH[i][d]} in Z3) models the path taken by the courier $i$. The path is defined such that $P_{i, d_1} = d_1$ iff the location $d_1$ is not part of the route of the courier $i$ and $P_{i, d_1} = d_2$ iff $d_2$ is visited immediately after $d_1$ in the route of $c$. In other words, each relevant location indicates which is its successor and the overall route is defined as a Hamiltonian cycle that starts from $n+1$ (i.e., the depot).
 
-    \item For each courier $i$, $C_i \in \mathbf{N}$ (\texttt{COUNT[i]} in Z3) models the number of packages delivered by courier $i$.
+    \item For each courier $i$, $D_i \in \mathbb{N}$(\texttt{DISTANCES[i][d]} in Z3) is equal to the distance traveled by each courier.
+
+    \item For each courier $i$, $C_i \in \mathbb{N}$ (\texttt{COUNT[i]} in Z3) models the number of packages delivered by courier $i$.
+
+    \item For each item $j$ and for each courier $i$, $PPC_{i,j}$ (\texttt{PACKS_PER_COURIER[i][j]} in Z3) model the packages delivered by each courier and it is used for symmetry breaking only.
 \end{itemize}
 
 \subsection{Objective function}
 The objective function is defined as follows:
 
-\[ (\Sum_{j1 \in \{1, \dots, n\} \Sum_{j2 \in \{1, \dots, n\} f(j1, j2)) +  \]
+\[ \arg \max D_i  \]
+    \item All the elements of each row of \texttt{PATH} should be distinct.
+
+    \item Count constraint: $C_i == \sum_{i \in \{1, \dots, m\}} \texttt{If(} A_j == 1 \texttt{) -> 1 else 0}$
+
+    \item To make sure that $P_i$ defines a correct path for the courier $i$ we impose that the elements of $P_i$ forms a Hamiltonian subcircuit (same as Hamiltonian path but ignoring the elements where $P_{i,j} == j$)
+
+    \begin{itemize}
+        \item NON SO SE SPIEGARE MEGLIO.
+    \end{itemize}
+
+    \item Weight constraint: 
+        
+\[\]
 
 
 \subsection{Constraints}
+To model uses the following constraints in order to model effectively the problem:
 
-
+\begin{itemize}
+    \item \textbf{\texttt{ASSIGNMENTS} constraints}: 
+\end{itemize}
 
 
 \subsection{Validation}

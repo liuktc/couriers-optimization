@@ -6,7 +6,7 @@ from .model_twosolver import SMT_twosolver
 import logging
 logger = logging.getLogger(__name__)
 
-experiments = [
+""" experiments = [
     {
         "name": "plain",
         "model": SMT_plain,
@@ -35,6 +35,15 @@ experiments = [
         "name": "twosolver_symm",
         "model": SMT_twosolver,
         "symmetry_breaking": True,
+        "implied_constraints": False
+    }
+] """
+
+experiments = [
+    {
+        "name": "plain",
+        "model": SMT_plain,
+        "symmetry_breaking": False,
         "implied_constraints": False
     }
 ]
