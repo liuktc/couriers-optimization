@@ -1,38 +1,47 @@
 {
-  "penalty": {
-    "time": 300,
-    "optimal": false,
-    "obj": null,
-    "sol": null,
-    "_extras": {
-      "runner": "github-action"
-    }
-  },
-  "plain_symm": {
-    "time": 300,
-    "optimal": false,
-    "obj": null,
-    "sol": null,
-    "_extras": {
-      "runner": "github-action"
-    }
-  },
-  "twosolver": {
-    "time": 1,
-    "optimal": false,
-    "obj": null,
-    "sol": null,
-    "_extras": {
-      "runner": "github-action"
-    }
-  },
-  "smt_first": {
-    "time": 308,
-    "optimal": false,
-    "obj": null,
-    "sol": null,
-    "_extras": {
-      "runner": "github-action"
-    }
-  }
+   "plain": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "penalty": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain_symm": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "twosolver": {
+      "time": 1,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt_first": {
+      "time": 308,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
 }

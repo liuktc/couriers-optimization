@@ -1,92 +1,101 @@
 {
-  "penalty": {
-    "time": 301,
-    "optimal": false,
-    "obj": null,
-    "sol": null,
-    "_extras": {
-      "runner": "github-action"
-    }
-  },
-  "plain_symm": {
-    "time": 301,
-    "optimal": false,
-    "obj": null,
-    "sol": null,
-    "_extras": {
-      "runner": "github-action"
-    }
-  },
-  "twosolver": {
-    "time": 300,
-    "optimal": false,
-    "obj": 1504,
-    "sol": [
-      [
-        4,
-        3,
-        28,
-        6,
-        14,
-        25,
-        43,
-        21,
-        47,
-        17,
-        29,
-        39,
-        18,
-        31,
-        45,
-        42,
-        1
+   "plain": {
+      "time": 301,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "penalty": {
+      "time": 301,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain_symm": {
+      "time": 301,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "twosolver": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1504,
+      "sol": [
+         [
+            4,
+            3,
+            28,
+            6,
+            14,
+            25,
+            43,
+            21,
+            47,
+            17,
+            29,
+            39,
+            18,
+            31,
+            45,
+            42,
+            1
+         ],
+         [
+            46,
+            11,
+            10,
+            13,
+            24,
+            5,
+            27,
+            2,
+            44,
+            12,
+            32,
+            15,
+            22,
+            38,
+            34
+         ],
+         [
+            33,
+            41,
+            7,
+            36,
+            35,
+            40,
+            23,
+            20,
+            8,
+            30,
+            9,
+            16,
+            19,
+            26,
+            37
+         ]
       ],
-      [
-        46,
-        11,
-        10,
-        13,
-        24,
-        5,
-        27,
-        2,
-        44,
-        12,
-        32,
-        15,
-        22,
-        38,
-        34
-      ],
-      [
-        33,
-        41,
-        7,
-        36,
-        35,
-        40,
-        23,
-        20,
-        8,
-        30,
-        9,
-        16,
-        19,
-        26,
-        37
-      ]
-    ],
-    "_extras": {
-      "runner": "github-action"
-    }
-  },
-  "smt_first": {
-    "time": 301,
-    "optimal": false,
-    "obj": null,
-    "sol": null,
-    "_extras": {
-      "runner": "github-action"
-    }
-  }
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt_first": {
+      "time": 301,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
 }
