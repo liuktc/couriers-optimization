@@ -7,6 +7,7 @@ on:
       - cp
       - sat
       - smt
+      - smt-lib
       - milp
     paths: ["src/**", .github/workflows/status.yml, .github/status_update.py, .github/check_solution_json.py]
 

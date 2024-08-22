@@ -1,6 +1,7 @@
 from .model_plain import SMT_plain
 from .model_penalty import SMT_penalty
 from .model_twosolver import SMT_twosolver 
+from .solve_smtlib import solve as solve_smtlib
 
 
 import logging
@@ -70,5 +71,9 @@ def solve(instance, timeout, cache={}, **kwargs):
                               implied_constraints=implied_constraints,
                               symmetry_breaking=symmetry_breaking,
                               **kwargs)
-        
+    
+    smtlib_results = solve_smtlib(instance, timeout, cache, **kwargs)
+    for key in smtlib_results:
+        results[key] = smtlib_results[key]
+
     return results

@@ -1,5 +1,5 @@
 import subprocess
-from .. import SMTLIBModel, smtlibSolutionParser, Constraint
+from .. import SMTLIBModel, Constraint, smtlibModelParser, smtlibUnsatCoreParser
 import threading
 import time
 
@@ -42,8 +42,31 @@ class _SolverThread(threading.Thread):
             opened_brackets += buff.count("(")
             closed_brackets += buff.count(")")
             if opened_brackets == closed_brackets: break
+        return smtlibModelParser(model)
 
-        return smtlibSolutionParser(model)
+    def getUnsatCore(self):
+        self.proc.stdin.write("(get-unsat-core)\n")
+        self.proc.stdin.flush()
+
+        opened_brackets, closed_brackets = 0, 0 # Check end of stdout by counting brackets
+        core = ""
+        while True:
+            buff = self.proc.stdout.readline().strip()
+            core += buff + "\n"
+            opened_brackets += buff.count("(")
+            closed_brackets += buff.count(")")
+            if opened_brackets == closed_brackets: break
+        return smtlibUnsatCoreParser(core)
+
+
+    def push(self, n: int):
+        self.proc.stdin.write(f"(push {n})\n")
+        self.proc.stdin.flush()
+
+
+    def pop(self, n: int):
+        self.proc.stdin.write(f"(pop {n})\n")
+        self.proc.stdin.flush()
 
 
     def addConstraint(self, constraint: Constraint):
@@ -70,6 +93,15 @@ class Solver:
 
     def getModel(self):
         return self._thread.getModel()
+    
+    def getUnsatCore(self):
+        return self._thread.getUnsatCore()
+
+    def push(self, n: int=1):
+        return self._thread.push(n)
+
+    def pop(self, n: int=1):
+        return self._thread.pop(n)
 
     def addConstraint(self, constraint: Constraint):
         return self._thread.addConstraint(constraint)

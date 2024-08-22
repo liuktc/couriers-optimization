@@ -7,15 +7,23 @@ class Constraint:
         self.operator = operator
         self.vars = vars
         self._comment = None
+        self._name = None
 
     def __str__(self):
         return f"({self.operator} {' '.join([str(v) for v in self.vars])})"
     
     def define(self):
-        return f"(assert {str(self)}) {f'; {self._comment}' if self._comment else ''}"
+        constr_str = str(self)
+        if self._name is not None:
+            constr_str = f"(! {constr_str} :named {self._name})"
+        return f"(assert {constr_str}) {f'; {self._comment}' if self._comment else ''}"
     
     def comment(self, comment: str):
         self._comment = comment
+        return self
+    
+    def named(self, name: str):
+        self._name = name
         return self
     
     def getVariables(self):
