@@ -115,10 +115,10 @@ models_setup = [
         "name": "implied-model",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_implied_constraint.mod"),
     },
-    {
-        "name": "symmetry-model",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_symmetry_breaking.mod"),
-    },
+    #{
+        #"name": "symmetry-model",
+        #"model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_symmetry_breaking.mod"),
+    #},
 ]
 
 
@@ -149,7 +149,7 @@ def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
             )
             
             out_results[model_str] = result
-            print(out_results)
+            #print(out_results)
     return out_results
 
 
