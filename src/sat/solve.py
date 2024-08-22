@@ -1,15 +1,24 @@
+from .total_sat import Unified_Model, call_model
+
 def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
-    return {
-        "test1": {
-            "time": 300,
-            "optimal": False,
-            "obj": 14,
-            "sol": [ [1] ]
-        },
-        "test2": {
-            "time": 300,
-            "optimal": False,
-            "obj": 16,
-            "sol": [ [1] ]
-        }
+    
+    models = {
+        'Unified Model': Unified_Model
     }
+
+    results = {
+    }
+
+    for model in models.keys():
+    
+        # Declaration of the Model class
+        def_model = models[model](instance)
+
+        # Setting timeout
+        # def_model.solver.set('timeout', 4000)
+
+        results[model] = call_model(def_model, instance, timeout, random_seed)
+    
+    # print(results)
+    
+    return results
