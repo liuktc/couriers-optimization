@@ -1,6 +1,7 @@
 from itertools import combinations
 from z3 import *
 import time
+import math
 
 ## Utils
 def at_least_one(bool_vars):
@@ -271,33 +272,40 @@ def call_model(model, instance, timeout, random_seed):
     # Try Counter
     i = 0
     # while (timeout==False):
-    while True:
+    try: 
+        while True:
+            # Obtain a first assignment to variable assignment (=> which courier deliver each pack)
+            # print(f'({i+1}) - try')
+            objective, solution, unsat_status  = model.solve(init_time, timeout)
 
-        # Obtain a first assignment to variable assignment (=> which courier deliver each pack)
-        # print(f'({i+1}) - try')
-        objective, solution, unsat_status  = model.solve(init_time, timeout)
+            # Initializing pretty solution storage
+            if objective is not None:
+                if (objective < solution_dict['obj']):
+                    solution_dict['obj'] = objective
+                    solution_dict['sol'] = solution
 
-        # Initializing pretty solution storage
-        if objective is not None:
-            if (objective < solution_dict['obj']):
-                solution_dict['obj'] = objective
-                solution_dict['sol'] = solution
+            # Time statistics measure
+            end_time = time.time()
+            diff_time = end_time-init_time
 
-        # Time statistics measure
-        end_time = time.time()
-        diff_time = end_time-init_time
+            # Checking timeout
+            if diff_time>=timeout:
+                solution_dict['time'] = math.floor(diff_time)
+                solution_dict['timeout'] = True
+                break
 
-        # Checking timeout
-        if diff_time>=timeout:
-            solution_dict['time'] = diff_time
-            solution_dict['timeout'] = True
-            break
+                
+            # Chacking optimality
+            if unsat_status:
+                solution_dict['time'] = math.floor(diff_time)
+                solution_dict['is_optimal'] = True
+                break
+            i += 1
+    except Exception as e:
+        pass
 
-            
-        # Chacking optimality
-        if unsat_status:
-            solution_dict['time'] = diff_time
-            solution_dict['is_optimal'] = True
-            break
-        i += 1
+    if solution_dict['sol'] is None:
+        solution_dict['obj'] = None
+        solution_dict['time'] = timeout
+
     return solution_dict
