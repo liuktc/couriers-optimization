@@ -8,8 +8,8 @@ from amplpy import AMPL, add_to_path
 logger = logging.getLogger(__name__)
 
 # Lista dei solver da testare, da aggiungerene altri e/o da testare modificadone parametri -> con highs non so cosa succeda...
-SOLVERS = ['cbc', 'scip', 'highs']
-#SOLVERS = ['scip']
+#SOLVERS = ['cbc', 'scip', 'highs']
+SOLVERS = ['highs']
 
 def run_ampl_model(model_file, data_file, solver, timeout):
     
