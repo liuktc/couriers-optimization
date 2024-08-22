@@ -23,16 +23,16 @@ class SMTLIBModel:
 
         return (
             f"(set-logic {self._logic})\n"
-            "\n"
-            "; --- Imports --- \n"
-            f"{'\n'.join(self._imports)}"
-            "\n"
-            "; --- Variables ---\n"
-            f"{'\n'.join([v.define() for v in self._variables])}\n"
-            "\n"
-            "; --- Constraints ---\n"
-            f"{'\n'.join([c.define() for c in self._constraints])}\n"
-            "\n"
+            + "\n"
+            + "; --- Imports --- \n"
+            + "\n".join(self._imports) + "\n"
+            + "\n"
+            + "; --- Variables ---\n"
+            + "\n".join([v.define() for v in self._variables]) + "\n"
+            + "\n"
+            + "; --- Constraints ---\n"
+            + "\n".join([c.define() for c in self._constraints]) + "\n"
+            + "\n"
         )
     
 
