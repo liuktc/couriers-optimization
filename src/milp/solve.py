@@ -32,7 +32,7 @@ def run_ampl_model(model_file, data_file, solver, timeout):
             #raise ValueError(f"Solver non supportato: {solver}")
         
         ampl.solve()
-        if ampl.getValue('solve_result') == 'failure' or ampl.getValue('solve_result') == 'infeasible' : raise Exception
+        if ampl.getValue('solve_result') == 'failure' or ampl.getValue('solve_result') == 'infeasible' or ampl.getValue('solve_result') == 'limit' : raise Exception
         
         objective = ampl.getObjective('ObjectiveMaxDistance').value()
         is_optimal = ampl.getValue('solve_result') == "solved"

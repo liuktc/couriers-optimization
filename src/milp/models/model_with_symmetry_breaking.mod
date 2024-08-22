@@ -87,6 +87,6 @@ subject to LowBound:
 #subject to ImpliedConstraint {k in COURIERS}:
 	#sum{i in PACKS} A[i,k] >= 1;
 	
-subject to SymmetryBreaking {k in COURIERS: k < m}:
+subject to SymmetryBreaking {k in COURIERS: k < m: l[k] == l[k+1]}:   #-> problem beacusa not taking into accunt the capacity of the couriers
     sum{i in PACKS} i * A[i,k] <= sum{i in PACKS} i * A[i,k+1];
     
