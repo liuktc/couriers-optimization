@@ -5,29 +5,36 @@ from . import Constraint
 
 class SMTLIBModel:
     def __init__(self, logic: str="LIA", imports: list[str]=[]):
-        self.logic = logic
-        self.imports = imports
-        self.variables = set()
-        self.constraints = []
+        self._logic = logic
+        self._imports = imports
+        self._variables = set()
+        self._constraints = []
+        self.variables = {}
+
 
     def add(self, constraint: Constraint):
-        self.variables = self.variables.union(constraint.getVariables())
-        self.constraints.append(constraint)
+        self._variables = self._variables.union(constraint.getVariables())
+        self._constraints.append(constraint)
         return constraint
 
-    def __str__(self):
+
+    def compile(self):
+        for v in self._variables: self.variables[v.name] = v
+
         return (
-            f"(set-logic {self.logic})\n"
+            f"(set-logic {self._logic})\n"
             "\n"
             "; --- Imports --- \n"
-            f"{'\n'.join(self.imports)}"
+            f"{'\n'.join(self._imports)}"
             "\n"
             "; --- Variables ---\n"
-            f"{'\n'.join([v.define() for v in self.variables])}\n"
+            f"{'\n'.join([v.define() for v in self._variables])}\n"
             "\n"
             "; --- Constraints ---\n"
-            f"{'\n'.join([c.define() for c in self.constraints])}\n"
+            f"{'\n'.join([c.define() for c in self._constraints])}\n"
             "\n"
-            "(check-sat)\n"
-            "(get-model)"
         )
+    
+
+    def __str__(self):
+        return self.compile()
