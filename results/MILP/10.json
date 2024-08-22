@@ -1,4 +1,90 @@
 {
+   "initial-model_highs": {
+      "time": 0,
+      "optimal": true,
+      "obj": 243,
+      "sol": [
+         [
+            12
+         ],
+         [
+            8
+         ],
+         [
+            1
+         ],
+         [
+            9
+         ],
+         [
+            7,
+            5,
+            10
+         ],
+         [
+            13,
+            2
+         ],
+         [
+            6
+         ],
+         [
+            4
+         ],
+         [
+            11
+         ],
+         [
+            3
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "implied-model_highs": {
+      "time": 0,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            8
+         ],
+         [
+            3,
+            5
+         ],
+         [
+            2,
+            12
+         ],
+         [
+            11
+         ],
+         [
+            9,
+            6
+         ],
+         [
+            10
+         ],
+         [
+            7
+         ],
+         [
+            4
+         ],
+         [
+            13
+         ],
+         [
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "initial-model_scip": {
       "time": 2,
       "optimal": true,

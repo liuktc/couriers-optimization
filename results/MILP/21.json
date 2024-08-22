@@ -1,4 +1,22 @@
 {
+   "initial-model_highs": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "implied-model_highs": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "initial-model_scip": {
       "time": 300,
       "optimal": false,
