@@ -117,7 +117,7 @@ models_setup = [
 ]
 
 
-def solve(instance, instance_number, timeout, cache={}, random_seed = 42):
+def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
     
     data_dir = os.path.join(pathlib.Path(__file__).parent.resolve(), './data')
     data_instance = sorted([f for f in os.listdir(data_dir) if f.endswith('.dat')])[instance_number-1]
