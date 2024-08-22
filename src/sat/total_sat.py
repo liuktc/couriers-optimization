@@ -1,6 +1,5 @@
 from itertools import combinations
 from z3 import *
-import numpy as np
 import time
 
 ## Utils
