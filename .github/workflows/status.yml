@@ -45,6 +45,10 @@ jobs:
         if: endsWith(github.ref, '/smt')
         run: |
           echo "METHODS=smt" >> $GITHUB_ENV
+      - name: Set env for methods to run (SMT-LIB)
+        if: endsWith(github.ref, '/smt-lib')
+        run: |
+          echo "METHODS=smt" >> $GITHUB_ENV
       - name: Set env for methods to run (MILP)
         if: endsWith(github.ref, '/milp')
         run: |
