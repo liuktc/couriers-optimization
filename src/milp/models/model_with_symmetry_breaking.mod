@@ -21,7 +21,7 @@ var A{i in PACKS, k in COURIERS} binary;
 #X[i,j,k] = 1 iff the couriers k start from the point i and end to the point j 
 var X{i in NODES, j in NODES, k in COURIERS} binary;
 #var u[i,k] used of the soubtur elimination following the MTZ approach
-var u{i in PACKS, k in COURIERS} >= 0;
+var u{i in NODES, k in COURIERS} >= 1;
 
 minimize ObjectiveMaxDistance: 
 	max{k in COURIERS} sum{i in NODES, j in NODES} D[i,j]*X[i,j,k];
@@ -65,9 +65,16 @@ subject to EndAtDepot {k in COURIERS}:
 	sum{i in NODES} X[i, DEPOT, k] = 1;
 
 #Subtour elimination (Da guardarci meglio!) -> MTZ formultation
-subject to SubtourElimination{i in PACKS, j in PACKS, k in COURIERS}:
-    u[i,k] - u[j,k] + n * X[i,j,k] <= n - 1;
-    
+
+subject to SubtourElimination1{k in COURIERS, i in PACKS, j in NODES: j!=i}:
+	u[i,k] - u[j,k] + 1 <= n*(1-X[i,j,k]);
+
+subject to SubtourElimination2{k in COURIERS, i in PACKS}:
+	u[i,k] <= X[DEPOT,i,k] + (n+1)*(1-X[DEPOT,i,k]);
+
+#subject to SubtourElimination3{k in COURIERS, i in PACKS, j in NODES: j!=i}:
+	#u[j,k] >= u[i,k] + X[i,j,k];
+
 #Objective boundaries constraints
 subject to UpBound:
 	max{k in COURIERS} sum{i in NODES, j in NODES} D[i,j]*X[i,j,k] <= UpperBound;

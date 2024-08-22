@@ -8,8 +8,8 @@ from amplpy import AMPL, add_to_path
 logger = logging.getLogger(__name__)
 
 # Lista dei solver da testare, da aggiungerene altri e/o da testare modificadone parametri -> con highs non so cosa succeda...
-#SOLVERS = ['cbc', 'scip', 'highs']
-SOLVERS = ['cbc']
+#SOLVERS = ['scip', 'highs', 'gcg']
+SOLVERS = ['scip']
 
 def run_ampl_model(model_file, data_file, solver, timeout):
     
@@ -49,26 +49,31 @@ def run_ampl_model(model_file, data_file, solver, timeout):
         n = ampl.getValue('n')
         
         #Questa soluzione mostra i pacchi che prende ciascun corrriere -> non so se effettivamente è ordinato...
-        solution = []
-        for couriers in range(1,m+1):
-            couriers_packages = []
-            for packs in range(1,n+1):
-                if A[packs, couriers].value() == 1:
-                    couriers_packages.append(packs)
-            solution.append(couriers_packages)
-        
-        #IN ALCUNI CASI MI VA IN UN LOOP INFINITO, C'E' QUALCHE PROBELMA COL MODELLO...  
         #solution = []
         #for couriers in range(1,m+1):
-            #couriers_packs = []
-            #packs = n + 1
-            #while X[packs, n+1, couriers].value() == 0:
-                #for i in range(1, n + 1):
-                    #if X[packs, i, couriers].value() == 1:
-                        #couriers_packs.append(i)
-                        #packs = i
-                        #break
-            #solution.append(couriers_packs)
+            #couriers_packages = []
+            #for packs in range(1,n+1):
+                #if A[packs, couriers].value() == 1:
+                    #couriers_packages.append(packs)
+            #solution.append(couriers_packages)
+         
+        #for packs in range(1,n+1):
+        #    for couriers in range(1, m+1):
+        #        print(round(A[packs, couriers].value()), end=' ')
+        #    print()
+        
+        #IN ALCUNI CASI MI VA IN UN LOOP INFINITO, C'E' QUALCHE PROBELMA COL MODELLO...  
+        solution = []
+        for couriers in range(1,m+1):
+            couriers_packs = []
+            packs = n + 1
+            while round(X[packs, n+1, couriers].value()) == 0:
+                for i in range(1, n + 1):
+                    if round(X[packs, i, couriers].value()) == 1:
+                        couriers_packs.append(i)
+                        packs = i
+                        break
+            solution.append(couriers_packs)
         
         #solution = np.zeros((n+1,n+1,m))
         #for i in range(1,n+2):
@@ -144,6 +149,7 @@ def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
             )
             
             out_results[model_str] = result
+            print(out_results)
     return out_results
 
 
@@ -172,5 +178,5 @@ def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
     #print(f"Test completati. Risultati salvati nell'apposita directory.")
 
 if __name__ == '__main__':
-    solve(instance=' ', instance_number = 1, timeout=300)
+    solve(instance=' ', instance_number = 4, timeout=300)
     
