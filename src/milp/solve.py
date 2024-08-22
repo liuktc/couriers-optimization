@@ -32,7 +32,7 @@ def run_ampl_model(model_file, data_file, solver, timeout):
             #raise ValueError(f"Solver non supportato: {solver}")
         
         ampl.solve()
-        if ampl.getValue('solve_result') == 'failure' or ampl.getValue('solve_result') == 'unfeasible' : raise Exception
+        if ampl.getValue('solve_result') == 'failure' or ampl.getValue('solve_result') == 'infeasible' : raise Exception
         
         objective = ampl.getObjective('ObjectiveMaxDistance').value()
         is_optimal = ampl.getValue('solve_result') == "solved"
@@ -180,5 +180,5 @@ def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
     #print(f"Test completati. Risultati salvati nell'apposita directory.")
 
 if __name__ == '__main__':
-    solve(instance=' ', instance_number = 6, timeout=300)
+    solve(instance=' ', instance_number = 3, timeout=300)
     
