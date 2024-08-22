@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 # Lista dei solver da testare, da aggiungerene altri e/o da testare modificadone parametri -> con highs non so cosa succeda...
 #SOLVERS = ['scip', 'highs', 'gcg']
-SOLVERS = ['scip']
+SOLVERS = ['highs']
 
 def run_ampl_model(model_file, data_file, solver, timeout):
     
