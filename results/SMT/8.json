@@ -1,4 +1,40 @@
 {
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 186,
+      "sol": [
+         [
+            5
+         ],
+         [
+            3,
+            2
+         ],
+         [
+            8
+         ],
+         [
+            7
+         ],
+         [
+            1
+         ],
+         [
+            4
+         ],
+         [
+            9
+         ],
+         [
+            6,
+            10
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "plain": {
       "time": 2,
       "optimal": true,

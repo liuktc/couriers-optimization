@@ -1,4 +1,24 @@
 {
+   "local_search": {
+      "time": 1,
+      "optimal": true,
+      "obj": 14,
+      "sol": [
+         [
+            3,
+            6,
+            4
+         ],
+         [
+            1,
+            2,
+            5
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "plain": {
       "time": 1,
       "optimal": true,
