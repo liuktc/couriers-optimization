@@ -1,4 +1,43 @@
 {
+   "unified-model": {
+      "obj": 222,
+      "sol": [
+         [
+            17,
+            2,
+            5
+         ],
+         [
+            13,
+            10
+         ],
+         [
+            16,
+            6,
+            11
+         ],
+         [
+            1,
+            8,
+            3,
+            14
+         ],
+         [
+            15,
+            12,
+            4
+         ],
+         [
+            7,
+            9
+         ]
+      ],
+      "optimal": false,
+      "time": 300,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "test1": {
       "time": 300,
       "optimal": false,
