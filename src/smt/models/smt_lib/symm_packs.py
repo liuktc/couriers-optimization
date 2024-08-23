@@ -5,6 +5,12 @@ from smtlib_lib.solvers import *
 
 
 
+def lex_less(v1, v2):
+    if len(v1) == 0: return Constraint("=", 0, 0)
+    if len(v2) == 0: return Constraint("=", 0, 1)
+    return (v1[0] < v2[0]) | ((v1[0] == v2[0]) | lex_less(v1[1:], v2[1:]))
+
+
 def model(m, n, l, s, D):
     COURIERS = range(m)
     PACKS = range(n)
@@ -23,6 +29,7 @@ def model(m, n, l, s, D):
     paths = [ [Integer(f"path_{c}_{l}") for l in LOCATIONS] for c in COURIERS ]
     paths_cost = [ Integer(f"path_cost_{c}") for c in COURIERS ]
     u = [ [Integer(f"u_{c}_{l}") for l in LOCATIONS] for c in COURIERS ]
+    packs_per_courier = [ [Integer(f"packs_per_courier_{c}_{p}") for p in PACKS] for c in COURIERS ]
     obj = Integer("obj")
 
     # Domains
@@ -30,6 +37,7 @@ def model(m, n, l, s, D):
     [ model.add( (0 <= assignments[p]) & (assignments[p] < m) ) for p in PACKS ]
     [ model.add( (0 <= paths[c][l]) & (paths[c][l] <= DEPOT) ) for c in COURIERS for l in LOCATIONS ]
     [ model.add( (1 <= u[c][l]) & (u[c][l] <= n+1) ) for c in COURIERS for l in LOCATIONS ]
+    [ model.add( (0 <= packs_per_courier[c][p]) & (packs_per_courier[c][p] <= n) ) for c in COURIERS for p in PACKS ]
     model.add( obj >= OBJ_LOWER )
 
     # Constraints
@@ -70,6 +78,16 @@ def model(m, n, l, s, D):
     model.add(CommentLine("-- Path cost per courier"))
     for c in COURIERS:
         model.add( paths_cost[c] == Sum([ ITE(paths[c][l1] == l2, D[l1][l2], 0) for l1 in LOCATIONS for l2 in LOCATIONS if l1 != l2]) )
+
+    model.add(CommentLine("-- Symmetry breaking"))
+    for c in COURIERS:
+        for p in PACKS:
+            model.add( Implies(assignments[p] == c, packs_per_courier[c][p] == p+1) )
+            model.add( Implies(assignments[p] != c, packs_per_courier[c][p] == 0) )
+    for c1 in range(0, m-1):
+        for c2 in range(c1+1, m):
+            if l[c1] == l[c2]:
+                model.add( lex_less(packs_per_courier[c1], packs_per_courier[c2]) )
 
     model.add(CommentLine("-- Objective function"))
     constr = paths_cost[0]

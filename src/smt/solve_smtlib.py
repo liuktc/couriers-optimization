@@ -1,4 +1,5 @@
 from .models.smt_lib.plain import model as model_plain
+from .models.smt_lib.symm_packs import model as model_symm_packs
 from .smtlib_lib.solvers import Z3Solver
 import time
 import math
@@ -88,6 +89,7 @@ experiments = [
         "name": "smt2-plain-linear-z3",
         "model": model_plain,
         "solver": Z3Solver,
+        "solver_args": {},
         "sol_extractor": _solutionExtractor,
         "optimizer": linearOptimization
     },
@@ -95,8 +97,29 @@ experiments = [
         "name": "smt2-plain-binary-z3",
         "model": model_plain,
         "solver": Z3Solver,
+        "solver_args": {},
         "sol_extractor": _solutionExtractor,
         "optimizer": binaryOptimization
+    },
+    {
+        "name": "smt2-plain-luby-linear-z3",
+        "model": model_plain,
+        "solver": Z3Solver,
+        "solver_args": {
+            "restart": "luby"
+        },
+        "sol_extractor": _solutionExtractor,
+        "optimizer": linearOptimization
+    },
+    {
+        "name": "smt2-symm_packs-luby-linear-z3",
+        "model": model_symm_packs,
+        "solver": Z3Solver,
+        "solver_args": {
+            "restart": "luby"
+        },
+        "sol_extractor": _solutionExtractor,
+        "optimizer": linearOptimization
     },
 ]
 
@@ -120,7 +143,7 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
 
         try:
             model = exp["model"](instance["m"], instance["n"], instance["l"], instance["s"], instance["D"])
-            solver = Z3Solver(model, timeout, random_seed)
+            solver = Z3Solver(model, timeout=timeout, random_seed=random_seed, **exp["solver_args"])
             solver.compile()
 
             start_time = time.time()
