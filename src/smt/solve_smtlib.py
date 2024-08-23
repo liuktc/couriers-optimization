@@ -116,6 +116,7 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
         objective = None
         solution = None
         solve_time = timeout
+        solver = None
 
         try:
             model = exp["model"](instance["m"], instance["n"], instance["l"], instance["s"], instance["D"])
@@ -126,7 +127,8 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
 
             optimality, variables = exp["optimizer"](instance, solver, model)
         except Exception as e:
-            solver.terminate()
+            if solver is not None:
+                solver.terminate()
             logger.error(f"Exception {e}")
 
         if (variables is not None) and ("obj" in variables):
