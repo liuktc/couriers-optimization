@@ -8,6 +8,24 @@
          "runner": "github-action"
       }
    },
+   "smt2-plain-linear-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-binary-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "penalty": {
       "time": 305,
       "optimal": false,
