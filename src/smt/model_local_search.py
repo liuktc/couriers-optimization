@@ -1,11 +1,11 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, get_best_neighbor, minimum
+from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, get_best_neighbor, minimum
 import itertools
 import logging
 logger = logging.getLogger(__name__)
 # Disable debug logging
-logger.setLevel(logging.INFO)
+# logger.setLevel(logging.INFO)
 
 # from tqdm import tqdm
 

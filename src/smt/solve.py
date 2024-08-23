@@ -56,6 +56,30 @@ def solve(instance, timeout, cache={}, **kwargs):
         logger.info(f"Starting model {experiment['name']}")
         name, model, symmetry_breaking, implied_constraints = experiment["name"], experiment["model"], experiment["symmetry_breaking"], experiment["implied_constraints"]
 
+        # Redo experiment 11
+        if instance["m"] == 20 and instance["n"] == 143 and instance["l"][0] == 200:
+            results[name] = model(instance["m"],
+                              instance["n"],
+                              instance["l"],
+                              instance["s"],
+                              instance["D"],
+                              timeout=timeout,
+                              implied_constraints=implied_constraints,
+                              symmetry_breaking=symmetry_breaking,
+                              **kwargs)
+        else:
+            if name in cache:
+                logger.info(f"Cache hit")
+                results[name] = cache[name]
+                continue
+            else:
+                results[name] = {
+                        "time": timeout,
+                        "optimal": False,
+                        "obj": None,
+                        "sol": None
+                    }
+        continue
         # Check if result is in cache
         if name in cache:
             logger.info(f"Cache hit")

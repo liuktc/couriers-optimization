@@ -3,7 +3,7 @@ from model_plain import SMT_plain
 # from model_penalty import SMT_penalty
 from model_twosolver import SMT_twosolver
 from model_optimizer import SMT_optimizer
-from smt.model_local_search import SMT_local_search
+from model_local_search import SMT_local_search
 
 import logging
 logger = logging.getLogger(__name__)
