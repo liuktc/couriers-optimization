@@ -1,9 +1,7 @@
 import re
 
-
-
 def smtlibModelParser(solution: str):
-    pattern = re.compile(r"\s*\(\s*define-fun\s*(?P<name>.*?)\s*\(\)\s*(?P<sort>.*?)\s*(?P<value>.*?)\)")
+    pattern = re.compile(r"\s*\(\s*define-fun\s+(?P<name>.*?)\s+\(\)\s+(?P<sort>.*?)\s+(?P<value>.*?)\)")
     pos = 0
     out = {}
 

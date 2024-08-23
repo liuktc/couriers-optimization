@@ -27,7 +27,9 @@ class _SolverThread(threading.Thread):
     def checkSat(self):
         self.proc.stdin.write("(check-sat)\n")
         self.proc.stdin.flush()
-        status = self.proc.stdout.readline().strip()
+        status = ";"
+        while status[0] == ";": # OpenSMT prints some comments
+            status = self.proc.stdout.readline().strip()
         return status
     
 

@@ -13,7 +13,7 @@ def model(m, n, l, s, D):
     OBJ_LOWER = max([D[DEPOT][p] + D[p][DEPOT] for p in PACKS])
 
     model = SMTLIBModel(
-        logic = "LIA",
+        logic = "QF_LIA",
         imports = [ libs.max("Int") ]
     )
 
