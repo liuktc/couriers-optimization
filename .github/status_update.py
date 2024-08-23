@@ -100,6 +100,10 @@ def generateSpecificStatus(checks, method):
                 entry = f"$\\color{{green}}\\text{{{obj} ({time} s)}}$"
             elif status == "suboptimal":
                 entry = f"$\\color{{orange}}\\text{{{obj} ({time} s)}}$"
+            elif status == "inconsistent":
+                entry = f"$\\color{{red}}\\text{{I}}$"
+            elif status in ["crashed", "out-of-memory"]:
+                entry = f"$\\color{{pink}}\\text{{E}}$"
             else:
                 entry = f"$-$"
             status_md += f"{entry} | "
