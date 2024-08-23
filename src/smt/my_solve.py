@@ -100,9 +100,9 @@ if __name__ == "__main__":
     
     instances = [ (i+1, parseInstanceFile(os.path.join("../instances", f))) for i, f in enumerate(sorted(os.listdir("../instances"))) ]
     
-    instance_number = 13
+    instance_number = 11
     
     for instance_number, instance in instances[instance_number-1:instance_number]:
         print(instance)
-        print(solve(instance, timeout=30))
+        print(solve(instance, timeout=300))
     

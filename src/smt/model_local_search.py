@@ -1,6 +1,6 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, get_best_neighbor, minimum
+from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, get_best_neighbor, minimum
 import itertools
 import logging
 logger = logging.getLogger(__name__)
@@ -227,10 +227,10 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             for i in COURIERS:
                 for j in range(len(delivered_per_courier[i])):
                     if j < len(delivered_per_courier[i]) - 1:
-                        solver.add_soft(PATH[i][delivered_per_courier[i][j] - 1] == delivered_per_courier[i][j + 1])
+                        solver.add(PATH[i][delivered_per_courier[i][j] - 1] == delivered_per_courier[i][j + 1])
                         # print(f"PATH[{i}][{delivered_per_courier[i][j] - 1}] == {delivered_per_courier[i][j + 1]}")
                     else:
-                        solver.add_soft(PATH[i][delivered_per_courier[i][j] - 1] == delivered_per_courier[i][0])
+                        solver.add(PATH[i][delivered_per_courier[i][j] - 1] == delivered_per_courier[i][0])
                         # print(f"PATH[{i}][{delivered_per_courier[i][j] - 1}] == {delivered_per_courier[i][0]}")
 
             if solver.check() == sat:
