@@ -83,6 +83,7 @@ class Unified_Model():
                 # distance = 0
                 while True:
                     step = sum([loc2+1 if model.evaluate(self.paths[c][loc1][loc2]) else 0 for loc2 in LOCATIONS if loc1!=loc2])
+                    if step == 0: break # This courier does not deliver anything
 
                     # distance += self.distances[loc1][step-1]
                     if (step-1) == DEPOT:
