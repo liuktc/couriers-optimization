@@ -7,7 +7,7 @@
 | Instance | [CP](./method-statuses/cp-status.md) | [SAT](./method-statuses/sat-status.md) | [SMT](./method-statuses/smt-status.md) | [MILP](./method-statuses/milp-status.md) |
 |:-:| :---:|:---:|:---:|:---:|
 | $1$ | $\color{green}\text{0 s (obj: 14)}$</br>$\color{green}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{green}\text{0 s (obj: 14)}$</br>$\color{green}\text{smt2-plain-linear-z3}$ | $\color{red}\text{Inconsistent}$ | 
-| $2$ | $\color{green}\text{0 s (obj: 226)}$</br>$\color{green}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{green}\text{3 s (obj: 226)}$</br>$\color{green}\text{plain-symm}$ | $\color{red}\text{Inconsistent}$ | 
+| $2$ | $\color{green}\text{0 s (obj: 226)}$</br>$\color{green}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{green}\text{1 s (obj: 226)}$</br>$\color{green}\text{smt2-symm-packs-luby-linear-z3}$ | $\color{red}\text{Inconsistent}$ | 
 | $3$ | $\color{green}\text{0 s (obj: 12)}$</br>$\color{green}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{green}\text{0 s (obj: 12)}$</br>$\color{green}\text{smt2-plain-linear-z3}$ | $\color{red}\text{Inconsistent}$ | 
 | $4$ | $\color{green}\text{0 s (obj: 220)}$</br>$\color{green}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{green}\text{1 s (obj: 220)}$</br>$\color{green}\text{plain}$ | $\color{red}\text{Inconsistent}$ | 
 | $5$ | $\color{green}\text{0 s (obj: 206)}$</br>$\color{green}\text{vrp-gecode-lns}$ | $\color{red}\text{Inconsistent}$ | $\color{green}\text{0 s (obj: 206)}$</br>$\color{green}\text{smt2-plain-linear-z3}$ | $\color{red}\text{Inconsistent}$ | 

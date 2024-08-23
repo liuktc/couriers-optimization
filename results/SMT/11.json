@@ -26,6 +26,24 @@
          "runner": "github-action"
       }
    },
+   "smt2-plain-luby-linear-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-symm_packs-luby-linear-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "penalty": {
       "time": 367,
       "optimal": false,

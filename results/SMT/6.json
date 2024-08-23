@@ -86,6 +86,64 @@
          "runner": "github-action"
       }
    },
+   "smt2-plain-luby-linear-z3": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [],
+         [
+            5
+         ],
+         [
+            6,
+            7,
+            1,
+            4
+         ],
+         [
+            2
+         ],
+         [
+            3
+         ],
+         [
+            8
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-symm_packs-luby-linear-z3": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [],
+         [
+            7,
+            6
+         ],
+         [
+            2,
+            3
+         ],
+         [
+            4
+         ],
+         [
+            8
+         ],
+         [
+            5,
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "penalty": {
       "time": 300,
       "optimal": false,
