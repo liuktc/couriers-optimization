@@ -42,6 +42,126 @@
          "runner": "github-action"
       }
    },
+   "smt2-plain-linear-z3": {
+      "time": 49,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            7,
+            13
+         ],
+         [
+            6
+         ],
+         [
+            10,
+            3
+         ],
+         [
+            12
+         ],
+         [
+            9
+         ],
+         [
+            5,
+            11,
+            1,
+            2,
+            4
+         ],
+         [],
+         [
+            8
+         ],
+         [],
+         []
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-cvc5": {
+      "time": 237,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            2,
+            9
+         ],
+         [
+            10,
+            8
+         ],
+         [],
+         [],
+         [
+            11,
+            13,
+            4,
+            1,
+            7
+         ],
+         [
+            5
+         ],
+         [],
+         [
+            3,
+            6
+         ],
+         [],
+         [
+            12
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-opensmt": {
+      "time": 147,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            3,
+            1,
+            7,
+            2
+         ],
+         [
+            8
+         ],
+         [],
+         [],
+         [
+            11,
+            10
+         ],
+         [
+            6
+         ],
+         [
+            9
+         ],
+         [
+            5,
+            4
+         ],
+         [
+            12
+         ],
+         [
+            13
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "penalty": {
       "time": 300,
       "optimal": false,

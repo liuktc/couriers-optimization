@@ -8,6 +8,87 @@
          "runner": "github-action"
       }
    },
+   "smt2-plain-linear-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1446,
+      "sol": [
+         [
+            45,
+            35,
+            14,
+            30,
+            7,
+            12,
+            22,
+            37,
+            23,
+            31,
+            29,
+            16,
+            47,
+            46,
+            10,
+            38,
+            3,
+            32,
+            4,
+            28
+         ],
+         [
+            21,
+            13,
+            19,
+            18,
+            6,
+            27,
+            25,
+            24,
+            42,
+            5,
+            41
+         ],
+         [
+            26,
+            15,
+            36,
+            20,
+            17,
+            2,
+            8,
+            1,
+            9,
+            34,
+            33,
+            11,
+            39,
+            40,
+            44,
+            43
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-cvc5": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-opensmt": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "penalty": {
       "time": 301,
       "optimal": false,
