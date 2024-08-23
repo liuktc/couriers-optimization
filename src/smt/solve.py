@@ -57,7 +57,7 @@ def solve(instance, timeout, cache={}, **kwargs):
         name, model, symmetry_breaking, implied_constraints = experiment["name"], experiment["model"], experiment["symmetry_breaking"], experiment["implied_constraints"]
 
         # Redo experiment 11
-        if instance["m"] == 20 and instance["n"] == 143 and instance["l"][0] == 200:
+        """ if instance["m"] == 20 and instance["n"] == 143 and instance["l"][0] == 200:
             results[name] = model(instance["m"],
                               instance["n"],
                               instance["l"],
@@ -79,12 +79,12 @@ def solve(instance, timeout, cache={}, **kwargs):
                         "obj": None,
                         "sol": None
                     }
-        continue
+        continue """
         # Check if result is in cache
-        if name in cache:
+        """ if name in cache:
             logger.info(f"Cache hit")
             results[name] = cache[name]
-            continue
+            continue """
         
         results[name] = model(instance["m"],
                               instance["n"],

@@ -181,7 +181,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
         solver_assignment.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
         
-        print(f"Econding took {time.time() - encoding_start} seconds")        
+        logger.debug(f"Econding took {time.time() - encoding_start} seconds")        
         
         
         model = None
@@ -193,9 +193,9 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             model_assignment = solver_assignment.model()
             result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
             
-            print(f"Result assignment = {result_assignment}")
-            # print COUNT
-            print(f"COUNT = {[model_assignment.evaluate(COUNT[i]).as_long() for i in COURIERS]}")
+            logger.debug(f"Result assignment = {result_assignment}")
+            # logger.debug COUNT
+            logger.debug(f"COUNT = {[model_assignment.evaluate(COUNT[i]).as_long() for i in COURIERS]}")
             solver.push()
             solver_assignment.push()
             for j in ITEMS:
@@ -210,7 +210,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             solver.push()
             start = time.time()
             objective = None
-            print("Try to find a path for the given assignment")
+            logger.debug("Try to find a path for the given assignment")
             # Find the trivial assignments
             delivered_per_courier = []
             for i in COURIERS:
@@ -222,16 +222,16 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 d.append(DEPOT)
                 delivered_per_courier.append(d)
 
-            print(f"Delivered per courier = {delivered_per_courier}")
+            logger.debug(f"Delivered per courier = {delivered_per_courier}")
             solver.push()
             for i in COURIERS:
                 for j in range(len(delivered_per_courier[i])):
                     if j < len(delivered_per_courier[i]) - 1:
                         solver.add(PATH[i][delivered_per_courier[i][j] - 1] == delivered_per_courier[i][j + 1])
-                        # print(f"PATH[{i}][{delivered_per_courier[i][j] - 1}] == {delivered_per_courier[i][j + 1]}")
+                        # logger.debug(f"PATH[{i}][{delivered_per_courier[i][j] - 1}] == {delivered_per_courier[i][j + 1]}")
                     else:
                         solver.add(PATH[i][delivered_per_courier[i][j] - 1] == delivered_per_courier[i][0])
-                        # print(f"PATH[{i}][{delivered_per_courier[i][j] - 1}] == {delivered_per_courier[i][0]}")
+                        # logger.debug(f"PATH[{i}][{delivered_per_courier[i][j] - 1}] == {delivered_per_courier[i][0]}")
 
             if solver.check() == sat:
                 courier_to_optimize = 0
@@ -247,22 +247,22 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                     
                 
                 
-                print(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
+                logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
                 # solver.add(obj < result_objective)
                 path_model = [[model[PATH[i][j]].as_long() for j in range(DEPOT)] for i in COURIERS]
-                # print("PATH = ", path_model)
+                # logger.debug("PATH = ", path_model)
                 distances = [model[DISTANCES[i]].as_long() for i in COURIERS]
-                print("Distances = ", distances)
+                logger.debug("Distances = ", distances)
                 already_optimized = [distances[i] < result_objective for i in COURIERS]
-                print(f"Couriers to optimize = {[i for i in range(m) if not already_optimized[i]]}")
+                logger.debug(f"Couriers to optimize = {[i for i in range(m) if not already_optimized[i]]}")
                 while courier_to_optimize < m:
                     # Check timeout
                     if time.time() >= timeout_timestamp:
                         break
                     if not already_optimized[courier_to_optimize]:
-                        print(f"Courier to optimize = {courier_to_optimize}")
+                        logger.debug(f"Courier to optimize = {courier_to_optimize}")
                         
-                        # print(f"PATH = {path_model}")
+                        # logger.debug(f"PATH = {path_model}")
                         #implementation of local search
                         
                         # Calculate all the permutations of each path row
@@ -277,11 +277,11 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                         new_path, last_objective = get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURIERS, obj, DISTANCES, D, best_objective, one_courier_solvers[courier_to_optimize])
                         # solver.pop()
                         if new_path == path_model[courier_to_optimize]:
-                            print(f"No improvement found for courier {courier_to_optimize}")
+                            logger.debug(f"No improvement found for courier {courier_to_optimize}")
                             already_optimized[courier_to_optimize] = True
                         else:
                             new_optimal = True
-                            print(f"Found a new best path for courier {courier_to_optimize} with distance {last_objective}")
+                            logger.debug(f"Found a new best path for courier {courier_to_optimize} with distance {last_objective}")
                             """ if last_objective < objective:
                                 objective = last_objective """
                             # solver.add(obj < last_objective)
@@ -303,7 +303,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                                     
                             is_sat = solver.check() == sat
                             if not is_sat:
-                                print("Error: model is not satisfiable")
+                                logger.debug("Error: model is not satisfiable")
                                 break
                             model = solver.model()
                             solver.pop()
@@ -313,14 +313,14 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                             
                             
                             courier_to_optimize = 0
-                            print(f"New step to find new solution with obj val {objective}")
+                            logger.debug(f"New step to find new solution with obj val {objective}")
                                 
                             # solver.add(obj < objective)
                             path_model = [[model[PATH[i][j]].as_long() for j in range(DEPOT)] for i in COURIERS]
                             distances = [model[DISTANCES[i]].as_long() for i in COURIERS]
-                            print("New distances = ", distances)
+                            logger.debug("New distances = ", distances)
                             already_optimized =  [distances[i] < result_objective for i in COURIERS]
-                            print(f"Couriers to optimize = {[i for i in range(m) if not already_optimized[i]]}")
+                            logger.debug(f"Couriers to optimize = {[i for i in range(m) if not already_optimized[i]]}")
                             
                             if objective < best_objective:
                                 best_objective = objective
@@ -332,7 +332,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                             break
                     
                     courier_to_optimize += 1
-                print("Finished optimizing")       
+                logger.debug("Finished optimizing")       
                 # Add the optimized path_model to the constraints
                 solver.push()
                 for i in COURIERS:
@@ -341,20 +341,20 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                         
                 # Check if the model is satisfiable and in that case, save it
                 if solver.check() == sat:
-                    print("Checking model")
+                    logger.debug("Checking model")
                     model = solver.model()
                     objective_new = model[obj].as_long()
-                    print(f"Found a new solution with objective value {objective_new} in {time.time() - start} seconds")
+                    logger.debug(f"Found a new solution with objective value {objective_new} in {time.time() - start} seconds")
                     if objective_new < best_objective:
                         best_objective = objective_new
                         print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                     
                 else:
-                    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\nModel is not satisfiable\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-                    print(f"PATH = {[path_model[i][j] for i in COURIERS for j in range(DEPOT)]}")
+                    logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\nModel is not satisfiable\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+                    logger.debug(f"PATH = {[path_model[i][j] for i in COURIERS for j in range(DEPOT)]}")
                 solver.pop()
                 
-            print(f"Popping solver and adding objective constraint with objective value {objective}")
+            logger.debug(f"Popping solver and adding objective constraint with objective value {objective}")
             solver.pop()
             solver.pop()
             # if objective is not None:
@@ -375,20 +375,20 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             solver_assignment.set('timeout', millisecs_left(now, timeout_timestamp))
             
             
-            """ print(f"New optimal found: {result_objective}")
-            print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
-            print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
-            print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
+            """ logger.debug(f"New optimal found: {result_objective}")
+            logger.debug(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
+            logger.debug(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
+            logger.debug(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
             
-            print("PATH = ")
+            logger.debug("PATH = ")
             for i in COURIERS:
                 row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
-                print(row)
+                logger.debug(row)
                 
-            print("PACKS_PER_COURIER = ")
+            logger.debug("PACKS_PER_COURIER = ")
             for i in COURIERS:
                 row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                print(row) """
+                logger.debug(row) """
         
         result = {
             "time": math.ceil(time.time() - start_timestamp),
@@ -423,7 +423,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             
         return result
     except z3types.Z3Exception as e:
-        print(e)
+        logger.debug(e)
         return  {
             "time": timeout,
             "optimal": False,
@@ -432,7 +432,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
         }
         
     except Exception as e:
-        print(e)
+        logger.debug(e)
         return  {
             "time": timeout,
             "optimal": False,
