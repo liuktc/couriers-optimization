@@ -1,9 +1,16 @@
 from z3 import *
+import itertools
 
 def maximum(a):
     m = a[0]
     for v in a[1:]:
         m = If(v > m, v, m)
+    return m
+
+def minimum(a):
+    m = a[0]
+    for v in a[1:]:
+        m = If(v < m, v, m)
     return m
 
 def precedes(a1, a2):
@@ -35,6 +42,15 @@ def get_element_at_index(arr, idx):
         selected = If(idx == i, arr[i], selected)
     
     return selected
+    
+""" def get_element_at_index(arr, idx):
+    # Create a Z3 array from the list
+    z3_array = Array('z3_array', IntSort(), IntSort())
+    for i in range(len(arr)):
+        z3_array = Store(z3_array, i, arr[i])
+    
+    # Use Select to get the element at the given index
+    return Select(z3_array, idx) """
 
 # -----------------------------------------------------------------------------%
 # Constrains the elements of 'path' to define a subcircuit where 'x[i] = j'
@@ -108,3 +124,78 @@ def subcircuit(x, tag):
     constraints.append(Implies(Not(empty), And(non_empty_conditions)))
 
     return constraints
+
+def get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURIERS, obj, DISTANCES, D, best_objective, one_courier_solver):
+    
+    # one_courier_solver = Solver()
+    # one_courier_solver.add(Distinct(PATH[courier_to_optimize]))
+    # one_courier_solver.add(subcircuit(PATH[courier_to_optimize], f"{courier_to_optimize}_extra"))
+    # D_array = Array(f"D_array_{courier_to_optimize}", IntSort(), IntSort())
+    # for i in range(DEPOT):
+    #     for j in range(DEPOT):
+    #         # one_courier_solver.add(Store(D_array, i*DEPOT + j , D[i][j]))
+    #         D_array = Store(D_array, i*DEPOT + j , D[i][j])
+    # dist = Sum([If(PATH[courier_to_optimize][j] != j + 1, get_element_at_index(D[j], PATH[courier_to_optimize][j] - 1), 0) for j in range(DEPOT)])
+    # # dist = Sum([If(PATH[courier_to_optimize][j] != j + 1, D_array[j*DEPOT + PATH[courier_to_optimize][j] - 1], 0) for j in range(DEPOT)]) 
+    # 
+    # # solver.add(DISTANCES[courier_to_optimize] == dist)
+    # one_courier_solver.add(obj == dist)
+    one_courier_solver.push()
+    one_courier_solver.add(obj < best_objective)
+    
+    
+    # solver.push()
+    solutions = 0
+    objective = 9999999
+    items_delivered = [j for j in range(DEPOT) if path_model[courier_to_optimize][j] != j + 1]
+    if len(items_delivered) <= 1:
+        return path_model[courier_to_optimize], objective
+    best_path = path_model[courier_to_optimize]
+    """ for i in COURIERS:
+        if i != courier_to_optimize:
+            for j in range(DEPOT):
+                solver.add(PATH[i][j] == path_model[i][j]) """
+    t = 0
+    model = None
+    for combination in itertools.combinations(items_delivered, 3):
+        # print(f"Combination = {combination}")
+        sol_per_perm = 0
+        for perm in [[combination[1], combination[2], combination[0]],[combination[2], combination[0], combination[1]]]:
+            # print(f"Permutation = {perm}")
+            if perm == combination:
+                continue
+            one_courier_solver.push()
+            has_to_continue = True
+            for j in range(DEPOT):
+                if j in perm:
+                    if j + 1 == path_model[courier_to_optimize][perm[combination.index(j)]]:
+                        has_to_continue = False
+                        break
+                    one_courier_solver.add(PATH[courier_to_optimize][j] == path_model[courier_to_optimize][perm[combination.index(j)]])
+                else:
+                    one_courier_solver.add(PATH[courier_to_optimize][j] == path_model[courier_to_optimize][j])
+            if not has_to_continue:
+                one_courier_solver.pop()
+                continue
+            # Discard solution that are surely not good
+            
+            """ solver.add(And([
+                PATH[courier_to_optimize][j] == path_model[courier_to_optimize][perm[combination.index(j)]] if j in perm else PATH[courier_to_optimize][j] == path_model[courier_to_optimize][j] for j in range(DEPOT)
+            ]))   """      
+            
+            t += 1
+            if one_courier_solver.check() == sat:
+                sol_per_perm += 1
+                solutions += 1
+                model = one_courier_solver.model()
+                objective = model[obj].as_long()
+                best_path = [model[PATH[courier_to_optimize][j]].as_long() for j in range(DEPOT)]
+                # print(f"Sol {solutions}: {objective}")
+
+            one_courier_solver.pop()
+            one_courier_solver.add(obj < objective)
+    # print(f"Tried {t} solutions")
+    solver.pop()
+    one_courier_solver.pop()
+    return best_path, objective
+    

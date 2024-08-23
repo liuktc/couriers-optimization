@@ -64,17 +64,8 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
             solver.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
                         
         # Calculate the distance traveled by each courier
-        for i in COURIERS: 
-            dist = Sum([
-                Sum([If(And(ASSIGNMENTS[j1] == i + 1,
-                            ASSIGNMENTS[j2] == i + 1, 
-                            PATH[i][j1] == j2 + 1),
-                        D[j1][j2],
-                        0) for j2 in ITEMS])
-                for j1 in ITEMS
-                ])
-            dist += Sum([If(PATH[i][j] == n + 1, D[j][n], 0) for j in range(DEPOT)])
-            dist += Sum([If(j + 1 == PATH[i][n], D[n][j], 0) for j in range(DEPOT)])
+        for i in COURIERS:
+            dist = Sum([If(PATH[i][j] != j + 1, get_element_at_index(D[j], PATH[i][j] - 1), 0) for j in range(DEPOT)])
             solver.add(DISTANCES[i] == dist)
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 

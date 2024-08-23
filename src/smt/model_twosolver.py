@@ -1,11 +1,13 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
+from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
 # from tqdm import tqdm
   
     
 def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
     try:
+        encoding_start = time.time()
+        
         DEPOT = n + 1
         COURIERS = range(m)
         ITEMS = range(n)
@@ -59,8 +61,8 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             solver_assignment.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
           
         # Subcircuit constraints  
-        """ for i in COURIERS:
-            solver.add(subcircuit(PATH[i], i)) """
+        for i in COURIERS:
+            solver.add(subcircuit(PATH[i], i))
                             
         # Total weight constraints
         for i in COURIERS:
@@ -68,17 +70,8 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             solver_assignment.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
                         
         # Calculate the distance traveled by each courier
-        for i in COURIERS: 
-            dist = Sum([
-                Sum([If(And(ASSIGNMENTS[j1] == i + 1,
-                            ASSIGNMENTS[j2] == i + 1, 
-                            PATH[i][j1] == j2 + 1),
-                        D[j1][j2],
-                        0) for j2 in ITEMS])
-                for j1 in ITEMS
-                ])
-            dist += Sum([If(PATH[i][j] == n + 1, D[j][n], 0) for j in range(DEPOT)])
-            dist += Sum([If(j + 1 == PATH[i][n], D[n][j], 0) for j in range(DEPOT)])
+        for i in COURIERS:
+            dist = Sum([If(PATH[i][j] != j + 1, get_element_at_index(D[j], PATH[i][j] - 1), 0) for j in range(DEPOT)])
             solver.add(DISTANCES[i] == dist)
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -105,8 +98,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             for i in COURIERS:
                 solver.add(COUNT[i] > 0)
                 solver_assignment.add(COUNT[i] > 0)
-                    
-                
+             
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Objective function
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -139,12 +131,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
         solver_assignment.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
         
-        print(f"Start solving")
-        
-        # write the smt2 file to file
-        with open('smt2.smt2', 'w') as f:
-            f.write(solver.to_smt2())
-        
+        print(f"Econding took {time.time() - encoding_start} seconds")        
         
         
         model = None
@@ -173,9 +160,6 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                 solver.pop()
                 
                 solver.add(obj < result_objective)
-                
-                if result_objective < lower_bound:
-                    break
             # The new solution must be different from the previous one
             solver_assignment.add(Or([ASSIGNMENTS[j] != result_assignment[j] for j in ITEMS]))
             

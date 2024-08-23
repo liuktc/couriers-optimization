@@ -1,12 +1,20 @@
-# from model_arrays import SMT_array
+from model_arrays import SMT_arrays
 from model_plain import SMT_plain
 # from model_penalty import SMT_penalty
 from model_twosolver import SMT_twosolver
+from model_optimizer import SMT_optimizer
+from smt.model_local_search import SMT_local_search
 
 import logging
 logger = logging.getLogger(__name__)
 
 experiments = [
+    {
+        "name": "twosolver_optimizer",
+        "model": SMT_local_search,
+        "symmetry_breaking": False,
+        "implied_constraints": False
+    },
     {
         "name": "plain",
         "model": SMT_plain,
@@ -18,6 +26,18 @@ experiments = [
         "model": SMT_twosolver,
         "symmetry_breaking": False,
         "implied_constraints": False
+    },
+    {
+        "name": "arrays",
+        "model": SMT_arrays,
+        "symmetry_breaking": False,
+        "implied_constraints": False
+    },
+    {
+        "name": "optimizer",
+        "model": SMT_optimizer,
+        "symmetry_breaking": True,
+        "implied_constraints": True
     },
     {
         "name": "twosolver_implied",
@@ -80,7 +100,7 @@ if __name__ == "__main__":
     
     instances = [ (i+1, parseInstanceFile(os.path.join("../instances", f))) for i, f in enumerate(sorted(os.listdir("../instances"))) ]
     
-    instance_number = 3
+    instance_number = 13
     
     for instance_number, instance in instances[instance_number-1:instance_number]:
         print(instance)

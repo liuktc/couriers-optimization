@@ -1,23 +1,15 @@
 from z3 import *
 import time
-from utils import maximum, precedes, millisecs_left, Min, subcircuit, get_element_at_index
+from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
     
-def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
+def SMT_optimizer(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
     try:
-        encoding_start = time.time()
-        
         DEPOT = n + 1
         COURIERS = range(m)
         ITEMS = range(n)
         
-        solver = Solver()
-        
-        D_array = Array("D", IntSort(), IntSort())
-        # Copy the values of D into the array
-        for i in range(DEPOT):
-            for j in range(DEPOT):
-                # solver.add(Select(D_array, i * DEPOT + j) == D[i][j])
-                Store(D_array, i * DEPOT + j, D[i][j])
+        solver = Optimize()
+
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
         # Decision variables
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,6 +33,8 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
             for j in ITEMS:
                 solver.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
         
+        
+        
         solver.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
                 
         for i in COURIERS:
@@ -59,7 +53,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         # Count constraints
         for i in COURIERS:
             solver.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
-          
+            
         # Subcircuit constraints  
         for i in COURIERS:
             solver.add(subcircuit(PATH[i], i))
@@ -70,7 +64,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
                         
         # Calculate the distance traveled by each courier
         for i in COURIERS:
-            dist = Sum([If(PATH[i][j] != j + 1, Select(D_array, j * DEPOT + PATH[i][j] - 1), 0) for j in range(DEPOT)])
+            dist = Sum([If(PATH[i][j] != j + 1, get_element_at_index(D[j], PATH[i][j] - 1), 0) for j in range(DEPOT)])
             solver.add(DISTANCES[i] == dist)
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -91,8 +85,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         # Implied constraints
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                
-                    
+                        
                 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Objective function
@@ -100,14 +93,15 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         
         # Minimize the maximum distance traveled
         obj = Int('obj')
-        solver.add(obj == maximum([DISTANCES[i] for i in COURIERS]))
+        solver.add(obj == maximum(DISTANCES))
+        
         
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Search strategy
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
+        """ lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
         
         max_distances = [max(D[i][:-1]) for i in range(n)]
         max_distances.sort()
@@ -117,21 +111,25 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
             upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
 
         solver.add(obj >= lower_bound)
-        solver.add(obj <= upper_bound)
+        solver.add(obj <= upper_bound) """
         
         
         timeout_timestamp = time.time() + timeout
+        start_timestamp = time.time()
         solver.push()    
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        print(f"Econding took {time.time() - encoding_start} seconds")
                 
-        start_timestamp = time.time()
+        # Minimize the objective
+        solver.minimize(obj)
         model = None
-        while solver.check() == sat:
+        start = time.time()
+        if solver.check() == sat:
+            end = time.time()
+            print(f"Checking model in {end - start} seconds")
             model = solver.model()
             result_objective = model[obj].as_long()
             
-            """ print(f"New optimal found: {result_objective}")
+            print(f"New optimal found: {result_objective}")
             print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
             print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
             print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
@@ -144,21 +142,19 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
             print("PACKS_PER_COURIER = ")
             for i in COURIERS:
                 row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                print(row) """
+                print(row)
 
-            solver.pop()
+            """ solver.pop()
             solver.push()
-            solver.add(obj < result_objective)
+            solver.add(obj < result_objective) """
             
-            now = time.time()
+            """ now = time.time()
             if now >= timeout_timestamp:
                 break
-            solver.set('timeout', millisecs_left(now, timeout_timestamp))
+            solver.set('timeout', millisecs_left(now, timeout_timestamp)) """
         
-        end = time.time()
-        print(f"Checking model in {end - start_timestamp} seconds")
         result = {
-            "time": math.ceil(end - start_timestamp),
+            "time": math.ceil(time.time() - start_timestamp),
             "optimal": False,
             "obj": None,
             "sol": None
@@ -189,6 +185,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
             
         return result
     except z3types.Z3Exception as e:
+        print(e)
         return  {
             "time": timeout,
             "optimal": False,
@@ -197,6 +194,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         }
         
     except Exception as e:
+        print(e)
         return  {
             "time": timeout,
             "optimal": False,

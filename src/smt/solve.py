@@ -1,6 +1,7 @@
-from .model_plain import SMT_plain
+""" from .model_plain import SMT_plain
 from .model_penalty import SMT_penalty
-from .model_twosolver import SMT_twosolver 
+from .model_twosolver import SMT_twosolver  """
+from .model_local_search import SMT_local_search
 
 
 import logging
@@ -41,8 +42,8 @@ logger = logging.getLogger(__name__)
 
 experiments = [
     {
-        "name": "plain",
-        "model": SMT_plain,
+        "name": "local_search",
+        "model": SMT_local_search,
         "symmetry_breaking": False,
         "implied_constraints": False
     }
