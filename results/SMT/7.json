@@ -39,7 +39,7 @@
       }
    },
    "smt2-plain-linear-z3": {
-      "time": 299,
+      "time": 300,
       "optimal": false,
       "obj": 304,
       "sol": [
@@ -76,7 +76,7 @@
       }
    },
    "smt2-plain-binary-z3": {
-      "time": 299,
+      "time": 300,
       "optimal": false,
       "obj": 259,
       "sol": [

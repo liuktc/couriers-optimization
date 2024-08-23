@@ -133,6 +133,8 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
 
         if (variables is not None) and ("obj" in variables):
             solve_time = math.floor(time.time() - start_time)
+            if not optimality :
+                solve_time = timeout
             objective = variables["obj"]
             solution = exp["sol_extractor"](instance, variables)
 
