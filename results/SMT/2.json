@@ -2,8 +2,30 @@
    "local_search": {
       "time": 300,
       "optimal": false,
-      "obj": null,
-      "sol": null,
+      "obj": 226,
+      "sol": [
+         [
+            5,
+            2
+         ],
+         [
+            6,
+            8
+         ],
+         [
+            3,
+            7
+         ],
+         [
+            4
+         ],
+         [
+            1
+         ],
+         [
+            9
+         ]
+      ],
       "_extras": {
          "runner": "github-action"
       }
