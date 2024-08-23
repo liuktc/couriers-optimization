@@ -31,7 +31,10 @@ class Unified_Model():
         self.instance = instance
         self.distances = instance['D']
 
-    def solve(self, init_time, timeout):
+
+    def solve(self, timeout, random_seed):
+        set_option("sat.local_search", True)
+        self.solver.set("random_seed", random_seed)
 
         ## Useful ranges
         PACKS = range(self.instance['n'])
@@ -39,50 +42,36 @@ class Unified_Model():
         DEPOT = (self.instance['n'])
         LOCATIONS = range(DEPOT+1)
 
-        # self.solver.set("timeout", 300)
-        self.solver.push()
-
-        ##### Estimated distance for the minimum path
-        lower_bound = max([self.distances[DEPOT][p] + self.distances[p][DEPOT] for p in PACKS])
-
-        Objective = Max([
-                Sum([If(self.paths[c][loc1][loc2], self.distances[loc1][loc2], 0)
-                    for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2])
-                for c in COURIERS
-                ])
-
-        # Constraint - ensuring distance percurred by each courier to be greater than estimated lower bound
-        self.solver.add(Objective >= lower_bound)
-        # for c in COURIERS:
-        #     total_distance = Sum([If(self.paths[c][loc1][loc2], self.distances[loc1][loc2], 0) for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2])
-        #     self.solver.add(total_distance >= lower_bound)
-
         # Init
         objective = None
         solution_ls = []
+        init_time = time.time()
+        timeout_timestamp = init_time + timeout
+        solve_time = timeout
 
-        ## Check if problem has become unsat
-        unsat_status = True
+        optimality = False
 
-        # self.solver.set("timeout", 120)
-
-        while self.solver.check() == sat:
-
-            ## Checking timeout:
-            if (time.time() - init_time) >= timeout:
+        while True:
+            self.solver.set("timeout", math.floor(timeout_timestamp - time.time())*1000)
+            status = self.solver.check()
+        
+            if status == unsat:
+                optimality = (objective is not None)
+                solve_time = math.floor(time.time() - init_time)
                 break
 
-            # problem is still satisfiable
-            unsat_status = False
-
+            ## Checking timeout:
+            if (time.time() >= timeout_timestamp) or status == unknown:
+                break
             model = self.solver.model()
 
             # obtain Objective value
             objective = max([
-                sum([self.distances[loc1][loc2] if model.evaluate(self.paths[c][loc1][loc2]) else 0
-                    for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2])
-                for c in COURIERS
+                sum([
+                    self.distances[loc1][loc2] if model.evaluate(self.paths[c][loc1][loc2]) else 0
+                        for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2
                 ])
+            for c in COURIERS ])
         
             # Compose solution
             solution = []
@@ -100,9 +89,8 @@ class Unified_Model():
                         break
                     else:
                         loc1 = step-1
-
-                    if step != 0:
                         courier_path.append(step)
+
                 solution.append(courier_path)
                 # paths_distance.append(distance)
             solution_ls.append(solution)
@@ -119,7 +107,7 @@ class Unified_Model():
                 self.solver.add(total_distance < objective)
             
             # Constraint to ensure new assignments are different than ones already tried
-            self.solver.add(Not(And([model.evaluate(self.assignment[p][c]) == self.assignment[p][c] for c in COURIERS for p in PACKS])))
+            # self.solver.add(Not(And([model.evaluate(self.assignment[p][c]) == self.assignment[p][c] for c in COURIERS for p in PACKS])))
 
             # Provare a inserire le statistiche come output della solve
             # print ("statistics for the last check method...")
@@ -128,15 +116,12 @@ class Unified_Model():
             # for k, v in s.statistics():
             #     print ("%s : %s" % (k, v))
         
-        self.solver.pop()
         if (objective is not None):
-            ## Adding specific constraint to ensure total distance is less than the objective value for the nex time the solver is running
-            for c in COURIERS:
-                total_distance = Sum([If(self.paths[c][loc1][loc2], self.distances[loc1][loc2], 0) for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2])
-                self.solver.add(total_distance < objective)
+            return objective, solution_ls[-1], optimality, solve_time
+        else:
+            return None, None, False, solve_time
+    
 
-            return objective, solution_ls[-1], unsat_status
-        return objective, solution_ls, unsat_status
 def create_model(m, n, loads, sizes, distances):
     ## Useful ranges
     PACKS = range(n)
@@ -244,68 +229,21 @@ def create_model(m, n, loads, sizes, distances):
                     for k2 in PACKS:
                         solver_unified.add(Implies(And(u[c][p1][k1], u[c][p2][k2]), k1 - k2 + 1 <= (n-1) * (1-If(paths[c][p1][p2], 1, 0))))
     
+
+    ##### Estimated distance for the minimum path
+    lower_bound = max([distances[DEPOT][p] + distances[p][DEPOT] for p in PACKS])
+
+    Objective = Max([
+        Sum([
+            If(paths[c][loc1][loc2], distances[loc1][loc2], 0)
+                for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2
+        ])
+    for c in COURIERS ])
+
+    # Constraint - ensuring distance percurred by each courier to be greater than estimated lower bound
+    solver_unified.add(Objective >= lower_bound)
+    # for c in COURIERS:
+    #     total_distance = Sum([If(self.paths[c][loc1][loc2], self.distances[loc1][loc2], 0) for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2])
+    #     self.solver.add(total_distance >= lower_bound)
+
     return solver_unified, assignments, paths
-
-
-def call_model(model, instance, timeout, random_seed):
-
-    set_option("sat.random_seed", random_seed)
-    set_option("sat.local_search", True)
-    # set_option("sat.restart", 'luby') # ema, luby, static or geometric
-    # set_option("sat.ddfw_search", True)
-
-    # Setting up pretty solution dictionary
-    solution_dict = {
-        'obj':100000,
-        'sol':None,
-        'optimal': False,
-        'time':None,
-        'timeout':False,
-    }
-
-    # Initializing time measure
-    init_time = time.time()
-
-    # Setting Timeout False
-    # timeout = False
-
-    # Try Counter
-    i = 0
-    # while (timeout==False):
-    try: 
-        while True:
-            # Obtain a first assignment to variable assignment (=> which courier deliver each pack)
-            # print(f'({i+1}) - try')
-            objective, solution, unsat_status  = model.solve(init_time, timeout)
-
-            # Initializing pretty solution storage
-            if objective is not None:
-                if (objective < solution_dict['obj']):
-                    solution_dict['obj'] = objective
-                    solution_dict['sol'] = solution
-
-            # Time statistics measure
-            end_time = time.time()
-            diff_time = end_time-init_time
-
-            # Checking timeout
-            if diff_time>=timeout:
-                solution_dict['time'] = math.floor(diff_time)
-                solution_dict['timeout'] = True
-                break
-
-                
-            # Chacking optimality
-            if unsat_status:
-                solution_dict['time'] = math.floor(diff_time)
-                solution_dict['is_optimal'] = True
-                break
-            i += 1
-    except Exception as e:
-        pass
-
-    if solution_dict['sol'] is None:
-        solution_dict['obj'] = None
-        solution_dict['time'] = timeout
-
-    return solution_dict
