@@ -12,12 +12,20 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     for model in models.keys():
     
         # Declaration of the Model class
-        def_model = models[model](instance)
+            try: 
+                def_model = models[model](instance)
+                results[model] = call_model(def_model, instance, timeout, random_seed)
+            except Exception as e:
+                results[model] = {
+                    'obj': None,
+                    'sol': None,
+                    'optimal': False,
+                    'time': timeout,
+                }
 
         # Setting timeout
         # def_model.solver.set('timeout', 4000)
 
-        results[model] = call_model(def_model, instance, timeout, random_seed)
     
     # print(results)
     
