@@ -162,6 +162,83 @@
          "runner": "github-action"
       }
    },
+   "smt2-plain-linear-smtinterpol": {
+      "time": 300,
+      "optimal": false,
+      "obj": 381,
+      "sol": [
+         [
+            9,
+            13,
+            8
+         ],
+         [],
+         [],
+         [
+            11,
+            1,
+            2,
+            3,
+            6,
+            4
+         ],
+         [
+            12,
+            10
+         ],
+         [
+            5
+         ],
+         [],
+         [],
+         [
+            7
+         ],
+         []
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-yices2": {
+      "time": 11,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [],
+         [],
+         [
+            6,
+            2
+         ],
+         [
+            5,
+            3,
+            7
+         ],
+         [],
+         [
+            10,
+            13
+         ],
+         [],
+         [
+            9
+         ],
+         [
+            4,
+            8,
+            1,
+            11
+         ],
+         [
+            12
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "penalty": {
       "time": 300,
       "optimal": false,

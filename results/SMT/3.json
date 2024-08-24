@@ -91,6 +91,52 @@
          "runner": "github-action"
       }
    },
+   "smt2-plain-linear-smtinterpol": {
+      "time": 1,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            4,
+            2
+         ],
+         [
+            7,
+            3
+         ],
+         [
+            6,
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-yices2": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            4,
+            2
+         ],
+         [
+            3,
+            7
+         ],
+         [
+            6,
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "penalty": {
       "time": 1,
       "optimal": true,

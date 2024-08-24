@@ -35,6 +35,24 @@
          "runner": "github-action"
       }
    },
+   "smt2-plain-linear-smtinterpol": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-yices2": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "penalty": {
       "time": 319,
       "optimal": false,
