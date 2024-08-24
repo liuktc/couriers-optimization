@@ -6,7 +6,6 @@ import math
 ## Utils
 def at_least_one(bool_vars):
     return Or(bool_vars)
-# Pairwise encoding approach
 def at_most_one(bool_vars):
     return And([Not(And(pair[0], pair[1])) for pair in combinations(bool_vars, 2)])
 def exactly_one(bool_vars):
@@ -20,7 +19,7 @@ def Max(vs):
 
 
 # Definition of Unified Model
-class Unified_Model():
+class Unified_CumulativeConstr_Model():
     def __init__(self, instance):
         self.solver, self.assignment, self.paths = create_model(
             m = instance['m'],
@@ -35,9 +34,6 @@ class Unified_Model():
 
     def solve(self, timeout, random_seed):
         set_option("sat.local_search", True)
-        # set_param('parallel.enable', True)
-        # set_param('sat.lookahead_simplify', True)
-        # set_option('sat.force_cleanup', True)
         self.solver.set("random_seed", random_seed)
 
         ## Useful ranges
@@ -79,14 +75,17 @@ class Unified_Model():
         
             # Compose solution
             solution = []
+            # paths_distance = []
             for c in COURIERS:
                 courier_path = []
 
                 loc1 = DEPOT
+                # distance = 0
                 while True:
                     step = sum([loc2+1 if model.evaluate(self.paths[c][loc1][loc2]) else 0 for loc2 in LOCATIONS if loc1!=loc2])
                     if step == 0: break # This courier does not deliver anything
 
+                    # distance += self.distances[loc1][step-1]
                     if (step-1) == DEPOT:
                         break
                     else:
@@ -94,7 +93,15 @@ class Unified_Model():
                         courier_path.append(step)
 
                 solution.append(courier_path)
+                # paths_distance.append(distance)
             solution_ls.append(solution)
+
+            # objective = max(paths_distance)
+        
+            # solution = [[sum([loc2+1 for loc2 in LOCATIONS if (model.evaluate(paths[c][loc1][loc2]) and loc1!=loc2)]) for loc1 in LOCATIONS] for c in COURIERS]
+
+            # print(f'Objective: {objective}')
+            # print(f'Solution: {solution}')
 
             for c in COURIERS:
                 total_distance = Sum([If(self.paths[c][loc1][loc2], self.distances[loc1][loc2], 0) for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2])
@@ -123,6 +130,10 @@ def create_model(m, n, loads, sizes, distances):
     DEPOT = (n)
     LOCATIONS = range(DEPOT+1)
 
+    # Cumuluative constraints
+    constraints = []
+
+
     ###### Previous assignment model
     # Decision variables
     assignments = [[Bool(f"a_{p}_{c}") for c in COURIERS] for p in PACKS]
@@ -133,11 +144,13 @@ def create_model(m, n, loads, sizes, distances):
     # Capacity constraint - assure that sum of weights of a singular courier is under its load limit
     for c in COURIERS:
         sum_load = Sum([If(assignments[p][c], sizes[p], 0) for p in PACKS])
-        solver_unified.add(sum_load <= loads[c])
+        constraints.append(sum_load <= loads[c])
+        # solver_unified.add(sum_load <= loads[c])
     
     # Capacity constraint - ensure that each pack is delivered only by a courier
     for p in PACKS:
-        solver_unified.add(exactly_one([assignments[p][c] for c in COURIERS]))
+        constraints.append(exactly_one([assignments[p][c] for c in COURIERS]))
+        # solver_unified.add(exactly_one([assignments[p][c] for c in COURIERS]))
     
 
     
@@ -167,25 +180,31 @@ def create_model(m, n, loads, sizes, distances):
     # 1 - Nel path deve esistere uno step con valore del pacco True con indice = DEPOT (n+1)
     for c in COURIERS:
         # If courier has at_least_one package to deliver, its path[c][DEPOT] must have a destination != DEPOT
-        solver_unified.add(Implies(at_least_one([assignments[p][c] for p in PACKS]), paths[c][DEPOT][DEPOT]==False))
+        constraints.append(Implies(at_least_one([assignments[p][c] for p in PACKS]), paths[c][DEPOT][DEPOT]==False))
+        # solver_unified.add(Implies(at_least_one([assignments[p][c] for p in PACKS]), paths[c][DEPOT][DEPOT]==False))
 
         # If courier has no package to deliver, it can stay in DEPOT
-        solver_unified.add(Implies(Not(at_least_one([assignments[p][c] for p in PACKS])), paths[c][DEPOT][DEPOT]==True))
+        constraints.append(Implies(Not(at_least_one([assignments[p][c] for p in PACKS])), paths[c][DEPOT][DEPOT]==True))
+        # solver_unified.add(Implies(Not(at_least_one([assignments[p][c] for p in PACKS])), paths[c][DEPOT][DEPOT]==True))
 
         for p in PACKS:
-            solver_unified.add(Implies(assignments[p][c], paths[c][p][p]==False))
-            solver_unified.add(Implies(Not(assignments[p][c]), paths[c][p][p]==True))
+            constraints.append(Implies(assignments[p][c], paths[c][p][p]==False))
+            constraints.append(Implies(Not(assignments[p][c]), paths[c][p][p]==True))
+            # solver_unified.add(Implies(assignments[p][c], paths[c][p][p]==False))
+            # solver_unified.add(Implies(Not(assignments[p][c]), paths[c][p][p]==True))
 
     # 2 - ensuring pack is delivered by a single courier only once
     for c in COURIERS:
         for loc in LOCATIONS:
-            solver_unified.add(exactly_one([paths[c][loc][ind] for ind in LOCATIONS]))
+            constraints.append(exactly_one([paths[c][loc][ind] for ind in LOCATIONS]))
+            # solver_unified.add(exactly_one([paths[c][loc][ind] for ind in LOCATIONS]))
 
     ## Subcircuit constraint
     # 1 - alldifferent per ogni path di ogni courier
     for c in COURIERS:
         for loc in LOCATIONS:
-            solver_unified.add(exactly_one([paths[c][ind][loc] for ind in LOCATIONS]))
+            constraints.append(exactly_one([paths[c][ind][loc] for ind in LOCATIONS]))
+            # solver_unified.add(exactly_one([paths[c][ind][loc] for ind in LOCATIONS]))
 
     # 2 - subtour elimination
     # Variables: u[i] to prevent subtours
@@ -195,7 +214,8 @@ def create_model(m, n, loads, sizes, distances):
     for c in COURIERS:
         # u del primo pacco = 1
         for p in PACKS:
-            solver_unified.add(Implies(paths[c][DEPOT][p], u[c][p][0]==True))
+            constraints.append(Implies(paths[c][DEPOT][p], u[c][p][0]==True))
+            # solver_unified.add(Implies(paths[c][DEPOT][p], u[c][p][0]==True))
 
         # u_j >= u_i + 1
         for p1 in PACKS:
@@ -204,12 +224,14 @@ def create_model(m, n, loads, sizes, distances):
                     continue
 
                 for k in PACKS:
-                    solver_unified.add(Implies(And(paths[c][p1][p2], u[c][p1][k]), And(exactly_one([u[c][p2][i] for i in range(k+1, n)]))))
+                    constraints.append(Implies(And(paths[c][p1][p2], u[c][p1][k]), And(exactly_one([u[c][p2][i] for i in range(k+1, n)]))))
+                    # solver_unified.add(Implies(And(paths[c][p1][p2], u[c][p1][k]), And(exactly_one([u[c][p2][i] for i in range(k+1, n)]))))
 
     ## Exatcly one true value for each u_p1
     for c in COURIERS:
         for p1 in PACKS:
-            solver_unified.add(exactly_one(u[c][p1]))
+            constraints.append(exactly_one(u[c][p1]))
+            # solver_unified.add(exactly_one(u[c][p1]))
 
     # Applying MTZ formulation constraint
     # u_i - u_j + 1 <= (n - 1) * (1 - paths[c, i, j])
@@ -221,7 +243,8 @@ def create_model(m, n, loads, sizes, distances):
 
                 for k1 in PACKS:
                     for k2 in PACKS:
-                        solver_unified.add(Implies(And(u[c][p1][k1], u[c][p2][k2]), k1 - k2 + 1 <= (n-1) * (1-If(paths[c][p1][p2], 1, 0))))
+                        constraints.append(Implies(And(u[c][p1][k1], u[c][p2][k2]), k1 - k2 + 1 <= (n-1) * (1-If(paths[c][p1][p2], 1, 0))))
+                        # solver_unified.add(Implies(And(u[c][p1][k1], u[c][p2][k2]), k1 - k2 + 1 <= (n-1) * (1-If(paths[c][p1][p2], 1, 0))))
     
 
     ##### Estimated distance for the minimum path
@@ -235,6 +258,9 @@ def create_model(m, n, loads, sizes, distances):
     for c in COURIERS ])
 
     # Constraint - ensuring distance percurred by each courier to be greater than estimated lower bound
-    solver_unified.add(Objective >= lower_bound)
+    constraints.append(Objective >= lower_bound)
+    # solver_unified.add(Objective >= lower_bound)
+
+    solver_unified.add(And(*constraints))
 
     return solver_unified, assignments, paths

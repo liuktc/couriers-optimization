@@ -6,9 +6,42 @@ import math
 ## Utils
 def at_least_one(bool_vars):
     return Or(bool_vars)
-# Pairwise encoding approach
+
+# Global at_most_one counter
+most_counter = 0
+
+# Sequential encoding approach
+# def at_most_one(bool_vars):
+#     global most_counter
+#     most_counter += 1
+#     # Introducing auxiliar variables in the same amount of the boolean variables as arg
+#     n = len(bool_vars)
+#     aux_vars = [Bool(f'aux_{most_counter}_{ind}') for ind in range(n)]
+#     constraints = [
+#             And(
+#                 Implies(Or(bool_vars[i], aux_vars[most_counter][i-1]), aux_vars[most_counter][i]),
+#                 Implies(aux_vars[most_counter][i-1], Not(bool_vars[i]))
+#                 )
+#             for i in range(1, n-1)
+#         ]
+#     return And(
+#         Implies(bool_vars[0], aux_vars[most_counter][0]),
+#         constraints,
+#         Implies(aux_vars[most_counter][n-2], Not(bool_vars[n-1]))
+#     )
+
+# Heule encoding approach
 def at_most_one(bool_vars):
-    return And([Not(And(pair[0], pair[1])) for pair in combinations(bool_vars, 2)])
+    if len(bool_vars)<=4:
+        return And([Not(And(pair[0], pair[1])) for pair in combinations(bool_vars, 2)])
+    else:
+        global most_counter
+        # Increment at_most_one counter
+        most_counter += 1
+        aux_var = Bool(f'y_{most_counter}')
+
+        return And(at_most_one(bool_vars[:3] + [aux_var]), at_most_one([Not(aux_var)] + bool_vars[3:]))
+
 def exactly_one(bool_vars):
     return And(at_most_one(bool_vars), at_least_one(bool_vars))
 
@@ -20,7 +53,7 @@ def Max(vs):
 
 
 # Definition of Unified Model
-class Unified_Model():
+class Unified_HeuleEnc_Model():
     def __init__(self, instance):
         self.solver, self.assignment, self.paths = create_model(
             m = instance['m'],
@@ -35,9 +68,6 @@ class Unified_Model():
 
     def solve(self, timeout, random_seed):
         set_option("sat.local_search", True)
-        # set_param('parallel.enable', True)
-        # set_param('sat.lookahead_simplify', True)
-        # set_option('sat.force_cleanup', True)
         self.solver.set("random_seed", random_seed)
 
         ## Useful ranges
@@ -100,9 +130,6 @@ class Unified_Model():
                 total_distance = Sum([If(self.paths[c][loc1][loc2], self.distances[loc1][loc2], 0) for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2])
                 self.solver.add(total_distance < objective)
             
-            # Constraint to ensure new assignments are different than ones already tried
-            # self.solver.add(Not(And([model.evaluate(self.assignment[p][c]) == self.assignment[p][c] for c in COURIERS for p in PACKS])))
-
             # Provare a inserire le statistiche come output della solve
             # print ("statistics for the last check method...")
             # print (s.statistics())
