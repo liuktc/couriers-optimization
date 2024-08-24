@@ -1,7 +1,11 @@
 from .total_sat import Unified_Model
+from .total_cumconstr_sat import Unified_CumulativeConstr_Model
+from .total_diff_enc_sat import Unified_HeuleEnc_Model
+from .milp_like_sat import Unified_MILPlike_Model
 import time
 import multiprocessing
 import logging
+import traceback
 logger = logging.getLogger(__name__)
 
 
@@ -23,6 +27,7 @@ def modelRunner(ModelClass, instance, timeout, random_seed, queue):
         solve_time = solve_time + model_init_time
     except Exception as e:
         logger.error(f"Exception {e}")
+        print(traceback.format_exc())
 
     result = {}
 
@@ -46,7 +51,10 @@ def modelRunner(ModelClass, instance, timeout, random_seed, queue):
 def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     
     models = {
-        'unified-model': Unified_Model
+        'un-model': Unified_Model,
+        'un-cumulative-constraints-model': Unified_CumulativeConstr_Model,
+        'un-heule-encoding-model': Unified_HeuleEnc_Model,
+        # 'un-milplike-model': Unified_MILPlike_Model, # still some problem or in the model or in the solve
     }
 
     results = {}
@@ -67,6 +75,7 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
             proc.start()
             res = runner_queue.get(block=True, timeout=timeout+1) # Tolerance to wait for Z3 timeout
         except Exception as e:
+            print(traceback.format_exc())
             logger.error(f"Exception {e}")
         finally:
             proc.terminate()
@@ -80,5 +89,6 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
             }
         else:
             results[model] = res
+    print(results)
 
     return results
