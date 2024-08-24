@@ -135,6 +135,22 @@ experiments = [
         "sol_extractor": _solutionExtractor,
         "optimizer": linearOptimization
     },
+    {
+        "name": "smt2-plain-linear-smtinterpol",
+        "model": model_plain,
+        "solver": SMTInterpolSolver,
+        "solver_args": {},
+        "sol_extractor": _solutionExtractor,
+        "optimizer": linearOptimization
+    },
+    {
+        "name": "smt2-plain-linear-yices2",
+        "model": model_plain,
+        "solver": Yices2Solver,
+        "solver_args": {},
+        "sol_extractor": _solutionExtractor,
+        "optimizer": linearOptimization
+    },
 ]
 
 

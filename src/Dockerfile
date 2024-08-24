@@ -30,6 +30,19 @@ RUN wget https://github.com/usi-verification-and-security/opensmt/releases/downl
     tar -xf opensmt-2.7.0-x64-linux.tar.bz2 &&\
     cp opensmt /usr/local/bin/opensmt
 
+# Install SMTInterpol
+RUN apt install -y openjdk-21-jre-headless
+RUN wget http://ultimate.informatik.uni-freiburg.de/smtinterpol/smtinterpol-2.5-1384-g98f115aa.jar &&\
+    mv smtinterpol-2.5-1384-g98f115aa.jar /usr/local/share/smtinterpol.jar
+
+# Install Yices
+RUN wget https://github.com/SRI-CSL/yices2/releases/download/Yices-2.6.5/yices-2.6.5-x86_64-pc-linux-gnu-static-gmp.tar.gz &&\
+    tar -xf yices-2.6.5-x86_64-pc-linux-gnu-static-gmp.tar.gz &&\
+    cp -r yices-2.6.5/bin/* /usr/local/bin &&\
+    cp -r yices-2.6.5/etc/* /usr/local/etc &&\
+    cp -r yices-2.6.5/include/* /usr/local/include &&\
+    cp -r yices-2.6.5/lib/* /usr/local/lib
+    
 
 RUN chmod +x ./entrypoint.sh
 ENTRYPOINT [ "./entrypoint.sh" ]

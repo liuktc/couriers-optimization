@@ -12,4 +12,10 @@ def restart2index(restart_str):
 
 class Z3Solver(Solver):
     def __init__(self, model, timeout, restart="inner-outer-geometric", random_seed=42):
-        super().__init__(model, ["z3", "-in", "unsat_core=true", f"smt.restart_strategy={restart2index(restart)}", f"smt.random_seed={random_seed}"], timeout)
+        super().__init__(model, [
+            "z3", "-in",
+            "unsat_core=true", 
+            "opt.incremental=true",
+            f"smt.restart_strategy={restart2index(restart)}", 
+            f"smt.random_seed={random_seed}"
+        ], timeout)
