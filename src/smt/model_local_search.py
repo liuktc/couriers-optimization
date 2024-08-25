@@ -241,9 +241,6 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 result_objective = model[obj].as_long()
                 objective = result_objective
                 
-                if objective < best_objective:
-                    best_objective = objective
-                    print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                     
                 
                 
@@ -255,6 +252,14 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 logger.debug("Distances = ", distances)
                 already_optimized = [distances[i] < result_objective for i in COURIERS]
                 logger.debug(f"Couriers to optimize = {[i for i in range(m) if not already_optimized[i]]}")
+                
+                
+                if objective < best_objective:
+                    best_objective = objective
+                    best_path = path_model
+                    print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
+                
+                
                 while courier_to_optimize < m:
                     # Check timeout
                     if time.time() >= timeout_timestamp:
@@ -345,8 +350,10 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                     model = solver.model()
                     objective_new = model[obj].as_long()
                     logger.debug(f"Found a new solution with objective value {objective_new} in {time.time() - start} seconds")
+                    path_model = [[model[PATH[i][j]].as_long() for j in range(DEPOT)] for i in COURIERS]
                     if objective_new < best_objective:
                         best_objective = objective_new
+                        best_path = path_model
                         print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                     
                 else:
