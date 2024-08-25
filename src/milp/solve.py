@@ -105,8 +105,6 @@ def run_ampl_model(model_file, data_file, solver, timeout):
             #ampl.option['scip_options'] = "heuristics/shiftandpropagate/freq = 1 numerics/feastol = 1e-6"
         if solver == 'highs':
             ampl.option['highs_options'] = "presolve=on parallel=on mip_heuristic_effort=0.5 mip_rel_gap=1e-4" 
-        else:
-            raise ValueError(f"Solver non supportato: {solver}")
         
         ampl.solve()
         objective = ampl.getObjective('ObjectiveMaxDistance').value()
