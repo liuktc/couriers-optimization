@@ -1260,6 +1260,81 @@
          "runner": "github-action"
       }
    },
+   "vrp-luby-chuffed": {
+      "time": 1,
+      "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            4,
+            2,
+            7
+         ],
+         [
+            5,
+            10,
+            6
+         ],
+         [
+            1
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [
+            3
+         ],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 960,
+               "flatIntVars": 857,
+               "flatBoolConstraints": 648,
+               "flatIntConstraints": 1375,
+               "evaluatedReifiedConstraints": 376,
+               "evaluatedHalfReifiedConstraints": 400,
+               "eliminatedImplications": 112,
+               "method": "minimize",
+               "flatTime": 0.174429
+            },
+            "solver": {
+               "nodes": 43900,
+               "failures": 12477,
+               "restarts": 393,
+               "variables": 44374,
+               "intVars": 945,
+               "boolVariables": 43427,
+               "propagators": 1304,
+               "propagations": 4195926,
+               "peakDepth": 273,
+               "nogoods": 12477,
+               "backjumps": 7322,
+               "peakMem": 0.0,
+               "time": 1.356,
+               "initTime": 0.04,
+               "solveTime": 1.316,
+               "objective": 186,
+               "optTime": 1.316,
+               "baseMem": 0.0,
+               "trailMem": 0.19,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 61
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 1.553127077102661,
+         "runner": "github-action"
+      }
+   },
    "vrp-symm_amount-chuffed": {
       "time": 0,
       "optimal": true,

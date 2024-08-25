@@ -3979,6 +3979,35 @@
          "runner": "github-action"
       }
    },
+   "vrp-luby-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 38600,
+               "flatIntVars": 34890,
+               "flatBoolConstraints": 26960,
+               "flatIntConstraints": 54119,
+               "evaluatedReifiedConstraints": 15420,
+               "evaluatedHalfReifiedConstraints": 15480,
+               "eliminatedImplications": 3900,
+               "method": "minimize",
+               "flatTime": 3.59015
+            },
+            "solver": {
+               "nSolutions": 0
+            },
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": null,
+         "runner": "github-action"
+      }
+   },
    "vrp-symm_amount-chuffed": {
       "time": 300,
       "optimal": false,

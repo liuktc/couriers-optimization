@@ -1390,6 +1390,85 @@
          "runner": "github-action"
       }
    },
+   "vrp-luby-chuffed": {
+      "time": 194,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            3,
+            6,
+            9,
+            7,
+            2
+         ],
+         [
+            10,
+            13,
+            4,
+            1,
+            11
+         ],
+         [
+            8
+         ],
+         [
+            5
+         ],
+         [
+            12
+         ],
+         [],
+         [],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1500,
+               "flatIntVars": 1342,
+               "flatBoolConstraints": 1020,
+               "flatIntConstraints": 2139,
+               "evaluatedReifiedConstraints": 590,
+               "evaluatedHalfReifiedConstraints": 620,
+               "eliminatedImplications": 170,
+               "method": "minimize",
+               "flatTime": 0.199108
+            },
+            "solver": {
+               "nodes": 1858858,
+               "failures": 999677,
+               "restarts": 12362,
+               "variables": 75279,
+               "intVars": 1482,
+               "boolVariables": 73795,
+               "propagators": 2020,
+               "propagations": 291094642,
+               "peakDepth": 401,
+               "nogoods": 999677,
+               "backjumps": 304856,
+               "peakMem": 0.0,
+               "time": 194.103,
+               "initTime": 0.066,
+               "solveTime": 194.037,
+               "objective": 244,
+               "optTime": 193.988,
+               "baseMem": 0.0,
+               "trailMem": 0.28,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 77
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 194.2861151561737,
+         "runner": "github-action"
+      }
+   },
    "vrp-symm_amount-chuffed": {
       "time": 1,
       "optimal": true,

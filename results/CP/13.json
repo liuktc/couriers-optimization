@@ -1795,6 +1795,110 @@
          "runner": "github-action"
       }
    },
+   "vrp-luby-chuffed": {
+      "time": 300,
+      "optimal": false,
+      "obj": 914,
+      "sol": [
+         [
+            32,
+            12,
+            5,
+            8,
+            29,
+            33,
+            19,
+            10,
+            45,
+            27,
+            6,
+            34,
+            21,
+            47,
+            42,
+            44,
+            1,
+            14,
+            16
+         ],
+         [
+            25,
+            2,
+            40,
+            20,
+            37,
+            9,
+            11,
+            35,
+            15,
+            30,
+            39,
+            46,
+            22,
+            7,
+            31,
+            4
+         ],
+         [
+            17,
+            38,
+            13,
+            36,
+            41,
+            28,
+            26,
+            18,
+            23,
+            3,
+            24,
+            43
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1470,
+               "flatIntVars": 1363,
+               "flatBoolConstraints": 1020,
+               "flatIntConstraints": 2069,
+               "evaluatedReifiedConstraints": 585,
+               "evaluatedHalfReifiedConstraints": 594,
+               "eliminatedImplications": 153,
+               "method": "minimize",
+               "flatTime": 0.20468
+            },
+            "solver": {
+               "nodes": 2066517,
+               "failures": 1364104,
+               "restarts": 5197,
+               "variables": 173248,
+               "intVars": 1384,
+               "boolVariables": 171862,
+               "propagators": 1932,
+               "propagations": 1173315823,
+               "peakDepth": 235,
+               "nogoods": 1364104,
+               "backjumps": 356744,
+               "peakMem": 0.0,
+               "time": 298.93,
+               "initTime": 0.137,
+               "solveTime": 298.793,
+               "objective": 914,
+               "optTime": 297.031,
+               "baseMem": 0.0,
+               "trailMem": 0.42,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 81
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 297.4061151561737,
+         "runner": "github-action"
+      }
+   },
    "vrp-symm_amount-chuffed": {
       "time": 300,
       "optimal": false,

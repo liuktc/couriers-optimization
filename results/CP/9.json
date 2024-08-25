@@ -1365,6 +1365,83 @@
          "runner": "github-action"
       }
    },
+   "vrp-luby-chuffed": {
+      "time": 107,
+      "optimal": true,
+      "obj": 436,
+      "sol": [
+         [
+            2,
+            6,
+            7,
+            5,
+            9,
+            1,
+            11,
+            10,
+            12,
+            3
+         ],
+         [
+            8,
+            13
+         ],
+         [
+            4
+         ],
+         [],
+         [],
+         [],
+         [],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1500,
+               "flatIntVars": 1342,
+               "flatBoolConstraints": 1020,
+               "flatIntConstraints": 2139,
+               "evaluatedReifiedConstraints": 590,
+               "evaluatedHalfReifiedConstraints": 620,
+               "eliminatedImplications": 170,
+               "method": "minimize",
+               "flatTime": 0.20827
+            },
+            "solver": {
+               "nodes": 992109,
+               "failures": 510748,
+               "restarts": 7005,
+               "variables": 102627,
+               "intVars": 1482,
+               "boolVariables": 101143,
+               "propagators": 2020,
+               "propagations": 138800526,
+               "peakDepth": 435,
+               "nogoods": 510748,
+               "backjumps": 150138,
+               "peakMem": 0.0,
+               "time": 107.172,
+               "initTime": 0.081,
+               "solveTime": 107.091,
+               "objective": 436,
+               "optTime": 107.09,
+               "baseMem": 0.0,
+               "trailMem": 0.63,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 45
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 107.41310704994201,
+         "runner": "github-action"
+      }
+   },
    "vrp-symm_amount-chuffed": {
       "time": 0,
       "optimal": true,
