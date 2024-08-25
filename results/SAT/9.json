@@ -1,4 +1,118 @@
 {
+   "un-model": {
+      "obj": 436,
+      "sol": [
+         [
+            1,
+            12,
+            5,
+            2,
+            10
+         ],
+         [
+            11,
+            13,
+            6
+         ],
+         [],
+         [
+            4,
+            3,
+            9
+         ],
+         [],
+         [],
+         [
+            8
+         ],
+         [],
+         [
+            7
+         ],
+         []
+      ],
+      "optimal": true,
+      "time": 121,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "un-cumulative-constraints-model": {
+      "obj": 436,
+      "sol": [
+         [
+            1,
+            12,
+            5,
+            2,
+            10
+         ],
+         [
+            11,
+            13,
+            6
+         ],
+         [],
+         [
+            4,
+            3,
+            9
+         ],
+         [],
+         [],
+         [
+            8
+         ],
+         [],
+         [
+            7
+         ],
+         []
+      ],
+      "optimal": true,
+      "time": 123,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "un-heule-encoding-model": {
+      "obj": 436,
+      "sol": [
+         [
+            7,
+            12
+         ],
+         [
+            5,
+            6,
+            4
+         ],
+         [
+            10,
+            13
+         ],
+         [
+            2,
+            3,
+            1,
+            9,
+            11
+         ],
+         [
+            8
+         ],
+         [],
+         [],
+         [],
+         [],
+         []
+      ],
+      "optimal": true,
+      "time": 126,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "unified-model": {
       "obj": 436,
       "sol": [

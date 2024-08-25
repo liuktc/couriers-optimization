@@ -1,4 +1,31 @@
 {
+   "un-model": {
+      "obj": null,
+      "sol": null,
+      "optimal": false,
+      "time": 300,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "un-cumulative-constraints-model": {
+      "obj": null,
+      "sol": null,
+      "optimal": false,
+      "time": 300,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "un-heule-encoding-model": {
+      "obj": null,
+      "sol": null,
+      "optimal": false,
+      "time": 300,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "unified-model": {
       "obj": null,
       "sol": null,
