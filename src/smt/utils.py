@@ -219,3 +219,18 @@ def get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURI
     one_courier_solver.pop()
     return best_path, objective
     
+    
+def get_solution(path, COURIERS, DEPOT):
+    solution = []
+    for i in COURIERS:
+        items_delivered = []
+        
+        first_item = int(path[i][DEPOT - 1])
+        next_item = first_item
+        while next_item != DEPOT:
+            items_delivered.append(next_item)
+            next_item = int(path[i][next_item - 1])
+        
+        solution.append(items_delivered)
+
+    return solution

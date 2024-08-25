@@ -1,8 +1,8 @@
-from model_arrays import SMT_arrays
+""" from model_arrays import SMT_arrays
 from model_plain import SMT_plain
 # from model_penalty import SMT_penalty
 from model_twosolver import SMT_twosolver
-from model_optimizer import SMT_optimizer
+from model_optimizer import SMT_optimizer """
 from model_local_search import SMT_local_search
 
 import logging
@@ -14,7 +14,9 @@ experiments = [
         "model": SMT_local_search,
         "symmetry_breaking": False,
         "implied_constraints": False
-    },
+    }
+]
+""" ,
     {
         "name": "plain",
         "model": SMT_plain,
@@ -45,7 +47,7 @@ experiments = [
         "symmetry_breaking": False,
         "implied_constraints": True
     }
-]
+] """
 
 def solve(instance, timeout, cache={}, **kwargs):
     results = {}
@@ -100,9 +102,9 @@ if __name__ == "__main__":
     
     instances = [ (i+1, parseInstanceFile(os.path.join("../instances", f))) for i, f in enumerate(sorted(os.listdir("../instances"))) ]
     
-    instance_number = 5
+    instance_number = 16
     
     for instance_number, instance in instances[instance_number-1:instance_number]:
         print(instance)
-        print(solve(instance, timeout=300))
+        print(solve(instance, timeout=100))
     

@@ -1,6 +1,6 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, get_best_neighbor, minimum
+from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, get_best_neighbor, minimum, get_solution
 import itertools
 import logging
 logger = logging.getLogger(__name__)
@@ -413,7 +413,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             result["obj"] = best_objective
             
             # Calculate the solution
-            solution = []
+            """ solution = []
             path = best_path
             for i in COURIERS:
                 items_delivered = []
@@ -424,25 +424,41 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                     items_delivered.append(next_item)
                     next_item = int(path[i][next_item - 1])
                 
-                solution.append(items_delivered)
+                solution.append(items_delivered) """
 
-            result["sol"] = solution
+            result["sol"] = get_solution(best_path, COURIERS, DEPOT)
             
         return result
     except z3types.Z3Exception as e:
         logger.debug(e)
-        return  {
-            "time": timeout,
-            "optimal": False,
-            "obj": None,
-            "sol": None
-        }
+        if best_path is not None:
+            return {
+                "time": timeout,
+                "optimal": False,
+                "obj": best_objective,
+                "sol": get_solution(best_path, COURIERS, DEPOT)
+            }
+        else:
+            return  {
+                "time": timeout,
+                "optimal": False,
+                "obj": None,
+                "sol": None
+            }
         
     except Exception as e:
         logger.debug(e)
-        return  {
-            "time": timeout,
-            "optimal": False,
-            "obj": None,
-            "sol": None
-        }
+        if best_path is not None:
+            return {
+                "time": timeout,
+                "optimal": False,
+                "obj": best_objective,
+                "sol": get_solution(best_path, COURIERS, DEPOT)
+            }
+        else:
+            return  {
+                "time": timeout,
+                "optimal": False,
+                "obj": None,
+                "sol": None
+            }
