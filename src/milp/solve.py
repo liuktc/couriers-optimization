@@ -110,7 +110,7 @@ def run_ampl_model(model_file, data_file, solver, timeout):
         objective = ampl.getObjective('ObjectiveMaxDistance').value()
         is_optimal = ampl.getValue('solve_result') == "solved"
         solve_time = ampl.getValue('_solve_time')
-        if ampl.getValue('solve_result') == 'failure' or ampl.getValue('solve_result') == 'infeasible' or (ampl.getValue('solve_result') == 'limit' and objective == None) : raise Exception
+        if ampl.getValue('solve_result') == 'failure' or ampl.getValue('solve_result') == 'infeasible' or ampl.getValue('solve_result') == 'limit'  : raise Exception
         
         #iterations = ampl.getValue('_solve_problem.niter')
         #solve_result = ampl.getOutput('solve;')
