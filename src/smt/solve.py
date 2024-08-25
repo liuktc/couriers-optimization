@@ -2,6 +2,8 @@
 from .model_penalty import SMT_penalty
 from .model_twosolver import SMT_twosolver  """
 from .model_local_search import SMT_local_search
+from .model_plain import SMT_plain
+from .model_plain_mtz import SMT_plain_mtz
 
 
 import logging
@@ -41,15 +43,21 @@ logger = logging.getLogger(__name__)
 ] """
 
 experiments = [
+    # {
+    #     "name": "local_search",
+    #     "model": SMT_local_search,
+    #     "symmetry_breaking": False,
+    #     "implied_constraints": False
+    # },
     {
-        "name": "local_search",
-        "model": SMT_local_search,
+        "name": "plain-mtz",
+        "model": SMT_plain_mtz,
         "symmetry_breaking": False,
         "implied_constraints": False
     }
 ]
 
-def solve(instance, timeout, cache={}, **kwargs):
+def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     results = {}
     
     for experiment in experiments:
@@ -94,6 +102,7 @@ def solve(instance, timeout, cache={}, **kwargs):
                               timeout=timeout,
                               implied_constraints=implied_constraints,
                               symmetry_breaking=symmetry_breaking,
+                              random_seed = random_seed,
                               **kwargs)
         
     return results

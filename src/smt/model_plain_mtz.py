@@ -1,14 +1,17 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
+from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, subcircuitMTZ
     
-def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
+def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, random_seed=42, **kwargs):
+    timeout_timestamp = time.time() + timeout
+
     try:
         DEPOT = n + 1
         COURIERS = range(m)
         ITEMS = range(n)
         
         solver = Solver()
+        solver.set("random_seed", random_seed)
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
         # Decision variables
@@ -56,7 +59,8 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
           
         # Subcircuit constraints  
         for i in COURIERS:
-            solver.add(subcircuit(PATH[i], i))
+            # solver.add(subcircuit(PATH[i], i))
+            solver.add(subcircuitMTZ(PATH[i], i))
                             
         # Total weight constraints
         for i in COURIERS:
@@ -72,10 +76,10 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if symmetry_breaking:
             # --- Ordering on the amount of delivered packages ---
-            for i1 in COURIERS:
-                for i2 in COURIERS:
-                    if i1 < i2 and l[i1] == l[i2]:
-                        solver.add(COUNT[i1] <= COUNT[i2])
+            # for i1 in COURIERS:
+            #     for i2 in COURIERS:
+            #         if i1 < i2 and l[i1] == l[i2]:
+            #             solver.add(COUNT[i1] <= COUNT[i2])
                         
             # --- Ordering on the index of the delivered packages ---
             for i1 in COURIERS:
@@ -113,8 +117,15 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
         solver.add(obj >= lower_bound)
         solver.add(obj <= upper_bound)
         
+
+        if time.time() >= timeout_timestamp:
+            return {
+                "time": timeout,
+                "optimal": False,
+                "obj": None,
+                "sol": None
+            }
         
-        timeout_timestamp = time.time() + timeout
         start_timestamp = time.time()
         solver.push()    
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
@@ -125,20 +136,20 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
             model = solver.model()
             result_objective = model[obj].as_long()
             
-            print(f"New optimal found: {result_objective}")
-            print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
-            print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
-            print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
+            # print(f"New optimal found: {result_objective}")
+            # print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
+            # print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
+            # print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
             
-            print("PATH = ")
-            for i in COURIERS:
-                row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
-                print(row)
+            # print("PATH = ")
+            # for i in COURIERS:
+            #     row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
+            #     print(row)
                 
-            print("PACKS_PER_COURIER = ")
-            for i in COURIERS:
-                row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                print(row)
+            # print("PACKS_PER_COURIER = ")
+            # for i in COURIERS:
+            #     row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
+            #     print(row)
 
             solver.pop()
             solver.push()
@@ -150,7 +161,7 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
         
         end = time.time()
-        print(f"Checking model in {end - start} seconds")
+        # print(f"Checking model in {end - start} seconds")
         result = {
             "time": math.ceil(time.time() - start_timestamp),
             "optimal": False,

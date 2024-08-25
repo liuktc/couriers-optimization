@@ -125,6 +125,26 @@ def subcircuit(x, tag):
 
     return constraints
 
+def subcircuitMTZ(path, tag):
+    constraints = []
+    n = len(path) - 1
+    ITEMS = range(len(path)-1)
+    LOCATIONS = range(len(path))
+    DEPOT_IDX = len(path)-1
+
+    u = [ Int(f"u_{tag}_{l}") for l in LOCATIONS ]
+
+    for p in ITEMS:
+        constraints.append( Implies( path[DEPOT_IDX] == p, u[p] == 1 ) )
+
+    for l1 in ITEMS:
+        for l2 in LOCATIONS:
+            if l1 == l2: continue
+            constraints.append( Implies( path[l1] == l2+1, u[l2] >= (u[l1] + 1) ) )
+            constraints.append( u[l1] - u[l2] + 1 <= (n-1) * If(path[l1] == l2+1, 0, 1) )
+
+    return constraints
+
 def get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURIERS, obj, DISTANCES, D, best_objective, one_courier_solver):
     
     # one_courier_solver = Solver()

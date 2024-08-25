@@ -1,4 +1,27 @@
 {
+   "plain-mtz": {
+      "time": 1,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            6,
+            3
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "local_search": {
       "time": 1,
       "optimal": true,
