@@ -1,4 +1,35 @@
 {
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 226,
+      "sol": [
+         [
+            6,
+            9
+         ],
+         [
+            3,
+            5
+         ],
+         [
+            8
+         ],
+         [
+            2
+         ],
+         [
+            7
+         ],
+         [
+            1,
+            4
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "plain-mtz": {
       "time": 1,
       "optimal": true,
