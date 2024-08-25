@@ -89,7 +89,7 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
                     }
         continue """
         # Check if result is in cache
-        if name in cache:
+        if name in cache and name != "local_search":
             logger.info(f"Cache hit")
             results[name] = cache[name]
             continue
