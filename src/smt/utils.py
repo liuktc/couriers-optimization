@@ -1,5 +1,6 @@
 from z3 import *
 import itertools
+import time
 
 def maximum(a):
     m = a[0]
@@ -145,7 +146,7 @@ def subcircuitMTZ(path, tag):
 
     return constraints
 
-def get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURIERS, obj, DISTANCES, D, best_objective, one_courier_solver):
+def get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURIERS, obj, DISTANCES, D, best_objective, one_courier_solver, timeout_timestamp):
     
     # one_courier_solver = Solver()
     # one_courier_solver.add(Distinct(PATH[courier_to_optimize]))
@@ -184,6 +185,8 @@ def get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURI
             # print(f"Permutation = {perm}")
             if perm == combination:
                 continue
+            if time.time() >= timeout_timestamp:
+                break
             one_courier_solver.push()
             has_to_continue = True
             for j in range(DEPOT):
@@ -203,6 +206,7 @@ def get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURI
                 PATH[courier_to_optimize][j] == path_model[courier_to_optimize][perm[combination.index(j)]] if j in perm else PATH[courier_to_optimize][j] == path_model[courier_to_optimize][j] for j in range(DEPOT)
             ]))   """      
             
+            
             t += 1
             if one_courier_solver.check() == sat:
                 sol_per_perm += 1
@@ -214,8 +218,11 @@ def get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURI
 
             one_courier_solver.pop()
             one_courier_solver.add(obj < objective)
+        
+        if time.time() >= timeout_timestamp:
+            break
     # print(f"Tried {t} solutions")
-    solver.pop()
+    # solver.pop()
     one_courier_solver.pop()
     return best_path, objective
     

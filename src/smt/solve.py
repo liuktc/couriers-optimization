@@ -48,14 +48,14 @@ experiments = [
         "model": SMT_local_search,
         "symmetry_breaking": False,
         "implied_constraints": False
-    },
-    {
+    }]
+"""     {
         "name": "plain-mtz",
         "model": SMT_plain_mtz,
         "symmetry_breaking": False,
         "implied_constraints": False
     }
-]
+] """
 
 def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     results = {}

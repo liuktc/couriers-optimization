@@ -6,6 +6,8 @@ import logging
 logger = logging.getLogger(__name__)
 # Disable debug logging
 # logger.setLevel(logging.INFO)
+# Show debug
+logger.setLevel(logging.DEBUG)
 
 # from tqdm import tqdm
 
@@ -266,8 +268,6 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                         break
                     if not already_optimized[courier_to_optimize]:
                         logger.debug(f"Courier to optimize = {courier_to_optimize}")
-                        
-                        # logger.debug(f"PATH = {path_model}")
                         #implementation of local search
                         
                         # Calculate all the permutations of each path row
@@ -279,23 +279,41 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                             for j in range(DEPOT):
                                 if i != courier_to_optimize:
                                     solver.add(PATH[i][j] == path_model[i][j]) """
-                        new_path, last_objective = get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURIERS, obj, DISTANCES, D, best_objective, one_courier_solvers[courier_to_optimize])
+                        new_path, last_objective = get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURIERS, obj, DISTANCES, D, best_objective, one_courier_solvers[courier_to_optimize], timeout_timestamp)
                         # solver.pop()
                         if new_path == path_model[courier_to_optimize]:
                             logger.debug(f"No improvement found for courier {courier_to_optimize}")
                             already_optimized[courier_to_optimize] = True
                         else:
                             new_optimal = True
+                            path_model[courier_to_optimize] = new_path
                             logger.debug(f"Found a new best path for courier {courier_to_optimize} with distance {last_objective}")
                             """ if last_objective < objective:
                                 objective = last_objective """
-                            # solver.add(obj < last_objective)
-                            # objective = last_objective
-                            # Constraint the best path on courier courier_to_optimize
-                            path_model[courier_to_optimize] = new_path
-                            best_path = path_model
-                            """ for j in range(DEPOT):
-                                solver.add(PATH[courier_to_optimize][j] == best_path[j]) """
+                            solver.push()
+                            for i in COURIERS:
+                                for j in range(DEPOT):
+                                    solver.add(PATH[i][j] == path_model[i][j])
+                                    
+                            is_sat = solver.check() == sat
+                            if not is_sat:
+                                logger.debug("Error: model is not satisfiable")
+                                break
+                            model = solver.model()
+                            solver.pop()
+                            
+                            result_objective = model[obj].as_long()
+                            objective = result_objective
+                            
+                            
+                            path_model = [[model[PATH[i][j]].as_long() for j in range(DEPOT)] for i in COURIERS]
+                            distances = [model[DISTANCES[i]].as_long() for i in COURIERS]
+                            logger.debug("New distances = ", distances)
+                            
+                            if objective < best_objective:
+                                best_objective = objective
+                                best_path = path_model
+                                print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                         
                     
                     if courier_to_optimize == m - 1:
