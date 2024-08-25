@@ -35,42 +35,6 @@
          "runner": "github-action"
       }
    },
-   "local_search": {
-      "time": 300,
-      "optimal": false,
-      "obj": 220,
-      "sol": [
-         [
-            7
-         ],
-         [
-            4
-         ],
-         [
-            5
-         ],
-         [
-            10
-         ],
-         [
-            1
-         ],
-         [
-            9
-         ],
-         [
-            8
-         ],
-         [
-            2,
-            6,
-            3
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
    "plain": {
       "time": 1,
       "optimal": true,

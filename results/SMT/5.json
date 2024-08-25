@@ -16,15 +16,6 @@
          "runner": "github-action"
       }
    },
-   "local_search": {
-      "time": 300,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
    "plain": {
       "time": 1,
       "optimal": true,

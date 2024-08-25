@@ -43,12 +43,12 @@ logger = logging.getLogger(__name__)
 ] """
 
 experiments = [
-    # {
-    #     "name": "local_search",
-    #     "model": SMT_local_search,
-    #     "symmetry_breaking": False,
-    #     "implied_constraints": False
-    # },
+    {
+        "name": "local_search",
+        "model": SMT_local_search,
+        "symmetry_breaking": False,
+        "implied_constraints": False
+    },
     {
         "name": "plain-mtz",
         "model": SMT_plain_mtz,
@@ -89,10 +89,10 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
                     }
         continue """
         # Check if result is in cache
-        """ if name in cache:
+        if name in cache:
             logger.info(f"Cache hit")
             results[name] = cache[name]
-            continue """
+            continue
         
         results[name] = model(instance["m"],
                               instance["n"],

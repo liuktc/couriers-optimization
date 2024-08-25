@@ -42,49 +42,6 @@
          "runner": "github-action"
       }
    },
-   "local_search": {
-      "time": 300,
-      "optimal": false,
-      "obj": 436,
-      "sol": [
-         [
-            6
-         ],
-         [
-            1
-         ],
-         [
-            5
-         ],
-         [
-            2
-         ],
-         [
-            7
-         ],
-         [
-            10
-         ],
-         [
-            9,
-            11,
-            4,
-            13
-         ],
-         [
-            8
-         ],
-         [
-            3
-         ],
-         [
-            12
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
    "plain": {
       "time": 1,
       "optimal": true,
