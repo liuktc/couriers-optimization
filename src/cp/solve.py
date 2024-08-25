@@ -169,6 +169,13 @@ experiments_chuffed = [
         "preprocessing": []
     },
     {
+        "name": "vrp-luby-chuffed",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-luby.mzn"),
+        "solver": "chuffed",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": []
+    },
+    {
         "name": "vrp-symm_amount-chuffed",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-symm_amount.mzn"),
         "solver": "chuffed",
