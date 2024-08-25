@@ -1,11 +1,11 @@
 import os
 import json
-import subprocess
+#import subprocess
 import logging 
 import pathlib
-import re
+#import re
 from amplpy import AMPL, add_to_path, DataFrame
-import matplotlib.pylab as plt
+#import matplotlib.pylab as plt
 
 logger = logging.getLogger(__name__)
 
