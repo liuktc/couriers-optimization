@@ -21,7 +21,7 @@ var A{i in PACKS, k in COURIERS} binary;
 #X[i,j,k] = 1 iff the couriers k start from the point i and end to the point j 
 var X{i in NODES, j in NODES, k in COURIERS} binary;
 #var u[i,k] used of the soubtur elimination following the MTZ approach
-var u{i in NODES, k in COURIERS} >= 1;
+var u{i in NODES, k in COURIERS} >= 1 <= n + 1;
 
 minimize ObjectiveMaxDistance: 
 	max{k in COURIERS} sum{i in NODES, j in NODES} D[i,j]*X[i,j,k];
@@ -72,8 +72,8 @@ subject to SubtourElimination1{k in COURIERS, i in PACKS, j in NODES: j!=i}:
 subject to SubtourElimination2{k in COURIERS, i in PACKS}:
 	u[i,k] <= X[DEPOT,i,k] + (n+1)*(1-X[DEPOT,i,k]);
 
-#subject to SubtourElimination3{k in COURIERS, i in PACKS, j in NODES: j!=i}:
-	#u[j,k] >= u[i,k] + X[i,j,k];
+subject to SubtourElimination3{k in COURIERS, i in PACKS, j in NODES: j!=i}:
+	u[j,k] >= (u[i,k] + 1)* X[i,j,k];
 
 #Objective boundaries constraints
 subject to UpBound:
@@ -87,6 +87,8 @@ subject to LowBound:
 #subject to ImpliedConstraint {k in COURIERS}:
 	#sum{i in PACKS} A[i,k] >= 1;
 	
-subject to SymmetryBreaking {k in COURIERS: k < m: l[k] == l[k+1]}:   #-> problem beacusa not taking into accunt the capacity of the couriers
-    sum{i in PACKS} i * A[i,k] <= sum{i in PACKS} i * A[i,k+1];
+subject to SymmetryBreaking {k in COURIERS, j in COURIERS: k < j and l[k] == l[j]}: 
+    sum{i in PACKS} A[i,k] <= sum{i in PACKS}  A[i,j];
+
+
     

@@ -91,4 +91,87 @@ subject to LowBound:
     #sum{i in PACKS} A[i,k] <= sum{i in PACKS}  A[i,j];
 
 
+# Inizializzazione dei parametri per la soluzione iniziale
+param A_start{PACKS, COURIERS} default 0;
+param X_start{NODES, NODES, COURIERS} default 0;
 
+# Funzione per trovare il pacco più vicino non assegnato
+function find_nearest_unassigned(current, unassigned, remaining_capacity) {
+    if card(unassigned) == 0 then return DEPOT;
+    
+    let nearest := first(unassigned);
+    let min_dist := D[current, nearest];
+    
+    for {j in unassigned} {
+        if D[current, j] < min_dist and s[j] <= remaining_capacity then {
+            let nearest := j;
+            let min_dist := D[current, j];
+        }
+    }
+    if s[nearest] > remaining_capacity then return DEPOT;
+    return nearest;
+}
+
+# Generazione della soluzione iniziale
+let {i in PACKS, k in COURIERS} A_start[i,k] := 0;
+let {i in NODES, j in NODES, k in COURIERS} X_start[i,j,k] := 0;
+
+for {k in COURIERS} {
+    let current := DEPOT;
+    let remaining_capacity := l[k];
+    let unassigned := PACKS;
+    
+    let X_start[DEPOT, DEPOT, k] := 1;  # Inizializza al deposito
+    
+    repeat {
+        let next := find_nearest_unassigned(current, unassigned, remaining_capacity);
+        if next == DEPOT then break;
+        
+        let A_start[next,k] := 1;
+        let X_start[current, next, k] := 1;
+        let remaining_capacity := remaining_capacity - s[next];
+        let unassigned := unassigned diff {next};
+        let current := next;
+    } until card(unassigned) == 0 or current == DEPOT;
+    
+    if current != DEPOT then
+        let X_start[current, DEPOT, k] := 1;
+}
+
+# Assegna eventuali pacchi non assegnati al corriere con più capacità residua
+for {i in PACKS: sum{k in COURIERS} A_start[i,k] == 0} {
+    let k := argmax{j in COURIERS} (l[j] - sum{p in PACKS} A_start[p,j] * s[p]);
+    let A_start[i,k] := 1;
+    # Nota: non aggiorniamo X_start per semplicità, ma in una implementazione completa dovremmo farlo
+}
+
+# Stampa della soluzione iniziale
+printf "Initial Solution:\n";
+for {k in COURIERS} {
+    printf "Route for courier %d: ", k;
+    let current := DEPOT;
+    repeat {
+        printf "%d -> ", current;
+        let next := first{j in NODES: X_start[current,j,k] == 1} j;
+        if next == DEPOT then break;
+        let current := next;
+    } until current == DEPOT;
+    printf "%d\n", DEPOT;
+    
+    printf "Packages assigned: ";
+    for {i in PACKS: A_start[i,k] == 1} {
+        printf "%d ", i;
+    }
+    printf "\n";
+}
+
+# Impostazione della soluzione iniziale per il warm start
+for {i in PACKS, k in COURIERS} {
+    let A[i,k].init := A_start[i,k];
+}
+
+for {i in NODES, j in NODES, k in COURIERS} {
+    let X[i,j,k].init := X_start[i,j,k];
+}
+
+# Non inizializziamo u[i,k] poiché è una variabile ausiliaria per l'eliminazione dei subtour
