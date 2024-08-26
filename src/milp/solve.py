@@ -8,12 +8,13 @@ from amplpy import AMPL, add_to_path, DataFrame
 #import matplotlib.pylab as plt
 import warnings
 import math
+import time
 
 logger = logging.getLogger(__name__)
 
 # Lista dei solver da testare, da aggiungerene altri e/o da testare modificadone parametri
 SOLVERS = [
-    # 'scip', 
+    'scip', 
     'highs'
 ]
 #SOLVERS = ['highs']
@@ -59,7 +60,7 @@ SOLVERS = [
 #    
 #    return A_start, X_start
 #
-def run_ampl_model(model_file, data_file, solver, timeout):
+def run_ampl_model(model_file, data_file, solver, timeout, random_seed):
     
     #add_to_path(r'c:/Users/cmaio/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/AMPL IDE.lnk') #Damodificareperreproducibilità
     ampl = AMPL()
@@ -109,13 +110,17 @@ def run_ampl_model(model_file, data_file, solver, timeout):
         
         ampl.setOption('solver', solver)
         ampl.setOption(solver + '_options', f'timelimit={timeout}')
+        ampl.setOption('randseed', random_seed)
 
+        start_time = time.time()
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             ampl.solve()
+        
+        solve_time = math.floor(time.time() - start_time)
         objective = round( ampl.getObjective('ObjectiveMaxDistance').value() )
         is_optimal = ampl.getValue('solve_result') == "solved"
-        solve_time = math.floor(ampl.getValue('_solve_time'))
+
         if (ampl.getValue('solve_result') == 'failure') or (ampl.getValue('solve_result') == 'infeasible') or (objective <= 0) : raise Exception("UNSAT")
         
         #iterations = ampl.getValue('_solve_problem.niter')
@@ -160,7 +165,7 @@ def run_ampl_model(model_file, data_file, solver, timeout):
         
     
         return {
-            "time": solve_time,
+            "time": solve_time if is_optimal else timeout,
             "optimal": is_optimal,
             "obj": objective,
             "sol": solution,
@@ -223,7 +228,8 @@ def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
                 model_file = model["model_path"],
                 data_file = data_file,
                 solver = solver,
-                timeout = timeout
+                timeout = timeout,
+                random_seed = random_seed
             )
             
             out_results[model_str] = result
