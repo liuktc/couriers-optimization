@@ -1,6 +1,6 @@
 from z3 import *
 import time
-from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
+from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
 import logging
 logger = logging.getLogger(__name__)
     

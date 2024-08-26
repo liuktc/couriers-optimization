@@ -1,6 +1,6 @@
 from z3 import *
 import time
-from utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
+from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
 import logging
 logger = logging.getLogger(__name__)  
     
@@ -152,13 +152,30 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
             
             start = time.time()
+            
             if solver.check() == sat:
                 model = solver.model()
                 result_objective = model[obj].as_long()
-                logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
                 solver.pop()
-                
+                logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")    
                 solver.add(obj < result_objective)
+                
+                now = time.time()
+                if now >= timeout_timestamp:
+                    break
+                
+                solver.set('timeout', millisecs_left(now, timeout_timestamp))
+                
+                while solver.check() == sat:
+                    model = solver.model()
+                    result_objective = model[obj].as_long()
+                    logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
+                    solver.add(obj < result_objective)
+                    now = time.time()
+                    if now >= timeout_timestamp:
+                        break
+                    
+                    solver.set('timeout', millisecs_left(now, timeout_timestamp))
                 
             # The new solution must be different from the previous one
             solver_assignment.add(Or([ASSIGNMENTS[j] != result_assignment[j] for j in ITEMS]))

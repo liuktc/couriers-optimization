@@ -30,7 +30,7 @@ def main(args):
   warnings = []  
   results_folder = args[2]
   for subfolder in os.listdir(results_folder):
-    if subfolder.startswith('.'):
+    if subfolder.startswith('.') or subfolder != 'SMT':
       # Skip hidden folders.
       continue
     folder = os.path.join(results_folder, subfolder)

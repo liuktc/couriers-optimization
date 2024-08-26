@@ -1,201 +1,201 @@
 {
-   "local_search": {
-      "time": 300,
-      "optimal": false,
-      "obj": 443,
-      "sol": [
-         [
-            20,
-            32,
-            43,
-            61
-         ],
-         [
-            22,
-            35,
-            88,
-            91
-         ],
-         [
-            5,
-            6,
-            54,
-            89
-         ],
-         [
-            62,
-            67,
-            73,
-            80
-         ],
-         [
-            2,
-            18,
-            27,
-            70
-         ],
-         [
-            16,
-            59,
-            63,
-            83
-         ],
-         [
-            36,
-            82,
-            92,
-            7,
-            17
-         ],
-         [
-            21,
-            8,
-            38,
-            64,
-            87,
-            94
-         ],
-         [
-            4,
-            29,
-            58,
-            72,
-            79
-         ],
-         [
-            10,
-            12,
-            68,
-            93,
-            95
-         ],
-         [
-            11,
-            30,
-            74,
-            81
-         ],
-         [
-            37,
-            48,
-            50,
-            56
-         ],
-         [
-            3,
-            26,
-            28,
-            46,
-            60,
-            84,
-            85
-         ],
-         [
-            1,
-            9,
-            51,
-            52,
-            66,
-            71
-         ],
-         [
-            23,
-            53,
-            65,
-            76,
-            24,
-            44
-         ],
-         [
-            15,
-            31,
-            34,
-            49,
-            77,
-            86,
-            47
-         ],
-         [
-            19,
-            33,
-            57,
-            78
-         ],
-         [
-            13,
-            42,
-            45,
-            69
-         ],
-         [
-            25,
-            39,
-            41,
-            55
-         ],
-         [
-            14,
-            40,
-            75,
-            90
-         ]
-      ],
-      "_extras": {
-         "runner": ""
-      }
-   },
-   "plain-mtz": {
-      "time": 734,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
    "plain": {
-      "time": 308,
+      "time": 38,
       "optimal": false,
       "obj": null,
       "sol": null,
       "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "penalty": {
-      "time": 319,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
-      "_extras": {
-         "runner": "github-action"
+         "runner": "Huawei_Laptop"
       }
    },
    "plain_symm": {
-      "time": 324,
+      "time": 48,
       "optimal": false,
       "obj": null,
       "sol": null,
       "_extras": {
-         "runner": "github-action"
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_impl": {
+      "time": 37,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
       }
    },
    "twosolver": {
-      "time": 304,
+      "time": 31,
       "optimal": false,
       "obj": null,
       "sol": null,
       "_extras": {
-         "runner": "github-action"
+         "runner": "Huawei_Laptop"
       }
    },
-   "smt_first": {
-      "time": 316,
+   "twosolver_symm": {
+      "time": 30,
       "optimal": false,
       "obj": null,
       "sol": null,
       "_extras": {
-         "runner": "github-action"
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_impl": {
+      "time": 31,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "local_search": {
+      "time": 30,
+      "optimal": false,
+      "obj": 498,
+      "sol": [
+         [
+            2,
+            9,
+            20,
+            69
+         ],
+         [
+            6,
+            30,
+            42,
+            75
+         ],
+         [
+            36,
+            43,
+            48,
+            87
+         ],
+         [
+            17,
+            28,
+            52,
+            68
+         ],
+         [
+            13,
+            16,
+            37,
+            58,
+            89
+         ],
+         [
+            14,
+            62,
+            67,
+            85
+         ],
+         [
+            11,
+            26,
+            49,
+            71,
+            73
+         ],
+         [
+            4,
+            7,
+            46,
+            47,
+            78
+         ],
+         [
+            29,
+            45,
+            51,
+            56,
+            92
+         ],
+         [
+            54,
+            64,
+            76,
+            90,
+            94
+         ],
+         [
+            10,
+            15,
+            19,
+            40,
+            86
+         ],
+         [
+            33,
+            44,
+            61,
+            81,
+            91
+         ],
+         [
+            3,
+            18,
+            34,
+            84,
+            88
+         ],
+         [
+            53,
+            59,
+            60,
+            66,
+            77
+         ],
+         [
+            22,
+            31,
+            35,
+            74,
+            93
+         ],
+         [
+            50,
+            80,
+            82,
+            83,
+            70
+         ],
+         [
+            5,
+            38,
+            57,
+            63,
+            25
+         ],
+         [
+            12,
+            65,
+            72,
+            8,
+            95
+         ],
+         [
+            23,
+            24,
+            39,
+            27,
+            32
+         ],
+         [
+            1,
+            21,
+            41,
+            55,
+            79
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
       }
    }
 }

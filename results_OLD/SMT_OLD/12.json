@@ -1,0 +1,201 @@
+{
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 443,
+      "sol": [
+         [
+            20,
+            32,
+            43,
+            61
+         ],
+         [
+            22,
+            35,
+            88,
+            91
+         ],
+         [
+            5,
+            6,
+            54,
+            89
+         ],
+         [
+            62,
+            67,
+            73,
+            80
+         ],
+         [
+            2,
+            18,
+            27,
+            70
+         ],
+         [
+            16,
+            59,
+            63,
+            83
+         ],
+         [
+            36,
+            82,
+            92,
+            7,
+            17
+         ],
+         [
+            21,
+            8,
+            38,
+            64,
+            87,
+            94
+         ],
+         [
+            4,
+            29,
+            58,
+            72,
+            79
+         ],
+         [
+            10,
+            12,
+            68,
+            93,
+            95
+         ],
+         [
+            11,
+            30,
+            74,
+            81
+         ],
+         [
+            37,
+            48,
+            50,
+            56
+         ],
+         [
+            3,
+            26,
+            28,
+            46,
+            60,
+            84,
+            85
+         ],
+         [
+            1,
+            9,
+            51,
+            52,
+            66,
+            71
+         ],
+         [
+            23,
+            53,
+            65,
+            76,
+            24,
+            44
+         ],
+         [
+            15,
+            31,
+            34,
+            49,
+            77,
+            86,
+            47
+         ],
+         [
+            19,
+            33,
+            57,
+            78
+         ],
+         [
+            13,
+            42,
+            45,
+            69
+         ],
+         [
+            25,
+            39,
+            41,
+            55
+         ],
+         [
+            14,
+            40,
+            75,
+            90
+         ]
+      ],
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "plain-mtz": {
+      "time": 734,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain": {
+      "time": 308,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "penalty": {
+      "time": 319,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain_symm": {
+      "time": 324,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "twosolver": {
+      "time": 304,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt_first": {
+      "time": 316,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
+}

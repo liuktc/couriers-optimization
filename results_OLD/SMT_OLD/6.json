@@ -1,0 +1,210 @@
+{
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 322,
+      "sol": [
+         [
+            4
+         ],
+         [
+            1
+         ],
+         [
+            5
+         ],
+         [
+            2,
+            3
+         ],
+         [
+            8
+         ],
+         [
+            6,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain-mtz": {
+      "time": 1,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            6,
+            3,
+            4
+         ],
+         [
+            5
+         ],
+         [
+            7
+         ],
+         [
+            2
+         ],
+         [
+            1
+         ],
+         [
+            8
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain": {
+      "time": 1,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            8
+         ],
+         [
+            6
+         ],
+         [
+            3
+         ],
+         [
+            2
+         ],
+         [
+            5,
+            1,
+            4
+         ],
+         [
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "penalty": {
+      "time": 300,
+      "optimal": false,
+      "obj": 322,
+      "sol": [
+         [
+            8,
+            1
+         ],
+         [
+            5
+         ],
+         [
+            7
+         ],
+         [
+            3
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            6
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "plain_symm": {
+      "time": 1,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            7
+         ],
+         [
+            1
+         ],
+         [
+            8,
+            4
+         ],
+         [
+            5
+         ],
+         [
+            6,
+            3
+         ],
+         [
+            2
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "twosolver": {
+      "time": 300,
+      "optimal": false,
+      "obj": 354,
+      "sol": [
+         [],
+         [],
+         [
+            4,
+            2
+         ],
+         [
+            7,
+            8
+         ],
+         [
+            6,
+            1
+         ],
+         [
+            5,
+            3
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt_first": {
+      "time": 14,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            4
+         ],
+         [
+            1,
+            6,
+            2
+         ],
+         [
+            3
+         ],
+         [
+            7
+         ],
+         [
+            5
+         ],
+         [
+            8
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
+}

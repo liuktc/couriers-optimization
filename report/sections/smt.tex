@@ -4,30 +4,39 @@ The SMT model is based on the CP model, and follows the same definition of paths
 
 \subsection{Decision variables}
 
-The SMT model relies on the following decision variables, where boolean variables are from the Propositional Logic Theory, and integer variables are from LIA Theory. To solve this, two kind of model are proposed:
-
-\item \texttt{plain}: Z3 solver with all the constraints below and nothing else.
-\item \texttt{two_solver}: two Z3 solvers, where the first one finds the assignments of the packages ($A_j$) and the second finds the route ($P_{i,j}$) given the assignment of packages found by the previous solver. In this way, we have specified Z3 what part of the solution to find first. 
+The SMT model relies on the following decision variables, where boolean variables are from the Propositional Logic Theory, and integer variables are from LIA Theory.
 
 \begin{itemize}
     \item For each package $j$, $A_j \in \{1, \dots, m\}$ (\texttt{ASSIGNMENTS[j]} in Z3) indicates which courier delivers package $j$. More specifically, $A_j = i$ iff the courier $i$ delivers package $j$.
     
     \item For each courier $i$, $P_{i,d} \in \{1, \dots, n + 1\}$ for $d \in \{1, \dots, n + 1\}$ (\texttt{PATH[i][d]} in Z3) models the path taken by the courier $i$. The path is defined such that $P_{i, d_1} = d_1$ iff the location $d_1$ is not part of the route of the courier $i$ and $P_{i, d_1} = d_2$ iff $d_2$ is visited immediately after $d_1$ in the route of $c$. In other words, each relevant location indicates which is its successor and the overall route is defined as a Hamiltonian cycle that starts from $n+1$ (i.e., the depot).
 
-    \item For each courier $i$, $D_i \in \mathbb{N}$(\texttt{DISTANCES[i][d]} in Z3) is equal to the distance traveled by each courier.
+    \item For each courier $i$, $D_i \in \mathbb{N}$ (\texttt{DISTANCES[i][d]} in Z3) is equal to the distance traveled by each courier.
 
     \item For each courier $i$, $C_i \in \mathbb{N}$ (\texttt{COUNT[i]} in Z3) models the number of packages delivered by courier $i$.
 
-    \item For each item $j$ and for each courier $i$, $PPC_{i,j}$ (\texttt{PACKS_PER_COURIER[i][j]} in Z3) model the packages delivered by each courier and it is used for symmetry breaking only.
+    \item For each item $j$ and for each courier $i$, $PPC_{i,j}$ (\texttt{PACKS\_PER\_COURIER[i][j]} in Z3) model the packages delivered by each courier and it is used for symmetry breaking only.
 \end{itemize}
 
 \subsection{Objective function}
 The objective function is defined as follows:
 
-\[ \arg \max D_i  \]
-    \item All the elements of each row of \texttt{PATH} should be distinct.
+\[ \texttt{obj} = \max_{i \in \{1, \dots, m\}} D_i  \]
 
-    \item Count constraint: $C_i == \sum_{i \in \{1, \dots, m\}} \texttt{If(} A_j == 1 \texttt{) -> 1 else 0}$
+\subsection{Constraints}
+
+\begin{itemize}
+    \item All the elements of each row of $P$ should be distinct:
+
+    \begin{equation}
+        \forall i \in \{1, \dots, m\}: \quad \texttt{alldifferent}(\{P_{i,j}, j \in \{1, \dots, n+1\}\}) 
+    \end{equation}
+
+    \item Count constraint: 
+
+    \begin{equation}
+        \forall i \in \{ 1, \dots, m \}: \quad C_i = | \{ j \in \{1, \dots, n\} | A_j = i \}|
+    \end{equation}
 
     \item To make sure that $P_i$ defines a correct path for the courier $i$ we impose that the elements of $P_i$ forms a Hamiltonian subcircuit (same as Hamiltonian path but ignoring the elements where $P_{i,j} == j$)
 
@@ -36,36 +45,83 @@ The objective function is defined as follows:
     \end{itemize}
 
     \item Weight constraint: 
-        
-\[\]
+    \begin{equation}
+        \forall i \in \{ 1, \dots, m \}: \sum_{j \in \{1, \dots, n\}: A_j = i} s_j \leq l_i 
+    \end{equation}
 
+    \item Subcircuit constraint:
 
-\subsection{Constraints}
-To model uses the following constraints in order to model effectively the problem:
+    \item Distance constraint:
 
-\begin{itemize}
-    \item \textbf{\texttt{ASSIGNMENTS} constraints}: 
+    \begin{equation}
+        \forall i \in \{1, \dots, m\}: \quad D_i = \sum_{j \in \{1, \dots, n+1\}} \begin{cases*}
+                    D_{j,P_{i,j}} & if  $P_{i,j} \neq j$  \\
+                    0 & if $P_{i,j} = j$
+                 \end{cases*}
+    \end{equation}
+
+    \item Assignment and path constraint:
+    \begin{equation}
+        \forall j \in \{1, \dots, n\}: \quad A_j = i \Longleftrightarrow P_{i,j} \neq j
+    \end{equation}
+
+    \begin{equation}
+        \forall j \in \{1, \dots, n\}: \quad A_j \neq i \Longleftrightarrow P_{i,j} = j
+    \end{equation}
 \end{itemize}
 
-\subsubsection{Symmetru breaking constraints}
+\subsubsection{Symmetry breaking constraints}
+See Symmetry breaking constraint of CP, section 2.3.1. 
 
 \subsubsection{Implied constraints}
 
 \begin{itemize}
-    \item $C_i \geq 1 \forall i \in \{1, \dots, m\}$ in order to ensure that each courier delivers at least one package.
+    \item In order to ensure that each courier delivers at least one package:
+    \begin{equation}
+        \forall i \in \{1, \dots, m\}: \quad C_i \geq 1  
+    \end{equation}
 \end{itemize}
 
 
 \subsection{Validation}
 
-The model has been implemented in Z3 using the python API \texttt{z3py}. The tests are performed on the following hardware: ????.
+The model has been implemented in Z3 using the python API \texttt{z3py}. The tests are performed on the following hardware: ????. For the problem instances after the 10th, 5GB of RAM weren't enough, so we increased it to 8GB in order to get some results.
 
-To be noted that the basic model using a single solver is not able to find a solution in a reasonable amount of time for the instances after the 10th. To be able to give a solution (even if not optimal), two strategie have been implemented:
+To be noted that the basic model using a single solver is not able to find a solution in a reasonable amount of time for the instances after the 10th. To be able to give a solution (even if not optimal) to hard to solve instances, two strategies have been implemented:
 
 \begin{itemize}
-    \item \textbf{Two solvers}: the first solver is used to find the \texttt{ASSIGNMENTS} and the second one to find the \texttt{PATH} given the \texttt{ASSIGNMENTS}. In other words, the first solver decides which courier delivers which package and the second solver decides the route taken by each courier (basically solving $n$ different Travelling Salesman Problems). This model performs better than the single solver model, but it is still not able to find a solution in a reasonable amount of time for the bigger instances.
+    \item \textbf{Two solvers}: the first solver is used to find the $A$ and the second one to find $P$ given $A$. In other words, the first solver decides which courier delivers which package and the second solver decides the route taken by each courier (basically solving $m$ different Travelling Salesman Problems). This model performs better than the single solver model, but it is still not able to find a solution in a reasonable amount of time for the bigger instances.
 
-    \item \textbf{Local search}: the first solver is used to find the \texttt{ASSIGNMENTS} and the second one to find the \texttt{PATH} given the \texttt{ASSIGNMENTS}. The big difference with the two solvers model is that the second solver doesn't try to find the optimal solution, but performs a local search starting from a trivial solution. In this way, even on the biggest instances, the solver is able to find a solution in a reasonable amount of time.
+    \item \textbf{Local search}: uses two solvers, the first solver is used to find $A$ and the second one to find $P$ given $A$. The difference with the \textit{two solvers} model is that the second solver doesn't try to find the optimal solution, but performs a local search starting from a trivial solution. In this way, even on the biggest instances, the solver is able to find a solution in a reasonable amount of time.
 
 \end{itemize}
+
+
+
+
+\begin{table}[h]
+	\centering
+	\caption{Caption}
+	\begin{tabular}{cccccccc}
+		\toprule
+		Id & plain & plain-symm & plain-impl & twosolver & twosolver-symm & twosolver-impl & local-search \\ 
+		\midrule
+		1 & \textbf{14} & 	\textbf{14} & 	\textbf{14} & 	\textbf{15} & 	\textbf{15} & 	\textbf{15} & 	\textbf{14} \\ 
+		2 & \textbf{226} & 	\textbf{226} & 	\textbf{226} & 	434 & 	-- & 	274 & 	226 \\ 
+		3 & \textbf{12} & 	\textbf{12} & 	\textbf{12} & 	\textbf{12} & 	\textbf{12} & 	\textbf{14} & 	\textbf{12} \\ 
+		4 & \textbf{220} & 	\textbf{220} & 	\textbf{220} & 	334 & 	389 & 	241 & 	220 \\ 
+		5 & \textbf{206} & 	\textbf{206} & 	\textbf{206} & 	\textbf{252} & 	\textbf{252} & 	\textbf{252} & 	\textbf{206} \\ 
+		6 & \textbf{322} & 	\textbf{322} & 	\textbf{322} & 	322 & 	-- & 	322 & 	322 \\ 
+		7 & 255 & 	254 & 	304 & 	365 & 	751 & 	340 & 	169 \\ 
+		8 & \textbf{186} & 	\textbf{186} & 	\textbf{186} & 	377 & 	-- & 	188 & 	186 \\ 
+		9 & \textbf{436} & 	\textbf{436} & 	\textbf{436} & 	619 & 	617 & 	436 & 	436 \\ 
+		10 & \textbf{244} & 	\textbf{244} & 	\textbf{244} & 	375 & 	-- & 	252 & 	244 \\ 
+		11 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	846 \\ 
+		12 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	498 \\ 
+		13 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	994 \\ 
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
     
