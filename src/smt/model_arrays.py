@@ -1,6 +1,8 @@
 from z3 import *
 import time
 from utils import maximum, precedes, millisecs_left, Min, subcircuit, get_element_at_index
+import logging
+logger = logging.getLogger(__name__)    
     
 def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
     try:
@@ -16,8 +18,8 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         # Copy the values of D into the array
         for i in range(DEPOT):
             for j in range(DEPOT):
-                # solver.add(Select(D_array, i * DEPOT + j) == D[i][j])
                 Store(D_array, i * DEPOT + j, D[i][j])
+
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
         # Decision variables
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,7 +93,9 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         # Implied constraints
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                
+        if implied_constraints:
+            for i in COURIERS:
+                solver.add(COUNT[i] > 0)
                     
                 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,26 +108,26 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # Search strategy
+        # Upper and lower bounds
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
         
         max_distances = [max(D[i][:-1]) for i in range(n)]
         max_distances.sort()
-        if implied_constraints:
-            upper_bound = sum(max_distances[m:]) + max(D[n]) + max([D[j][n] for j in range(n)])
-        else:
-            upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
+        upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
 
         solver.add(obj >= lower_bound)
         solver.add(obj <= upper_bound)
         
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Searching
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         timeout_timestamp = time.time() + timeout
         solver.push()    
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        print(f"Econding took {time.time() - encoding_start} seconds")
+        logger.debug(f"Econding took {time.time() - encoding_start} seconds")
                 
         start_timestamp = time.time()
         model = None
@@ -131,20 +135,20 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
             model = solver.model()
             result_objective = model[obj].as_long()
             
-            """ print(f"New optimal found: {result_objective}")
-            print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
-            print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
-            print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
+            logger.debug(f"New optimal found: {result_objective}")
+            logger.debug(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
+            logger.debug(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
+            logger.debug(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
             
-            print("PATH = ")
+            logger.debug("PATH = ")
             for i in COURIERS:
                 row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
-                print(row)
+                logger.debug(row)
                 
-            print("PACKS_PER_COURIER = ")
+            logger.debug("PACKS_PER_COURIER = ")
             for i in COURIERS:
                 row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                print(row) """
+                logger.debug(row)
 
             solver.pop()
             solver.push()
@@ -156,7 +160,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
         
         end = time.time()
-        print(f"Checking model in {end - start_timestamp} seconds")
+        logger.debug(f"Checking model in {end - start_timestamp} seconds")
         result = {
             "time": math.ceil(end - start_timestamp),
             "optimal": False,

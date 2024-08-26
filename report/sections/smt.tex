@@ -47,5 +47,25 @@ To model uses the following constraints in order to model effectively the proble
     \item \textbf{\texttt{ASSIGNMENTS} constraints}: 
 \end{itemize}
 
+\subsubsection{Symmetru breaking constraints}
+
+\subsubsection{Implied constraints}
+
+\begin{itemize}
+    \item $C_i \geq 1 \forall i \in \{1, \dots, m\}$ in order to ensure that each courier delivers at least one package.
+\end{itemize}
+
 
 \subsection{Validation}
+
+The model has been implemented in Z3 using the python API \texttt{z3py}. The tests are performed on the following hardware: ????.
+
+To be noted that the basic model using a single solver is not able to find a solution in a reasonable amount of time for the instances after the 10th. To be able to give a solution (even if not optimal), two strategie have been implemented:
+
+\begin{itemize}
+    \item \textbf{Two solvers}: the first solver is used to find the \texttt{ASSIGNMENTS} and the second one to find the \texttt{PATH} given the \texttt{ASSIGNMENTS}. In other words, the first solver decides which courier delivers which package and the second solver decides the route taken by each courier (basically solving $n$ different Travelling Salesman Problems). This model performs better than the single solver model, but it is still not able to find a solution in a reasonable amount of time for the bigger instances.
+
+    \item \textbf{Local search}: the first solver is used to find the \texttt{ASSIGNMENTS} and the second one to find the \texttt{PATH} given the \texttt{ASSIGNMENTS}. The big difference with the two solvers model is that the second solver doesn't try to find the optimal solution, but performs a local search starting from a trivial solution. In this way, even on the biggest instances, the solver is able to find a solution in a reasonable amount of time.
+
+\end{itemize}
+    

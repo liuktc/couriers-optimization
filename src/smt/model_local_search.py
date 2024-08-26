@@ -1,19 +1,11 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, get_best_neighbor, minimum, get_solution
+from utils import maximum, precedes, millisecs_left, get_element_at_index, subcircuit, get_best_neighbor, get_solution
 import itertools
 import logging
 logger = logging.getLogger(__name__)
-# Disable debug logging
 # logger.setLevel(logging.INFO)
-# Show debug
-logger.setLevel(logging.DEBUG)
-
-# from tqdm import tqdm
-
-best_objective = 99999999
-best_path = None
-  
+# logger.setLevel(logging.DEBUG)
     
 def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
     try:
@@ -24,11 +16,9 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
         ITEMS = range(n)
         
         solver = Optimize()
-        solver_assignment = Optimize()
-        one_courier_solvers = [Solver() for i in COURIERS]
+        solver_assignment = Optimize() # Using Optimize instead of Solver to use soft constraints 
+        one_courier_solvers = [Solver() for i in COURIERS] # Used for performance improvements
         
-            
-
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
         # Decision variables
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,19 +34,9 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
         DISTANCES = [Int(f"distance_{i}") for i in COURIERS]
         
         # Count[i] == k means that courier i delivered k items
-        COUNT = [Int(f"count_{i}") for i in COURIERS]
+        COUNT = [Int(f"count_{i}") for i in COURIERS]        
         
-        # PACKS_PER_COURIER = [[Int(f"packs_per_courier_{j}_{i}") for j in ITEMS] for i in COURIERS]
-        
-        """ for i in COURIERS:
-            for j in ITEMS:
-                solver.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
-        """       # solver_assignment.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
-        
-        
-        
-
-        
+        PACKS_PER_COURIER = [[Int(f"packs_per_courier_{j}_{i}") for j in ITEMS] for i in COURIERS]
         
         
         solver.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
@@ -103,14 +83,12 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 for i2 in COURIERS:
                     if i1 < i2 and l[i1] == l[i2]:
                         solver.add(COUNT[i1] <= COUNT[i2])
-                        # solver_assignment.add(COUNT[i1] <= COUNT[i2])
-                        
+
             # --- Ordering on the index of the delivered packages ---
             for i1 in COURIERS:
                 for i2 in COURIERS:
                     if i1 < i2 and l[i1] == l[i2]:
                         solver.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
-                        # solver_assignment.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         # Implied constraints
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,7 +105,6 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
         # Minimize the maximum distance traveled
         obj = Int('obj')
         solver.add(obj == maximum([DISTANCES[i] for i in COURIERS]))
-        # solver.minimize(obj)
         
         for i in COURIERS:
             one_courier_solvers[i].add(Distinct(PATH[i]))
@@ -138,44 +115,26 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Soft constraints
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # As a first solution for the solver, set the elements of PATH to be ordered in increasing order
-        """ solver.push()
-        for i in COURIERS:
-            for j in ITEMS:
-                solver.add_soft(Implies(ASSIGNMENTS[j] == i + 1, PATH[i][j] > j + 1)) """
-        
-        ABS_DIFF = [[Int(f"abs_diff_{i}_{j}") for j in COURIERS] for i in COURIERS]
-
-        for i in COURIERS:
-            for j in COURIERS:
-                if i < j:
-                    solver_assignment.add(ABS_DIFF[i][j] == Abs(COUNT[i] - COUNT[j]))
-                else:
-                    solver_assignment.add(ABS_DIFF[i][j] == 0)
-                    
-        sum_abs_diff = maximum([ABS_DIFF[i][j] for i in COURIERS for j in COURIERS if i < j]) 
-        # solver_assignment.minimize(sum_abs_diff)
-        solver_assignment.add_soft(And([COUNT[i] <= ((n*3)//(m*2)) for i in COURIERS]))
+        # The solver_assignment first try to find more equally distributed items
+        solver_assignment.add_soft(And([COUNT[i] <= (n//m) + 1 for i in COURIERS]))
         solver_assignment.add_soft(And([COUNT[i] >= n//m for i in COURIERS]))
         
-        
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # Search strategy
+        # Upper and lower bounds
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        
-        """ lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
+        lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
         
         max_distances = [max(D[i][:-1]) for i in range(n)]
         max_distances.sort()
-        if implied_constraints:
-            upper_bound = sum(max_distances[m:]) + max(D[n]) + max([D[j][n] for j in range(n)])
-        else:
-            upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
+        upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
 
         solver.add(obj >= lower_bound)
-        solver.add(obj <= upper_bound) """
+        solver.add(obj <= upper_bound)
         
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Searching
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         timeout_timestamp = time.time() + timeout
         start_timestamp = time.time()
@@ -186,23 +145,20 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
         logger.debug(f"Econding took {time.time() - encoding_start} seconds")        
         
         
-        model = None
-        global best_objective
-        global best_path
-        best_objective = 99999999
+        best_objective = upper_bound
         best_path = None
         while solver_assignment.check() == sat:
             model_assignment = solver_assignment.model()
             result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
             
             logger.debug(f"Result assignment = {result_assignment}")
-            # logger.debug COUNT
             logger.debug(f"COUNT = {[model_assignment.evaluate(COUNT[i]).as_long() for i in COURIERS]}")
+
+            # Set the found assignment solution to the solver
             solver.push()
             solver_assignment.push()
             for j in ITEMS:
                 solver.add(ASSIGNMENTS[j] == result_assignment[j])
-                # solver_assignment.add(ASSIGNMENTS[j] == result_assignment[j])
                 
             now = time.time()
             if now >= timeout_timestamp:
@@ -211,7 +167,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
             solver.push()
             start = time.time()
-            objective = None
+
             logger.debug("Try to find a path for the given assignment")
             # Find the trivial assignments
             delivered_per_courier = []
@@ -230,10 +186,8 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 for j in range(len(delivered_per_courier[i])):
                     if j < len(delivered_per_courier[i]) - 1:
                         solver.add(PATH[i][delivered_per_courier[i][j] - 1] == delivered_per_courier[i][j + 1])
-                        # logger.debug(f"PATH[{i}][{delivered_per_courier[i][j] - 1}] == {delivered_per_courier[i][j + 1]}")
                     else:
                         solver.add(PATH[i][delivered_per_courier[i][j] - 1] == delivered_per_courier[i][0])
-                        # logger.debug(f"PATH[{i}][{delivered_per_courier[i][j] - 1}] == {delivered_per_courier[i][0]}")
 
             if solver.check() == sat:
                 courier_to_optimize = 0
@@ -241,46 +195,37 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 model = solver.model()
                 solver.pop()
                 result_objective = model[obj].as_long()
-                objective = result_objective
                 
-                    
-                
-                
-                logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
-                # solver.add(obj < result_objective)
                 path_model = [[model[PATH[i][j]].as_long() for j in range(DEPOT)] for i in COURIERS]
-                # logger.debug("PATH = ", path_model)
                 distances = [model[DISTANCES[i]].as_long() for i in COURIERS]
-                logger.debug("Distances = ", distances)
                 already_optimized = [distances[i] < result_objective for i in COURIERS]
+
+                logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
+                logger.debug(f"Distances = {distances}")
                 logger.debug(f"Couriers to optimize = {[i for i in range(m) if not already_optimized[i]]}")
                 
                 
-                if objective < best_objective:
-                    best_objective = objective
+                if result_objective < best_objective:
+                    best_objective = result_objective
                     best_path = path_model
                     print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                 
-                
+                # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                # LOCAL SEARCH
+                # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                #
+                # Calculate the neighboring path solutions, by only considering the permutations
+                # of 3 items that are valid. In this way, we can reduce the search space and find
+                # an approximation of the optimal solution faster.
                 while courier_to_optimize < m:
                     # Check timeout
                     if time.time() >= timeout_timestamp:
                         break
                     if not already_optimized[courier_to_optimize]:
                         logger.debug(f"Courier to optimize = {courier_to_optimize}")
-                        #implementation of local search
-                        
-                        # Calculate all the permutations of each path row
-                        # By only considering the permutations that are valid, we can reduce the search space
-                        # So we take 3 elements from each path row and shuffle them
-                        """ solver.push()
-                        # FIX ALL THE PATH EXCEPT THE ONES THAT ARE BEING OPTIMIZED
-                        for i in COURIERS:
-                            for j in range(DEPOT):
-                                if i != courier_to_optimize:
-                                    solver.add(PATH[i][j] == path_model[i][j]) """
-                        new_path, last_objective = get_best_neighbor(path_model, courier_to_optimize, solver, DEPOT, PATH,COURIERS, obj, DISTANCES, D, best_objective, one_courier_solvers[courier_to_optimize], timeout_timestamp)
-                        # solver.pop()
+                        new_path, last_objective = get_best_neighbor(path_model, courier_to_optimize,  obj, best_objective, one_courier_solvers[courier_to_optimize], timeout_timestamp, upper_bound,DEPOT, PATH)
+
+                        # If no improvement found
                         if new_path == path_model[courier_to_optimize]:
                             logger.debug(f"No improvement found for courier {courier_to_optimize}")
                             already_optimized[courier_to_optimize] = True
@@ -288,8 +233,8 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                             new_optimal = True
                             path_model[courier_to_optimize] = new_path
                             logger.debug(f"Found a new best path for courier {courier_to_optimize} with distance {last_objective}")
-                            """ if last_objective < objective:
-                                objective = last_objective """
+                            
+                            # Check the found solution
                             solver.push()
                             for i in COURIERS:
                                 for j in range(DEPOT):
@@ -303,20 +248,21 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                             solver.pop()
                             
                             result_objective = model[obj].as_long()
-                            objective = result_objective
-                            
-                            
                             path_model = [[model[PATH[i][j]].as_long() for j in range(DEPOT)] for i in COURIERS]
                             distances = [model[DISTANCES[i]].as_long() for i in COURIERS]
                             logger.debug("New distances = ", distances)
                             
-                            if objective < best_objective:
-                                best_objective = objective
+                            if result_objective < best_objective:
+                                best_objective = result_objective
                                 best_path = path_model
                                 print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
-                        
                     
+                    if time.time() >= timeout_timestamp:
+                        break  
+                    
+                    # If optimized all the couriers in this step
                     if courier_to_optimize == m - 1:
+                        # If new optimal found, repeat the optimization
                         if new_optimal:
                             # Find the values by fixing the path values
                             solver.push()
@@ -324,34 +270,32 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                                 for j in range(DEPOT):
                                     solver.add(PATH[i][j] == path_model[i][j])
                                     
-                            is_sat = solver.check() == sat
-                            if not is_sat:
+                            if not solver.check() == sat:
                                 logger.debug("Error: model is not satisfiable")
                                 break
                             model = solver.model()
                             solver.pop()
-                            
                             result_objective = model[obj].as_long()
-                            objective = result_objective
                             
-                            
+                            # Restart the optimization
                             courier_to_optimize = 0
-                            logger.debug(f"New step to find new solution with obj val {objective}")
                                 
-                            # solver.add(obj < objective)
                             path_model = [[model[PATH[i][j]].as_long() for j in range(DEPOT)] for i in COURIERS]
                             distances = [model[DISTANCES[i]].as_long() for i in COURIERS]
-                            logger.debug("New distances = ", distances)
                             already_optimized =  [distances[i] < result_objective for i in COURIERS]
+                            
+                            logger.debug(f"New step to find new solution with obj val {result_objective}")
+                            logger.debug("New distances = ", distances)
                             logger.debug(f"Couriers to optimize = {[i for i in range(m) if not already_optimized[i]]}")
                             
-                            if objective < best_objective:
-                                best_objective = objective
+                            if result_objective < best_objective:
+                                best_objective = result_objective
                                 best_path = path_model
                                 print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                             new_optimal = False
                             continue
                         else:
+                            # If no improvement found, break the optimization
                             break
                     
                     courier_to_optimize += 1
@@ -379,16 +323,9 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                     logger.debug(f"PATH = {[path_model[i][j] for i in COURIERS for j in range(DEPOT)]}")
                 solver.pop()
                 
-            logger.debug(f"Popping solver and adding objective constraint with objective value {objective}")
+            logger.debug(f"Popping solver and adding objective constraint with objective value {best_objective}")
             solver.pop()
-            solver.pop()
-            # if objective is not None:
-            #     solver.add(obj < objective)
-            if objective is not None and objective < best_objective:
-                best_objective = objective
-                best_path = path_model
-                print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
-                
+            solver.pop()    
             
             # The new solution must be different from the previous one
             solver_assignment.add(Or([ASSIGNMENTS[j] != result_assignment[j] for j in ITEMS]))
@@ -398,22 +335,6 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 break
             
             solver_assignment.set('timeout', millisecs_left(now, timeout_timestamp))
-            
-            
-            """ logger.debug(f"New optimal found: {result_objective}")
-            logger.debug(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
-            logger.debug(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
-            logger.debug(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
-            
-            logger.debug("PATH = ")
-            for i in COURIERS:
-                row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
-                logger.debug(row)
-                
-            logger.debug("PACKS_PER_COURIER = ")
-            for i in COURIERS:
-                row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                logger.debug(row) """
         
         result = {
             "time": math.ceil(time.time() - start_timestamp),
@@ -421,7 +342,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             "obj": None,
             "sol": None
         }
-        if model is not None:
+        if best_path is not None:
             if result["time"] >= timeout:
                 result["time"] = timeout
                 result["optimal"] = False
@@ -429,21 +350,6 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 result["optimal"] = True
                 
             result["obj"] = best_objective
-            
-            # Calculate the solution
-            """ solution = []
-            path = best_path
-            for i in COURIERS:
-                items_delivered = []
-                
-                first_item = int(path[i][DEPOT - 1])
-                next_item = first_item
-                while next_item != DEPOT:
-                    items_delivered.append(next_item)
-                    next_item = int(path[i][next_item - 1])
-                
-                solution.append(items_delivered) """
-
             result["sol"] = get_solution(best_path, COURIERS, DEPOT)
             
         return result
@@ -464,7 +370,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 "sol": None
             }
         
-    except Exception as e:
+    """ except Exception as e:
         print(e)
         if best_path is not None:
             return {
@@ -479,4 +385,4 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 "optimal": False,
                 "obj": None,
                 "sol": None
-            }
+            } """

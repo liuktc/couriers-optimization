@@ -20,4 +20,8 @@ RUN wget https://github.com/MiniZinc/MiniZincIDE/releases/download/2.8.4/MiniZin
 
 
 RUN chmod +x ./entrypoint.sh
+
+RUN apt install -y dos2unix
+RUN dos2unix ./entrypoint.sh
+
 ENTRYPOINT [ "./entrypoint.sh" ]
