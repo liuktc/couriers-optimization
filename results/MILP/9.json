@@ -1,4 +1,47 @@
 {
+   "initial-model_scip": {
+      "time": 3,
+      "optimal": true,
+      "obj": 436,
+      "sol": [
+         [
+            11,
+            1
+         ],
+         [
+            2
+         ],
+         [
+            3,
+            12
+         ],
+         [
+            4
+         ],
+         [
+            5
+         ],
+         [
+            6,
+            13
+         ],
+         [
+            7
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [
+            10
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "initial-model_highs": {
       "time": 0,
       "optimal": true,
@@ -42,6 +85,49 @@
          "runner": "github-action"
       }
    },
+   "implied-model_scip": {
+      "time": 2,
+      "optimal": true,
+      "obj": 436,
+      "sol": [
+         [
+            11,
+            1
+         ],
+         [
+            2
+         ],
+         [
+            3,
+            10,
+            5
+         ],
+         [
+            4
+         ],
+         [
+            6
+         ],
+         [
+            7
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [
+            13
+         ],
+         [
+            12
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "implied-model_highs": {
       "time": 1,
       "optimal": true,
@@ -79,6 +165,49 @@
          [
             10,
             7
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "symmetry-model_scip": {
+      "time": 6,
+      "optimal": true,
+      "obj": 436,
+      "sol": [
+         [
+            1,
+            13
+         ],
+         [
+            11,
+            2
+         ],
+         [
+            12
+         ],
+         [
+            4
+         ],
+         [
+            9
+         ],
+         [
+            7,
+            5
+         ],
+         [
+            6
+         ],
+         [
+            10
+         ],
+         [
+            8
+         ],
+         [
+            3
          ]
       ],
       "_extras": {

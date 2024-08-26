@@ -1,4 +1,47 @@
 {
+   "initial-model_scip": {
+      "time": 2,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            12
+         ],
+         [
+            6
+         ],
+         [
+            2,
+            10
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [
+            5,
+            3
+         ],
+         [
+            11,
+            13
+         ],
+         [
+            7
+         ],
+         [
+            1
+         ],
+         [
+            4
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "initial-model_highs": {
       "time": 1,
       "optimal": true,
@@ -42,6 +85,49 @@
          "runner": "github-action"
       }
    },
+   "implied-model_scip": {
+      "time": 5,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            8
+         ],
+         [
+            3,
+            9
+         ],
+         [
+            10,
+            1
+         ],
+         [
+            2
+         ],
+         [
+            4,
+            11
+         ],
+         [
+            12
+         ],
+         [
+            6
+         ],
+         [
+            7
+         ],
+         [
+            5
+         ],
+         [
+            13
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "implied-model_highs": {
       "time": 2,
       "optimal": true,
@@ -79,6 +165,49 @@
          [
             2,
             6
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "symmetry-model_scip": {
+      "time": 6,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            6
+         ],
+         [
+            5
+         ],
+         [
+            7,
+            13
+         ],
+         [
+            1
+         ],
+         [
+            10,
+            8
+         ],
+         [
+            3
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            11
+         ],
+         [
+            9
+         ],
+         [
+            12
          ]
       ],
       "_extras": {

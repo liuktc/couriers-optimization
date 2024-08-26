@@ -1,4 +1,35 @@
 {
+   "initial-model_scip": {
+      "time": 1,
+      "optimal": true,
+      "obj": 226,
+      "sol": [
+         [
+            1,
+            4
+         ],
+         [
+            2
+         ],
+         [
+            5,
+            3
+         ],
+         [
+            6
+         ],
+         [
+            8
+         ],
+         [
+            7,
+            9
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "initial-model_highs": {
       "time": 0,
       "optimal": true,
@@ -30,6 +61,37 @@
          "runner": "github-action"
       }
    },
+   "implied-model_scip": {
+      "time": 5,
+      "optimal": true,
+      "obj": 226,
+      "sol": [
+         [
+            1
+         ],
+         [
+            2,
+            7
+         ],
+         [
+            3
+         ],
+         [
+            4
+         ],
+         [
+            9,
+            5
+         ],
+         [
+            6,
+            8
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "implied-model_highs": {
       "time": 0,
       "optimal": true,
@@ -55,6 +117,37 @@
             3,
             2,
             7
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "symmetry-model_scip": {
+      "time": 1,
+      "optimal": true,
+      "obj": 226,
+      "sol": [
+         [
+            4
+         ],
+         [
+            1
+         ],
+         [
+            2
+         ],
+         [
+            8,
+            9
+         ],
+         [
+            5,
+            7,
+            3
+         ],
+         [
+            6
          ]
       ],
       "_extras": {

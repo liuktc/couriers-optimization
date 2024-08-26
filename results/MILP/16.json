@@ -1,4 +1,13 @@
 {
+   "initial-model_scip": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "initial-model_highs": {
       "time": 127,
       "optimal": true,
@@ -96,6 +105,15 @@
          "runner": "github-action"
       }
    },
+   "implied-model_scip": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "implied-model_highs": {
       "time": 301,
       "optimal": false,
@@ -189,6 +207,15 @@
             45
          ]
       ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "symmetry-model_scip": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
       "_extras": {
          "runner": "github-action"
       }
