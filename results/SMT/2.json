@@ -1,26 +1,211 @@
 {
-   "twosolver": {
-      "time": 30,
-      "optimal": false,
+   "plain": {
+      "time": 4,
+      "optimal": true,
       "obj": 226,
       "sol": [
+         [
+            4
+         ],
+         [
+            3,
+            9
+         ],
+         [
+            6,
+            8
+         ],
+         [
+            7,
+            5
+         ],
+         [
+            2
+         ],
+         [
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_symm": {
+      "time": 1,
+      "optimal": true,
+      "obj": 226,
+      "sol": [
+         [
+            4,
+            1
+         ],
+         [
+            8
+         ],
          [
             6
          ],
          [
-            8,
+            3,
             9
+         ],
+         [
+            7,
+            5
+         ],
+         [
+            2
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_impl": {
+      "time": 3,
+      "optimal": true,
+      "obj": 226,
+      "sol": [
+         [
+            5
+         ],
+         [
+            6
+         ],
+         [
+            7
+         ],
+         [
+            2,
+            3
+         ],
+         [
+            1,
+            4
+         ],
+         [
+            9,
+            8
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver": {
+      "time": 300,
+      "optimal": false,
+      "obj": 226,
+      "sol": [
+         [
+            9,
+            3
+         ],
+         [
+            7,
+            2
+         ],
+         [
+            5
          ],
          [
             4
          ],
          [
+            8,
+            6
+         ],
+         [
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_symm": {
+      "time": 300,
+      "optimal": false,
+      "obj": 226,
+      "sol": [
+         [
+            9
+         ],
+         [
+            7,
+            5
+         ],
+         [
+            4,
+            1
+         ],
+         [
+            8,
+            6
+         ],
+         [],
+         [
+            3,
+            2
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_impl": {
+      "time": 300,
+      "optimal": false,
+      "obj": 226,
+      "sol": [
+         [
+            9
+         ],
+         [
+            5
+         ],
+         [
+            4,
             1
          ],
          [
             7,
             2,
             3
+         ],
+         [
+            8
+         ],
+         [
+            6
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 226,
+      "sol": [
+         [
+            3,
+            9
+         ],
+         [
+            6,
+            8
+         ],
+         [
+            1,
+            4
+         ],
+         [
+            2
+         ],
+         [
+            7
          ],
          [
             5
