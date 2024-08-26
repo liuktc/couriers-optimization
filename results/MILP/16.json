@@ -115,7 +115,7 @@
       }
    },
    "implied-model_highs": {
-      "time": 301,
+      "time": 300,
       "optimal": false,
       "obj": 557,
       "sol": [
@@ -221,7 +221,7 @@
       }
    },
    "symmetry-model_highs": {
-      "time": 461,
+      "time": 300,
       "optimal": false,
       "obj": 320,
       "sol": [
