@@ -1,0 +1,110 @@
+{
+   "initial-model_highs": {
+      "time": 0,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            10,
+            4
+         ],
+         [
+            7,
+            9
+         ],
+         [
+            5
+         ],
+         [
+            6
+         ],
+         [
+            2
+         ],
+         [
+            1
+         ],
+         [
+            8
+         ],
+         [
+            3
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "implied-model_highs": {
+      "time": 0,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            8
+         ],
+         [
+            7
+         ],
+         [
+            10
+         ],
+         [
+            3,
+            9
+         ],
+         [
+            2
+         ],
+         [
+            6
+         ],
+         [
+            1
+         ],
+         [
+            5,
+            4
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "symmetry-model_highs": {
+      "time": 0,
+      "optimal": true,
+      "obj": 220,
+      "sol": [
+         [
+            5
+         ],
+         [
+            3
+         ],
+         [
+            1
+         ],
+         [
+            4,
+            9
+         ],
+         [
+            2
+         ],
+         [
+            7
+         ],
+         [
+            8
+         ],
+         [
+            10,
+            6
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   }
+}
