@@ -6,11 +6,16 @@ import pathlib
 #import re
 from amplpy import AMPL, add_to_path, DataFrame
 #import matplotlib.pylab as plt
+import warnings
+import math
 
 logger = logging.getLogger(__name__)
 
 # Lista dei solver da testare, da aggiungerene altri e/o da testare modificadone parametri
-SOLVERS = ['scip', 'highs']
+SOLVERS = [
+    # 'scip', 
+    'highs'
+]
 #SOLVERS = ['highs']
 
 #def generate_initial_solution(m, n, l, s, D):
@@ -94,23 +99,24 @@ def run_ampl_model(model_file, data_file, solver, timeout):
        # ampl.set_data(X_df, 'X')
        # 
        # #####endWarmStart######
-       
-        ampl.setOption('solver', solver)
-        ampl.setOption(solver + '_options', f'timelimit={timeout}')
-        
         #DA MOGLIORARE
         #if solver == 'cbc':
             #ampl.option['cbc_options'] = "preprocess=on roundingHeuristic=on greedyHeuristic=on"
         #elif solver == 'scip':
             #ampl.option['scip_options'] = "heuristics/shiftandpropagate/freq = 1 numerics/feastol = 1e-6"
         if solver == 'highs':
-            ampl.option['highs_options'] = "presolve=on parallel=on mip_heuristic_effort=0.5 mip_rel_gap=1e-4" 
+            ampl.option['highs_options'] = "presolve=on mip_heuristic_effort=0.5 mip_rel_gap=1e-4" 
         
-        ampl.solve()
-        objective = ampl.getObjective('ObjectiveMaxDistance').value()
+        ampl.setOption('solver', solver)
+        ampl.setOption(solver + '_options', f'timelimit={timeout}')
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            ampl.solve()
+        objective = round( ampl.getObjective('ObjectiveMaxDistance').value() )
         is_optimal = ampl.getValue('solve_result') == "solved"
-        solve_time = ampl.getValue('_solve_time')
-        if ampl.getValue('solve_result') == 'failure' or ampl.getValue('solve_result') == 'infeasible' or ampl.getValue('solve_result') == 'limit'  : raise Exception
+        solve_time = math.floor(ampl.getValue('_solve_time'))
+        if (ampl.getValue('solve_result') == 'failure') or (ampl.getValue('solve_result') == 'infeasible') or (objective <= 0) : raise Exception("UNSAT")
         
         #iterations = ampl.getValue('_solve_problem.niter')
         #solve_result = ampl.getOutput('solve;')
@@ -156,7 +162,7 @@ def run_ampl_model(model_file, data_file, solver, timeout):
         return {
             "time": solve_time,
             "optimal": is_optimal,
-            "obj": int(objective),
+            "obj": objective,
             "sol": solution,
             #'iterations' : iterations,
             #'nodes' : nodes,
@@ -164,7 +170,7 @@ def run_ampl_model(model_file, data_file, solver, timeout):
             #'cuts' : cuts
         }
     except Exception as e:
-        print(f"Error with solver {solver} and model {model_file}: {str(e)}")
+        logger.error(f"Error with solver {solver} and model {model_file}: {str(e)}")
         return {
             "time": timeout,
             "optimal": False,
