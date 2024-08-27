@@ -2,6 +2,7 @@ from .model_plain import SMT_plain
 from .model_twosolver import SMT_twosolver 
 from .model_local_search import SMT_local_search
 from .model_plain_mtz import SMT_plain_mtz
+from .solve_smtlib import solve as solve_smtlib
 
 import logging
 logger = logging.getLogger(__name__)
@@ -92,5 +93,9 @@ def solve(instance, timeout, cache={}, instance_number=0, **kwargs):
                               implied_constraints=implied_constraints,
                               symmetry_breaking=symmetry_breaking,
                               **kwargs)
-        
+    
+    smtlib_results = solve_smtlib(instance, timeout, cache, **kwargs)
+    for key in smtlib_results:
+        results[key] = smtlib_results[key]
+
     return results

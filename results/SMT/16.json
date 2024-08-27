@@ -1,6 +1,6 @@
 {
    "plain": {
-      "time": 302,
+      "time": 300,
       "optimal": false,
       "obj": null,
       "sol": null,
@@ -9,7 +9,7 @@
       }
    },
    "plain_symm": {
-      "time": 303,
+      "time": 300,
       "optimal": false,
       "obj": null,
       "sol": null,
@@ -18,7 +18,7 @@
       }
    },
    "plain_impl": {
-      "time": 302,
+      "time": 300,
       "optimal": false,
       "obj": null,
       "sol": null,
@@ -317,6 +317,127 @@
       ],
       "_extras": {
          "runner": "Huawei_Laptop"
+      }
+   },
+   "smt2-plain-linear-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-cvc5": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-opensmt": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-smtinterpol": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-yices2": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1032,
+      "sol": [
+         [],
+         [],
+         [],
+         [],
+         [],
+         [
+            39
+         ],
+         [
+            28,
+            32,
+            17,
+            19,
+            45,
+            30,
+            26,
+            47
+         ],
+         [
+            33,
+            41,
+            42,
+            43,
+            36
+         ],
+         [],
+         [
+            20,
+            34,
+            3,
+            37,
+            18,
+            27,
+            16,
+            1,
+            40,
+            44
+         ],
+         [],
+         [
+            6,
+            14,
+            13,
+            10,
+            8,
+            23
+         ],
+         [
+            29,
+            21,
+            46,
+            35,
+            38,
+            5,
+            7,
+            11,
+            25,
+            12,
+            9,
+            4
+         ],
+         [],
+         [
+            15
+         ],
+         [],
+         [
+            2,
+            22,
+            24,
+            31
+         ],
+         [],
+         [],
+         []
+      ],
+      "_extras": {
+         "runner": "github-action"
       }
    }
 }

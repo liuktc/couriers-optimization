@@ -1,6 +1,6 @@
 {
    "plain": {
-      "time": 319,
+      "time": 300,
       "optimal": false,
       "obj": null,
       "sol": null,
@@ -9,7 +9,7 @@
       }
    },
    "plain_symm": {
-      "time": 349,
+      "time": 300,
       "optimal": false,
       "obj": null,
       "sol": null,
@@ -18,7 +18,7 @@
       }
    },
    "plain_impl": {
-      "time": 322,
+      "time": 300,
       "optimal": false,
       "obj": null,
       "sol": null,
@@ -27,7 +27,7 @@
       }
    },
    "twosolver": {
-      "time": 301,
+      "time": 300,
       "optimal": false,
       "obj": null,
       "sol": null,
@@ -45,7 +45,7 @@
       }
    },
    "twosolver_impl": {
-      "time": 301,
+      "time": 300,
       "optimal": false,
       "obj": null,
       "sol": null,
@@ -244,6 +244,51 @@
       ],
       "_extras": {
          "runner": "Huawei_Laptop"
+      }
+   },
+   "smt2-plain-linear-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-cvc5": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-opensmt": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-smtinterpol": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-yices2": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
       }
    }
 }

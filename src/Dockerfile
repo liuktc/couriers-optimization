@@ -5,7 +5,7 @@ COPY . .
 
 
 # Install dependencies
-RUN apt update && apt install -y python3 python3-pip wget
+RUN apt update && apt install -y python3 python3-pip wget unzip
 RUN pip3 install -r requirements.txt
 
 # Install MiniZinc
@@ -18,6 +18,31 @@ RUN wget https://github.com/MiniZinc/MiniZincIDE/releases/download/2.8.4/MiniZin
     cp -r minizinc/share/* /usr/local/share &&\
     cp -r minizinc/lib/* /usr/local/lib
 
+# Install CVC5
+RUN wget https://github.com/cvc5/cvc5/releases/download/cvc5-1.2.0/cvc5-Linux-x86_64-static.zip &&\
+    unzip cvc5-Linux-x86_64-static.zip -d cvc5 &&\
+    cp -r cvc5/cvc5-Linux-x86_64-static/bin/* /usr/local/bin &&\
+    cp -r cvc5/cvc5-Linux-x86_64-static/include/* /usr/local/include &&\
+    cp -r cvc5/cvc5-Linux-x86_64-static/lib/* /usr/local/lib
+
+# Install OpenSMT
+RUN wget https://github.com/usi-verification-and-security/opensmt/releases/download/v2.7.0/opensmt-2.7.0-x64-linux.tar.bz2 &&\
+    tar -xf opensmt-2.7.0-x64-linux.tar.bz2 &&\
+    cp opensmt /usr/local/bin/opensmt
+
+# Install SMTInterpol
+RUN apt install -y openjdk-21-jre-headless
+RUN wget http://ultimate.informatik.uni-freiburg.de/smtinterpol/smtinterpol-2.5-1384-g98f115aa.jar &&\
+    mv smtinterpol-2.5-1384-g98f115aa.jar /usr/local/share/smtinterpol.jar
+
+# Install Yices
+RUN wget https://github.com/SRI-CSL/yices2/releases/download/Yices-2.6.5/yices-2.6.5-x86_64-pc-linux-gnu-static-gmp.tar.gz &&\
+    tar -xf yices-2.6.5-x86_64-pc-linux-gnu-static-gmp.tar.gz &&\
+    cp -r yices-2.6.5/bin/* /usr/local/bin &&\
+    cp -r yices-2.6.5/etc/* /usr/local/etc &&\
+    cp -r yices-2.6.5/include/* /usr/local/include &&\
+    cp -r yices-2.6.5/lib/* /usr/local/lib
+    
 
 RUN chmod +x ./entrypoint.sh
 
