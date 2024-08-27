@@ -33,21 +33,21 @@ experiments = [
         "model": SMT_twosolver,
         "symmetry_breaking": False,
         "implied_constraints": False,
-        "instance_limit": 22,
+        "instance_limit": 17,
     },
     {
         "name": "twosolver_symm",
         "model": SMT_twosolver,
         "symmetry_breaking": True,
         "implied_constraints": False,
-        "instance_limit": 22,
+        "instance_limit": 17,
     },
     {
         "name": "twosolver_impl",
         "model": SMT_twosolver,
         "symmetry_breaking": False,
         "implied_constraints": True,
-        "instance_limit": 22,
+        "instance_limit": 17,
     },
     {
         "name": "local_search",
@@ -80,6 +80,8 @@ def solve(instance, timeout, cache={}, instance_number=0, **kwargs):
                 "obj": None,
                 "sol": None
             }
+            continue
+            
         
         results[name] = model(instance["m"],
                               instance["n"],
