@@ -1,15 +1,224 @@
 {
    "plain": {
+      "time": 1,
+      "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            7
+         ],
+         [
+            1
+         ],
+         [
+            3
+         ],
+         [
+            4
+         ],
+         [
+            2,
+            10,
+            5
+         ],
+         [
+            6
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_symm": {
       "time": 2,
       "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            6
+         ],
+         [
+            8
+         ],
+         [
+            3
+         ],
+         [
+            1
+         ],
+         [
+            2
+         ],
+         [
+            4,
+            7
+         ],
+         [
+            9
+         ],
+         [
+            5,
+            10
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_impl": {
+      "time": 2,
+      "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            5,
+            3
+         ],
+         [
+            4
+         ],
+         [
+            8
+         ],
+         [
+            2,
+            7
+         ],
+         [
+            9
+         ],
+         [
+            1
+         ],
+         [
+            10
+         ],
+         [
+            6
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver": {
+      "time": 300,
+      "optimal": false,
+      "obj": 186,
+      "sol": [
+         [
+            3
+         ],
+         [
+            1,
+            2
+         ],
+         [
+            8
+         ],
+         [
+            10,
+            6
+         ],
+         [
+            9
+         ],
+         [
+            5,
+            4
+         ],
+         [
+            7
+         ],
+         []
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_symm": {
+      "time": 300,
+      "optimal": false,
       "obj": 186,
       "sol": [
          [
             10
          ],
          [
-            3
+            9
          ],
+         [
+            5,
+            2
+         ],
+         [
+            6
+         ],
+         [
+            8,
+            7
+         ],
+         [
+            4
+         ],
+         [
+            1
+         ],
+         [
+            3
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_impl": {
+      "time": 300,
+      "optimal": false,
+      "obj": 186,
+      "sol": [
+         [
+            4,
+            7
+         ],
+         [
+            6
+         ],
+         [
+            1
+         ],
+         [
+            10
+         ],
+         [
+            5
+         ],
+         [
+            9
+         ],
+         [
+            8
+         ],
+         [
+            3,
+            2
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 186,
+      "sol": [
          [
             8
          ],
@@ -17,22 +226,28 @@
             6
          ],
          [
-            4,
+            2
+         ],
+         [
             7
          ],
          [
             1
          ],
          [
-            5,
-            2
+            9
          ],
          [
-            9
+            4,
+            5
+         ],
+         [
+            3,
+            10
          ]
       ],
       "_extras": {
-         "runner": "github-action"
+         "runner": "Huawei_Laptop"
       }
    },
    "smt2-plain-linear-z3": {
@@ -204,145 +419,6 @@
          ],
          [
             10
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "penalty": {
-      "time": 300,
-      "optimal": false,
-      "obj": 186,
-      "sol": [
-         [
-            3,
-            10
-         ],
-         [
-            1
-         ],
-         [
-            7,
-            2
-         ],
-         [
-            4
-         ],
-         [
-            6
-         ],
-         [
-            9
-         ],
-         [
-            8
-         ],
-         [
-            5
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "plain_symm": {
-      "time": 2,
-      "optimal": true,
-      "obj": 186,
-      "sol": [
-         [
-            1
-         ],
-         [
-            3
-         ],
-         [
-            8
-         ],
-         [
-            6
-         ],
-         [
-            9
-         ],
-         [
-            2
-         ],
-         [
-            4,
-            7
-         ],
-         [
-            5,
-            10
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "twosolver": {
-      "time": 300,
-      "optimal": false,
-      "obj": 444,
-      "sol": [
-         [],
-         [
-            10
-         ],
-         [],
-         [],
-         [],
-         [
-            2
-         ],
-         [],
-         [
-            1,
-            5,
-            3,
-            6,
-            8,
-            9,
-            7,
-            4
-         ]
-      ],
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "smt_first": {
-      "time": 4,
-      "optimal": true,
-      "obj": 186,
-      "sol": [
-         [
-            8
-         ],
-         [
-            1
-         ],
-         [
-            2,
-            5
-         ],
-         [
-            3,
-            6
-         ],
-         [
-            7
-         ],
-         [
-            4
-         ],
-         [
-            10
-         ],
-         [
-            9
          ]
       ],
       "_extras": {

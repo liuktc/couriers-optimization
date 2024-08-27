@@ -1,9 +1,17 @@
 from z3 import *
+import itertools
+import time
 
 def maximum(a):
     m = a[0]
     for v in a[1:]:
         m = If(v > m, v, m)
+    return m
+
+def minimum(a):
+    m = a[0]
+    for v in a[1:]:
+        m = If(v < m, v, m)
     return m
 
 def precedes(a1, a2):
@@ -90,17 +98,10 @@ def subcircuit(x, tag):
 
     # The successor of each node except where it is firstin is
     # numbered one more than the predecessor.
-    #non_empty_conditions.append(And([Implies(And(ins[i], x[i] - 1 != firstin), 
-    #                                         get_element_at_index(order, x[i] - 1) == get_element_at_index(order, i) + 1)
-    #                                 for i in S]))
 
     non_empty_conditions.append(And([Implies(And(ins[i], x[i] - 1 != firstin),
                                              Select(order, x[i] - 1) == Select(order, i) + 1)
                                      for i in S]))
-
-    # Each node that is not in is numbered after the lastin node.
-    # non_empty_conditions.append(And([Or(ins[i], get_element_at_index(order, lastin) < get_element_at_index(order, i))
-    #                                  for i in S]))
 
     non_empty_conditions.append(And([Or(ins[i], Select(order, lastin) < Select(order, i))
                                       for i in S]))
@@ -108,3 +109,87 @@ def subcircuit(x, tag):
     constraints.append(Implies(Not(empty), And(non_empty_conditions)))
 
     return constraints
+
+def subcircuitMTZ(path, tag):
+    constraints = []
+    n = len(path) - 1
+    ITEMS = range(len(path)-1)
+    LOCATIONS = range(len(path))
+    DEPOT_IDX = len(path)-1
+
+    u = [ Int(f"u_{tag}_{l}") for l in LOCATIONS ]
+
+    for p in ITEMS:
+        constraints.append( Implies( path[DEPOT_IDX] == p, u[p] == 1 ) )
+
+    for l1 in ITEMS:
+        for l2 in LOCATIONS:
+            if l1 == l2: continue
+            constraints.append( Implies( path[l1] == l2+1, u[l2] >= (u[l1] + 1) ) )
+            constraints.append( u[l1] - u[l2] + 1 <= (n-1) * If(path[l1] == l2+1, 0, 1) )
+
+    return constraints
+
+def get_best_neighbor(path_model, courier_to_optimize,  obj, best_objective, one_courier_solver, timeout_timestamp, upper_bound, DEPOT, PATH):
+    one_courier_solver.push()
+    one_courier_solver.add(obj < best_objective)
+        
+    objective = upper_bound
+    items_delivered = [j for j in range(DEPOT) if path_model[courier_to_optimize][j] != j + 1]
+    if len(items_delivered) <= 1:
+        return path_model[courier_to_optimize], objective
+
+    best_path = path_model[courier_to_optimize]
+    model = None
+    # Consider as neighboring solutions all the permutations of 3 items that are valid
+    for combination in itertools.combinations(items_delivered, 3):
+        for perm in [[combination[1], combination[2], combination[0]],[combination[2], combination[0], combination[1]]]:
+            if perm == combination:
+                continue
+            if time.time() >= timeout_timestamp:
+                break
+            one_courier_solver.push()
+            has_to_continue = True
+            for j in range(DEPOT):
+                # Add the permutation to the one_courier_solver
+                if j in perm:
+                    if j + 1 == path_model[courier_to_optimize][perm[combination.index(j)]]:
+                        has_to_continue = False
+                        break
+                    one_courier_solver.add(PATH[courier_to_optimize][j] == path_model[courier_to_optimize][perm[combination.index(j)]])
+                else:
+                    one_courier_solver.add(PATH[courier_to_optimize][j] == path_model[courier_to_optimize][j])
+            if not has_to_continue:
+                one_courier_solver.pop()
+                continue
+            
+            # Check if the permutation is a valid solution
+            # If it is, save it and the objective value
+            if one_courier_solver.check() == sat:
+                model = one_courier_solver.model()
+                objective = model[obj].as_long()
+                best_path = [model[PATH[courier_to_optimize][j]].as_long() for j in range(DEPOT)]
+
+            one_courier_solver.pop()
+            one_courier_solver.add(obj < objective)
+        
+        if time.time() >= timeout_timestamp:
+            break
+    one_courier_solver.pop()
+    return best_path, objective
+    
+# Get the solution out of the path
+def get_solution(path, COURIERS, DEPOT):
+    solution = []
+    for i in COURIERS:
+        items_delivered = []
+        
+        first_item = int(path[i][DEPOT - 1])
+        next_item = first_item
+        while next_item != DEPOT:
+            items_delivered.append(next_item)
+            next_item = int(path[i][next_item - 1])
+        
+        solution.append(items_delivered)
+
+    return solution

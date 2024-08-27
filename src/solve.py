@@ -91,7 +91,8 @@ if __name__ == "__main__":
             instance_results = solve_fn(
                 instance = instance,
                 timeout = args.timeout,
-                cache = cached_results
+                cache = cached_results,
+                instance_number = instance_number
             ) 
             
             # Adding missing cached results

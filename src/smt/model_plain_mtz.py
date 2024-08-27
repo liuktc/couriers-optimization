@@ -1,14 +1,17 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
+from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, subcircuitMTZ
     
-def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
+def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, random_seed=42, **kwargs):
+    timeout_timestamp = time.time() + timeout
+
     try:
         DEPOT = n + 1
         COURIERS = range(m)
         ITEMS = range(n)
         
         solver = Solver()
+        solver.set("random_seed", random_seed)
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
         # Decision variables
@@ -34,10 +37,9 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
                 solver.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
         
         
+        
         solver.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
-        
-        solver.add(PATH[0][0] != PATH[1][0])
-        
+                
         for i in COURIERS:
             for j in ITEMS:
                 solver.add(If(ASSIGNMENTS[j] == i + 1, PATH[i][j] != j + 1, PATH[i][j] == j + 1))
@@ -57,24 +59,16 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
           
         # Subcircuit constraints  
         for i in COURIERS:
-            solver.add(subcircuit(PATH[i], i))
+            # solver.add(subcircuit(PATH[i], i))
+            solver.add(subcircuitMTZ(PATH[i], i))
                             
         # Total weight constraints
         for i in COURIERS:
             solver.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
                         
         # Calculate the distance traveled by each courier
-        for i in COURIERS: 
-            dist = Sum([
-                Sum([If(And(ASSIGNMENTS[j1] == i + 1,
-                            ASSIGNMENTS[j2] == i + 1, 
-                            PATH[i][j1] == j2 + 1),
-                        D[j1][j2],
-                        0) for j2 in ITEMS])
-                for j1 in ITEMS
-                ])
-            dist += Sum([If(PATH[i][j] == n + 1, D[j][n], 0) for j in range(DEPOT)])
-            dist += Sum([If(j + 1 == PATH[i][n], D[n][j], 0) for j in range(DEPOT)])
+        for i in COURIERS:
+            dist = Sum([If(PATH[i][j] != j + 1, get_element_at_index(D[j], PATH[i][j] - 1), 0) for j in range(DEPOT)])
             solver.add(DISTANCES[i] == dist)
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -82,10 +76,10 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if symmetry_breaking:
             # --- Ordering on the amount of delivered packages ---
-            for i1 in COURIERS:
-                for i2 in COURIERS:
-                    if i1 < i2 and l[i1] == l[i2]:
-                        solver.add(COUNT[i1] <= COUNT[i2])
+            # for i1 in COURIERS:
+            #     for i2 in COURIERS:
+            #         if i1 < i2 and l[i1] == l[i2]:
+            #             solver.add(COUNT[i1] <= COUNT[i2])
                         
             # --- Ordering on the index of the delivered packages ---
             for i1 in COURIERS:
@@ -101,66 +95,73 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Objective function
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        ABS_DIFF = [[Int(f"abs_diff_{i}_{j}") for j in COURIERS] for i in COURIERS]
-
-        for i in COURIERS:
-            for j in COURIERS:
-                if i < j:
-                    solver.add(ABS_DIFF[i][j] == Abs(COUNT[i] - COUNT[j]))
-                else:
-                    solver.add(ABS_DIFF[i][j] == 0)
-                    
-        sum_abs_diff = Sum([ABS_DIFF[i][j] * ABS_DIFF[i][j] for i in COURIERS for j in COURIERS if i < j])
         
-                    
         # Minimize the maximum distance traveled
         obj = Int('obj')
-        solver.add(obj == maximum([DISTANCES[i] for i in COURIERS]) + sum_abs_diff)
-        # solver.add(obj == maximum([DISTANCES[i] for i in COURIERS]))
+        solver.add(obj == maximum([DISTANCES[i] for i in COURIERS]))
+        
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Search strategy
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        timeout_timestamp = time.time() + timeout
+        lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
+        
+        max_distances = [max(D[i][:-1]) for i in range(n)]
+        max_distances.sort()
+        if implied_constraints:
+            upper_bound = sum(max_distances[m:]) + max(D[n]) + max([D[j][n] for j in range(n)])
+        else:
+            upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
+
+        solver.add(obj >= lower_bound)
+        solver.add(obj <= upper_bound)
+        
+
+        if time.time() >= timeout_timestamp:
+            return {
+                "time": timeout,
+                "optimal": False,
+                "obj": None,
+                "sol": None
+            }
+        
         start_timestamp = time.time()
         solver.push()    
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-
+                
         model = None
+        start = time.time()
         while solver.check() == sat:
             model = solver.model()
-            result_objective = model[obj].as_long() - model.eval(sum_abs_diff).as_long()
+            result_objective = model[obj].as_long()
             
-            """ print(f"New optimal found: {result_objective}")
-            print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
-            print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
-            print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
-            print(f"ABS_DIFF =")
-            for i in COURIERS:
-                row = [model[ABS_DIFF[i][j]].as_long() for j in COURIERS]
-                print(row)
-            print(f"sum_abs_diff = {model.eval(sum_abs_diff).as_long()}")
+            # print(f"New optimal found: {result_objective}")
+            # print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
+            # print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
+            # print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
             
-            print("PATH = ")
-            for i in COURIERS:
-                row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
-                print(row)
+            # print("PATH = ")
+            # for i in COURIERS:
+            #     row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
+            #     print(row)
                 
-            print("PACKS_PER_COURIER = ")
-            for i in COURIERS:
-                row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                print(row) """
+            # print("PACKS_PER_COURIER = ")
+            # for i in COURIERS:
+            #     row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
+            #     print(row)
 
             solver.pop()
             solver.push()
-            solver.add(obj < model[obj].as_long())
+            solver.add(obj < result_objective)
             
             now = time.time()
             if now >= timeout_timestamp:
                 break
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
         
+        end = time.time()
+        # print(f"Checking model in {end - start} seconds")
         result = {
             "time": math.ceil(time.time() - start_timestamp),
             "optimal": False,
@@ -174,7 +175,7 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
             else:
                 result["optimal"] = True
                 
-            result["obj"] = model[obj].as_long() - model.eval(sum_abs_diff).as_long()
+            result["obj"] = model[obj].as_long()
             
             # Calculate the solution
             solution = []
@@ -193,7 +194,6 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
             
         return result
     except z3types.Z3Exception as e:
-        print(e)
         return  {
             "time": timeout,
             "optimal": False,
@@ -202,7 +202,6 @@ def SMT_penalty(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fals
         }
         
     except Exception as e:
-        print(e)
         return  {
             "time": timeout,
             "optimal": False,

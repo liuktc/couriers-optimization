@@ -5,7 +5,173 @@
       "obj": null,
       "sol": null,
       "_extras": {
-         "runner": "github-action"
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_symm": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_impl": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_symm": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_impl": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 398,
+      "sol": [
+         [
+            10,
+            25,
+            32,
+            53
+         ],
+         [
+            5,
+            16,
+            19,
+            30
+         ],
+         [
+            7,
+            23,
+            45,
+            55
+         ],
+         [
+            1,
+            9,
+            14,
+            42
+         ],
+         [
+            3,
+            28,
+            51,
+            66
+         ],
+         [
+            49,
+            58,
+            54,
+            69
+         ],
+         [
+            15,
+            52,
+            59,
+            60
+         ],
+         [
+            31,
+            35,
+            37,
+            48
+         ],
+         [
+            20,
+            21,
+            38
+         ],
+         [
+            8,
+            12,
+            68,
+            71
+         ],
+         [
+            11,
+            46,
+            50
+         ],
+         [
+            18,
+            41,
+            63
+         ],
+         [
+            27,
+            44,
+            62,
+            70
+         ],
+         [
+            2,
+            47,
+            64
+         ],
+         [
+            40,
+            56,
+            65,
+            43
+         ],
+         [
+            6,
+            36,
+            39
+         ],
+         [
+            26,
+            34,
+            67
+         ],
+         [
+            13,
+            61,
+            33
+         ],
+         [
+            17,
+            24,
+            57
+         ],
+         [
+            4,
+            22,
+            29
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
       }
    },
    "smt2-plain-linear-z3": {
@@ -46,42 +212,6 @@
    },
    "smt2-plain-linear-yices2": {
       "time": 300,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "penalty": {
-      "time": 300,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "plain_symm": {
-      "time": 300,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "twosolver": {
-      "time": 1,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
-      "_extras": {
-         "runner": "github-action"
-      }
-   },
-   "smt_first": {
-      "time": 308,
       "optimal": false,
       "obj": null,
       "sol": null,
