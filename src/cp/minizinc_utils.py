@@ -3,6 +3,8 @@ import os
 import json
 import logging
 logger = logging.getLogger(__name__)
+import time
+from pathlib import Path
 
 
 
@@ -20,8 +22,8 @@ def parseInstanceForMinizinc(instance):
     return out
 
 
-def __formatCommand(model_path, data_path, solver, timeout_ms, seed):
-    return [
+def __formatCommand(model_path, data_path, solver, timeout_ms, seed, free_search):
+    cmd = [
         "minizinc",
         "--json-stream",
         "--output-mode", "json",
@@ -33,11 +35,14 @@ def __formatCommand(model_path, data_path, solver, timeout_ms, seed):
         "--output-time",
         "--output-objective",
         "--model", f"{os.path.abspath(model_path)}",
-        "--data", f"{os.path.abspath(data_path)}"
+        "--data", f"{os.path.abspath(data_path)}",
     ]
+    if free_search:
+        cmd.append("-f")
+    return cmd
 
 
-def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int, seed: int):
+def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int, seed: int, free_search: bool=False):
     """
         Calls MiniZinc on a model and returns solving statistics and all solutions.
     """

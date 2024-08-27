@@ -1337,6 +1337,86 @@
          "runner": "github-action"
       }
    },
+   "vrp-plain-fs-chuffed": {
+      "time": 2,
+      "optimal": true,
+      "obj": 167,
+      "sol": [
+         [
+            17,
+            2
+         ],
+         [
+            12,
+            14,
+            3,
+            8,
+            6
+         ],
+         [
+            1,
+            4,
+            11
+         ],
+         [
+            9,
+            10,
+            16
+         ],
+         [
+            15,
+            7
+         ],
+         [
+            13,
+            5
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 1140,
+               "flatIntVars": 1030,
+               "flatBoolConstraints": 780,
+               "flatIntConstraints": 1619,
+               "evaluatedReifiedConstraints": 450,
+               "evaluatedHalfReifiedConstraints": 468,
+               "eliminatedImplications": 126,
+               "method": "minimize",
+               "flatTime": 0.134924
+            },
+            "solver": {
+               "nodes": 66033,
+               "failures": 22140,
+               "restarts": 126,
+               "variables": 52232,
+               "intVars": 1132,
+               "boolVariables": 51098,
+               "propagators": 1524,
+               "propagations": 7273505,
+               "peakDepth": 374,
+               "nogoods": 22140,
+               "backjumps": 20684,
+               "peakMem": 0.0,
+               "time": 2.039,
+               "initTime": 0.032,
+               "solveTime": 2.007,
+               "objective": 167,
+               "optTime": 2.003,
+               "baseMem": 0.0,
+               "trailMem": 0.28,
+               "randomSeed": 42
+            },
+            "solution": {
+               "nSolutions": 63
+            }
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 2.181209331512451,
+         "runner": ""
+      }
+   },
    "vrp-luby-chuffed": {
       "time": 211,
       "optimal": true,
@@ -1629,6 +1709,63 @@
          "runner": "github-action"
       }
    },
+   "vrp-plain-fs-or_tools": {
+      "time": 4,
+      "optimal": true,
+      "obj": 167,
+      "sol": [
+         [
+            5,
+            13
+         ],
+         [
+            11,
+            1,
+            4
+         ],
+         [
+            12,
+            14,
+            3,
+            17
+         ],
+         [
+            10,
+            16,
+            8,
+            15
+         ],
+         [
+            7,
+            6
+         ],
+         [
+            2,
+            9
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 432,
+               "flatIntVars": 456,
+               "flatBoolConstraints": 324,
+               "flatIntConstraints": 775,
+               "evaluatedReifiedConstraints": 216,
+               "evaluatedHalfReifiedConstraints": 324,
+               "eliminatedImplications": 108,
+               "method": "minimize",
+               "flatTime": 0.117497
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 4.3823821849822995,
+         "runner": ""
+      }
+   },
    "vrp-symm_amount-or_tools": {
       "time": 245,
       "optimal": true,
@@ -1686,6 +1823,63 @@
          "runner": "github-action"
       }
    },
+   "vrp-symm_amount-fs-or_tools": {
+      "time": 9,
+      "optimal": true,
+      "obj": 167,
+      "sol": [
+         [
+            14,
+            16,
+            10
+         ],
+         [
+            12,
+            5,
+            9
+         ],
+         [
+            8,
+            17,
+            4
+         ],
+         [
+            15,
+            6,
+            3
+         ],
+         [
+            2
+         ],
+         [
+            11,
+            1,
+            7,
+            13
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 432,
+               "flatIntVars": 456,
+               "flatBoolConstraints": 324,
+               "flatIntConstraints": 779,
+               "evaluatedReifiedConstraints": 216,
+               "evaluatedHalfReifiedConstraints": 324,
+               "eliminatedImplications": 108,
+               "method": "minimize",
+               "flatTime": 0.132983
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 9.71732901763916,
+         "runner": ""
+      }
+   },
    "vrp-symm_packs-or_tools": {
       "time": 300,
       "optimal": false,
@@ -1740,6 +1934,63 @@
          "crash_reason": null,
          "time_to_last_solution": 286.8031358985901,
          "runner": "github-action"
+      }
+   },
+   "vrp-symm_packs-fs-or_tools": {
+      "time": 3,
+      "optimal": true,
+      "obj": 167,
+      "sol": [
+         [
+            11,
+            10,
+            16,
+            6
+         ],
+         [
+            13,
+            5
+         ],
+         [
+            12,
+            4,
+            14
+         ],
+         [
+            7,
+            3,
+            17,
+            8
+         ],
+         [
+            2,
+            9
+         ],
+         [
+            15,
+            1
+         ]
+      ],
+      "_extras": {
+         "statistics": {
+            "compiler": {
+               "paths": 0,
+               "flatBoolVars": 994,
+               "flatIntVars": 558,
+               "flatBoolConstraints": 776,
+               "flatIntConstraints": 1217,
+               "evaluatedReifiedConstraints": 412,
+               "evaluatedHalfReifiedConstraints": 630,
+               "eliminatedImplications": 108,
+               "method": "minimize",
+               "flatTime": 0.125757
+            },
+            "solver": null,
+            "solution": null
+         },
+         "crash_reason": null,
+         "time_to_last_solution": 3.9022727508544923,
+         "runner": ""
       }
    },
    "vrp-plain-ff-or_tools": {

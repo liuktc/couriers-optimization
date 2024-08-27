@@ -37,126 +37,144 @@ experiments_gecode = [
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-plain.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
     {
         "name": "vrp-luby-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-luby.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
     {
         "name": "vrp-lns50-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(50) ]
+        "preprocessing": [ _setLNSPercentage(50) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns80-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(80) ]
+        "preprocessing": [ _setLNSPercentage(80) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns90-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(90) ]
+        "preprocessing": [ _setLNSPercentage(90) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns95-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
+        "preprocessing": [ _setLNSPercentage(95) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns97-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(97) ]
+        "preprocessing": [ _setLNSPercentage(97) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns99-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(99) ]
+        "preprocessing": [ _setLNSPercentage(99) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns90-symm_amount-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_amount.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(90) ]
+        "preprocessing": [ _setLNSPercentage(90) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns90-symm_packs-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_packs.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(90) ]
+        "preprocessing": [ _setLNSPercentage(90) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns95-symm_amount-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_amount.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
+        "preprocessing": [ _setLNSPercentage(95) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns95-symm_packs-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_packs.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
+        "preprocessing": [ _setLNSPercentage(95) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns95-symm_amount_strong-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_amount_strong.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
+        "preprocessing": [ _setLNSPercentage(95) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns95-symm_packs_strong-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_packs_strong.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
+        "preprocessing": [ _setLNSPercentage(95) ],
+        "free_search": False
     },
     {
         "name": "vrp-plain-ff-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-plain-ff.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
     {
         "name": "vrp-lns95-ff-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-ff.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
+        "preprocessing": [ _setLNSPercentage(95) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns95-symm_amount-ff-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_amount-ff.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
+        "preprocessing": [ _setLNSPercentage(95) ],
+        "free_search": False
     },
     {
         "name": "vrp-lns95-symm_packs-ff-gecode",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/gecode/vrp-lns-symm_packs-ff.mzn"),
         "solver": "gecode",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": [ _setLNSPercentage(95) ]
+        "preprocessing": [ _setLNSPercentage(95) ],
+        "free_search": False
     },
 ]
 
@@ -166,28 +184,40 @@ experiments_chuffed = [
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-plain.mzn"),
         "solver": "chuffed",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
+    },
+    {
+        "name": "vrp-plain-fs-chuffed",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-plain.mzn"),
+        "solver": "chuffed",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [],
+        "free_search": True
     },
     {
         "name": "vrp-luby-chuffed",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-luby.mzn"),
         "solver": "chuffed",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
     {
         "name": "vrp-symm_amount-chuffed",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-symm_amount.mzn"),
         "solver": "chuffed",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
     {
         "name": "vrp-symm_packs-chuffed",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/chuffed/vrp-symm_packs.mzn"),
         "solver": "chuffed",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
 ]
 
@@ -197,42 +227,72 @@ experiments_or_tools = [
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-plain.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
+    },
+    {
+        "name": "vrp-plain-fs-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-plain.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [],
+        "free_search": True
     },
     {
         "name": "vrp-symm_amount-or_tools",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_amount.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
+    },
+    {
+        "name": "vrp-symm_amount-fs-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_amount.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [],
+        "free_search": True
     },
     {
         "name": "vrp-symm_packs-or_tools",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_packs.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
+    },
+    {
+        "name": "vrp-symm_packs-fs-or_tools",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_packs.mzn"),
+        "solver": "com.google.ortools.sat",
+        "solution_extractor_fn": _solutionExtractorFromForwardPath,
+        "preprocessing": [],
+        "free_search": True
     },
     {
         "name": "vrp-plain-ff-or_tools",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-plain-ff.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
     {
         "name": "vrp-symm_amount-ff-or_tools",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_amount-ff.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
     {
         "name": "vrp-symm_packs-ff-or_tools",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/or_tools/vrp-symm_packs-ff.mzn"),
         "solver": "com.google.ortools.sat",
         "solution_extractor_fn": _solutionExtractorFromForwardPath,
-        "preprocessing": []
+        "preprocessing": [],
+        "free_search": False
     },
 ]
 
@@ -274,7 +334,8 @@ def solve(instance, timeout, cache={}, random_seed=42):
             data_path = instance_path,
             solver = experiment["solver"],
             timeout_ms = math.floor(timeout - preprocess_time)*1000,
-            seed = random_seed
+            seed = random_seed,
+            free_search = experiment["free_search"]
         )
         solve_time = time.time() - start_time
 
