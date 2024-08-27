@@ -57,7 +57,7 @@ def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int,
         "solver": None,
         "solution": None
     }
-    minizinc_cmd = __formatCommand(model_path, data_path, solver, timeout_ms, seed)
+    minizinc_cmd = __formatCommand(model_path, data_path, solver, timeout_ms, seed, free_search)
 
     with Popen(minizinc_cmd, stdout=PIPE, stderr=PIPE) as pipe:
         while True:
