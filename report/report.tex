@@ -1,11 +1,11 @@
 \documentclass{article}
 \usepackage{array}
 \usepackage{graphicx}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amsthm, thmtools, mathdots, mathtools, amssymb}
 \usepackage[pdfusetitle]{hyperref}
 \usepackage[all]{hypcap} % Links hyperref to object top and not caption
 \usepackage[nameinlink]{cleveref}   
-\usepackage{array, makecell, multirow, booktabs}
+\usepackage{makecell, multirow, booktabs}
 \usepackage{caption, subcaption}
 \usepackage{float}
 \usepackage[bottom]{footmisc}
@@ -15,6 +15,10 @@
 \newcommand*\rot{\rotatebox{90}}
 
 \let\endtitlepage\relax
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{lem}{Claim}
 
 
 \begin{document}

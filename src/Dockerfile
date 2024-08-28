@@ -18,6 +18,12 @@ RUN wget https://github.com/MiniZinc/MiniZincIDE/releases/download/2.8.4/MiniZin
     cp -r minizinc/share/* /usr/local/share &&\
     cp -r minizinc/lib/* /usr/local/lib
 
+# Install amplpy and all necessary amplpy.modules:
+ARG AMPL_KEY 
+RUN python3 -m pip install amplpy --no-cache-dir # Install amplpy
+RUN python3 -m amplpy.modules install highs cbc scip --no-cache-dir # Install modules
+RUN python3 -m amplpy.modules activate ${AMPL_KEY}
+
 
 RUN chmod +x ./entrypoint.sh
 ENTRYPOINT [ "./entrypoint.sh" ]

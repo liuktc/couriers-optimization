@@ -304,7 +304,7 @@ experiments_setup = (
 )
 
 
-def solve(instance, timeout, cache={}, random_seed=42):
+def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     instance_path = os.path.join(pathlib.Path(__file__).parent.resolve(), ".instance.dzn")
     out_results = {}
 
