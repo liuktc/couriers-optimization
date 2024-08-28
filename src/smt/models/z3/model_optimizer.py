@@ -152,7 +152,7 @@ def SMT_optimizer(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             solver.add(obj < result_objective)
 
         result = {
-            "time": math.ceil(time.time() - start_timestamp),
+            "time": math.floor(time.time() - start_timestamp),
             "optimal": False,
             "obj": None,
             "sol": None

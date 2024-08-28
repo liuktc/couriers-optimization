@@ -1,7 +1,7 @@
-from .model_plain import SMT_plain
-from .model_twosolver import SMT_twosolver 
-from .model_local_search import SMT_local_search
-from .model_plain_mtz import SMT_plain_mtz
+from .models.z3.model_plain import SMT_plain
+from .models.z3.model_twosolver import SMT_twosolver 
+from .models.z3.model_local_search import SMT_local_search
+from .models.z3.model_plain_mtz import SMT_plain_mtz
 from .solve_smtlib import solve as solve_smtlib
 
 import logging
@@ -13,49 +13,42 @@ experiments = [
         "model": SMT_plain,
         "symmetry_breaking": False,
         "implied_constraints": False,
-        "instance_limit": 11,
     },
     {
         "name": "plain_symm",
         "model": SMT_plain,
         "symmetry_breaking": True,
         "implied_constraints": False,
-        "instance_limit": 11,
     },
     {
         "name": "plain_impl",
         "model": SMT_plain,
         "symmetry_breaking": False,
         "implied_constraints": True,
-        "instance_limit": 11,
     },
     {
         "name": "twosolver",
         "model": SMT_twosolver,
         "symmetry_breaking": False,
         "implied_constraints": False,
-        "instance_limit": 17,
     },
     {
         "name": "twosolver_symm",
         "model": SMT_twosolver,
         "symmetry_breaking": True,
         "implied_constraints": False,
-        "instance_limit": 17,
     },
     {
         "name": "twosolver_impl",
         "model": SMT_twosolver,
         "symmetry_breaking": False,
         "implied_constraints": True,
-        "instance_limit": 17,
     },
     {
         "name": "local_search",
         "model": SMT_local_search,
         "symmetry_breaking": False,
         "implied_constraints": False,
-        "instance_limit": 22,
     }
 ]
 
@@ -73,7 +66,7 @@ def solve(instance, timeout, cache={}, instance_number=0, **kwargs):
             results[name] = cache[name]
             continue
         
-        if instance_number >= experiment["instance_limit"]:
+        if ("instance_limit" in experiment) and (instance_number >= experiment["instance_limit"]):
             logger.info(f"Model {name} skip instance {instance_number}")
             results[name] =  {
                 "time": timeout,

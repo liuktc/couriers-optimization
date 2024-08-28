@@ -5,6 +5,9 @@ import logging
 logger = logging.getLogger(__name__)
     
 def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
+    timeout_timestamp = time.time() + timeout
+    start_timestamp = time.time()
+
     try:
         DEPOT = n + 1
         COURIERS = range(m)
@@ -116,14 +119,21 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
         # Searching
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        timeout_timestamp = time.time() + timeout
-        start_timestamp = time.time()
-        solver.push()    
-        solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        
+        solver.push()
+
+        if time.time() >= timeout_timestamp:
+            return  {
+                "time": timeout,
+                "optimal": False,
+                "obj": None,
+                "sol": None
+            }
+
+        solver.set('timeout', millisecs_left(time.time(), timeout_timestamp))
                 
         model = None
         start = time.time()
+        solve_time = None
         while solver.check() == sat:
             model = solver.model()
             result_objective = model[obj].as_long()
@@ -149,13 +159,14 @@ def SMT_plain(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False,
             
             now = time.time()
             if now >= timeout_timestamp:
+                solve_time = timeout
                 break
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
         
         end = time.time()
         logger.debug(f"Checking model in {end - start} seconds")
         result = {
-            "time": math.ceil(time.time() - start_timestamp),
+            "time": math.floor(end - start_timestamp) if solve_time is None else solve_time,
             "optimal": False,
             "obj": None,
             "sol": None

@@ -1,17 +1,24 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, subcircuitMTZ
+from .utils import maximum, precedes, millisecs_left, Min, subcircuit, get_element_at_index
+import logging
+logger = logging.getLogger(__name__)    
     
-def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, random_seed=42, **kwargs):
-    timeout_timestamp = time.time() + timeout
-
+def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
     try:
+        encoding_start = time.time()
+        
         DEPOT = n + 1
         COURIERS = range(m)
         ITEMS = range(n)
         
         solver = Solver()
-        solver.set("random_seed", random_seed)
+        
+        D_array = Array("D", IntSort(), IntSort())
+        # Copy the values of D into the array
+        for i in range(DEPOT):
+            for j in range(DEPOT):
+                Store(D_array, i * DEPOT + j, D[i][j])
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
         # Decision variables
@@ -36,8 +43,6 @@ def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             for j in ITEMS:
                 solver.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
         
-        
-        
         solver.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
                 
         for i in COURIERS:
@@ -59,8 +64,7 @@ def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
           
         # Subcircuit constraints  
         for i in COURIERS:
-            # solver.add(subcircuit(PATH[i], i))
-            solver.add(subcircuitMTZ(PATH[i], i))
+            solver.add(subcircuit(PATH[i], i))
                             
         # Total weight constraints
         for i in COURIERS:
@@ -68,7 +72,7 @@ def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                         
         # Calculate the distance traveled by each courier
         for i in COURIERS:
-            dist = Sum([If(PATH[i][j] != j + 1, get_element_at_index(D[j], PATH[i][j] - 1), 0) for j in range(DEPOT)])
+            dist = Sum([If(PATH[i][j] != j + 1, Select(D_array, j * DEPOT + PATH[i][j] - 1), 0) for j in range(DEPOT)])
             solver.add(DISTANCES[i] == dist)
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -76,10 +80,10 @@ def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if symmetry_breaking:
             # --- Ordering on the amount of delivered packages ---
-            # for i1 in COURIERS:
-            #     for i2 in COURIERS:
-            #         if i1 < i2 and l[i1] == l[i2]:
-            #             solver.add(COUNT[i1] <= COUNT[i2])
+            for i1 in COURIERS:
+                for i2 in COURIERS:
+                    if i1 < i2 and l[i1] == l[i2]:
+                        solver.add(COUNT[i1] <= COUNT[i2])
                         
             # --- Ordering on the index of the delivered packages ---
             for i1 in COURIERS:
@@ -89,7 +93,9 @@ def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         # Implied constraints
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                
+        if implied_constraints:
+            for i in COURIERS:
+                solver.add(COUNT[i] > 0)
                     
                 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,54 +108,47 @@ def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # Search strategy
+        # Upper and lower bounds
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
         
         max_distances = [max(D[i][:-1]) for i in range(n)]
         max_distances.sort()
-        if implied_constraints:
-            upper_bound = sum(max_distances[m:]) + max(D[n]) + max([D[j][n] for j in range(n)])
-        else:
-            upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
+        upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
 
         solver.add(obj >= lower_bound)
         solver.add(obj <= upper_bound)
         
-
-        if time.time() >= timeout_timestamp:
-            return {
-                "time": timeout,
-                "optimal": False,
-                "obj": None,
-                "sol": None
-            }
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Searching
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        start_timestamp = time.time()
+        timeout_timestamp = time.time() + timeout
         solver.push()    
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
+        logger.debug(f"Econding took {time.time() - encoding_start} seconds")
                 
+        start_timestamp = time.time()
         model = None
-        start = time.time()
         while solver.check() == sat:
             model = solver.model()
             result_objective = model[obj].as_long()
             
-            # print(f"New optimal found: {result_objective}")
-            # print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
-            # print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
-            # print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
+            logger.debug(f"New optimal found: {result_objective}")
+            logger.debug(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
+            logger.debug(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
+            logger.debug(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
             
-            # print("PATH = ")
-            # for i in COURIERS:
-            #     row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
-            #     print(row)
+            logger.debug("PATH = ")
+            for i in COURIERS:
+                row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
+                logger.debug(row)
                 
-            # print("PACKS_PER_COURIER = ")
-            # for i in COURIERS:
-            #     row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-            #     print(row)
+            logger.debug("PACKS_PER_COURIER = ")
+            for i in COURIERS:
+                row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
+                logger.debug(row)
 
             solver.pop()
             solver.push()
@@ -161,9 +160,9 @@ def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
         
         end = time.time()
-        # print(f"Checking model in {end - start} seconds")
+        logger.debug(f"Checking model in {end - start_timestamp} seconds")
         result = {
-            "time": math.ceil(time.time() - start_timestamp),
+            "time": math.floor(end - start_timestamp),
             "optimal": False,
             "obj": None,
             "sol": None

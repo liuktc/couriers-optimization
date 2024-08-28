@@ -1,10 +1,13 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, subcircuit, get_element_at_index
+from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
 import logging
-logger = logging.getLogger(__name__)    
+logger = logging.getLogger(__name__)  
     
-def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
+def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
+    timeout_timestamp = time.time() + timeout
+    start_timestamp = time.time()
+    
     try:
         encoding_start = time.time()
         
@@ -13,12 +16,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         ITEMS = range(n)
         
         solver = Solver()
-        
-        D_array = Array("D", IntSort(), IntSort())
-        # Copy the values of D into the array
-        for i in range(DEPOT):
-            for j in range(DEPOT):
-                Store(D_array, i * DEPOT + j, D[i][j])
+        solver_assignment = Solver()
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
         # Decision variables
@@ -42,8 +40,10 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         for i in COURIERS:
             for j in ITEMS:
                 solver.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
+                # solver_assignment.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
         
         solver.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
+        solver_assignment.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
                 
         for i in COURIERS:
             for j in ITEMS:
@@ -53,7 +53,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
                 solver.add(PATH[i][j] >= 1)
                 solver.add(PATH[i][j] <= DEPOT)
                 if j == DEPOT - 1:
-                    solver.add(PATH[i][j] != n + 1)
+                   solver.add(Implies(COUNT[i] > 0,PATH[i][j] != n + 1))
         
         for i in COURIERS:
             solver.add(Distinct(PATH[i]))
@@ -61,6 +61,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         # Count constraints
         for i in COURIERS:
             solver.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
+            solver_assignment.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
           
         # Subcircuit constraints  
         for i in COURIERS:
@@ -69,10 +70,11 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         # Total weight constraints
         for i in COURIERS:
             solver.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
+            solver_assignment.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
                         
         # Calculate the distance traveled by each courier
         for i in COURIERS:
-            dist = Sum([If(PATH[i][j] != j + 1, Select(D_array, j * DEPOT + PATH[i][j] - 1), 0) for j in range(DEPOT)])
+            dist = Sum([If(PATH[i][j] != j + 1, get_element_at_index(D[j], PATH[i][j] - 1), 0) for j in range(DEPOT)])
             solver.add(DISTANCES[i] == dist)
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -84,20 +86,22 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
                 for i2 in COURIERS:
                     if i1 < i2 and l[i1] == l[i2]:
                         solver.add(COUNT[i1] <= COUNT[i2])
+                        solver_assignment.add(COUNT[i1] <= COUNT[i2])
                         
             # --- Ordering on the index of the delivered packages ---
             for i1 in COURIERS:
                 for i2 in COURIERS:
                     if i1 < i2 and l[i1] == l[i2]:
                         solver.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
+                        solver_assignment.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         # Implied constraints
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if implied_constraints:
             for i in COURIERS:
                 solver.add(COUNT[i] > 0)
-                    
-                
+                solver_assignment.add(COUNT[i] > 0)
+             
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Objective function
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -105,7 +109,6 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         # Minimize the maximum distance traveled
         obj = Int('obj')
         solver.add(obj == maximum([DISTANCES[i] for i in COURIERS]))
-        
         
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Upper and lower bounds
@@ -123,17 +126,75 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Searching
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        if time.time() >= timeout_timestamp:
+            return  {
+                "time": timeout,
+                "optimal": False,
+                "obj": None,
+                "sol": None
+            }
         
-        timeout_timestamp = time.time() + timeout
-        solver.push()    
-        solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        logger.debug(f"Econding took {time.time() - encoding_start} seconds")
-                
-        start_timestamp = time.time()
+        solver.set('timeout', millisecs_left(time.time(), timeout_timestamp))
+        solver_assignment.set('timeout', millisecs_left(time.time(), timeout_timestamp))
+        
+        logger.debug(f"Econding took {time.time() - encoding_start} seconds")        
+        
+        
         model = None
-        while solver.check() == sat:
-            model = solver.model()
-            result_objective = model[obj].as_long()
+        solve_time = None
+        while solver_assignment.check() == sat:
+            model_assignment = solver_assignment.model()
+            result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
+            
+            logger.debug(f"Result assignment = {result_assignment}")
+            solver.push()
+            solver_assignment.push()
+            for j in ITEMS:
+                solver.add(ASSIGNMENTS[j] == result_assignment[j])
+                
+            now = time.time()
+            if now >= timeout_timestamp:
+                break
+            
+            solver.set('timeout', millisecs_left(now, timeout_timestamp))
+            
+            start = time.time()
+            
+            if solver.check() == sat:
+                model = solver.model()
+                result_objective = model[obj].as_long()
+                solver.pop()
+                logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")    
+                solver.add(obj < result_objective)
+                
+                now = time.time()
+                if now >= timeout_timestamp:
+                    break
+                
+                solver.set('timeout', millisecs_left(now, timeout_timestamp))
+                
+                while solver.check() == sat:
+                    model = solver.model()
+                    result_objective = model[obj].as_long()
+                    logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
+                    solver.add(obj < result_objective)
+                    now = time.time()
+                    if now >= timeout_timestamp:
+                        break
+                    
+                    solver.set('timeout', millisecs_left(now, timeout_timestamp))
+                
+            # The new solution must be different from the previous one
+            solver_assignment.add(Or([ASSIGNMENTS[j] != result_assignment[j] for j in ITEMS]))
+            
+            now = time.time()
+            if now >= timeout_timestamp:
+                solve_time = timeout
+                break
+            
+            solver_assignment.set('timeout', millisecs_left(now, timeout_timestamp))
+            
             
             logger.debug(f"New optimal found: {result_objective}")
             logger.debug(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
@@ -149,20 +210,9 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
             for i in COURIERS:
                 row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
                 logger.debug(row)
-
-            solver.pop()
-            solver.push()
-            solver.add(obj < result_objective)
-            
-            now = time.time()
-            if now >= timeout_timestamp:
-                break
-            solver.set('timeout', millisecs_left(now, timeout_timestamp))
         
-        end = time.time()
-        logger.debug(f"Checking model in {end - start_timestamp} seconds")
         result = {
-            "time": math.ceil(end - start_timestamp),
+            "time": math.floor(time.time() - start_timestamp) if solve_time is None else solve_time,
             "optimal": False,
             "obj": None,
             "sol": None
@@ -193,6 +243,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
             
         return result
     except z3types.Z3Exception as e:
+        logger.debug(e)
         return  {
             "time": timeout,
             "optimal": False,
@@ -201,6 +252,7 @@ def SMT_arrays(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False
         }
         
     except Exception as e:
+        logger.debug(e)
         return  {
             "time": timeout,
             "optimal": False,

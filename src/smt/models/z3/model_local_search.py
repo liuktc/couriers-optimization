@@ -8,6 +8,9 @@ logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
     
 def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
+    timeout_timestamp = time.time() + timeout
+    start_timestamp = time.time()
+    
     try:
         encoding_start = time.time()
         
@@ -136,17 +139,23 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
         # Searching
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        timeout_timestamp = time.time() + timeout
-        start_timestamp = time.time()
-        
-        solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        solver_assignment.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
+        if time.time() >= timeout_timestamp:
+            return  {
+                "time": timeout,
+                "optimal": False,
+                "obj": None,
+                "sol": None
+            }
+    
+        solver.set('timeout', millisecs_left(time.time(), timeout_timestamp))
+        solver_assignment.set('timeout', millisecs_left(time.time(), timeout_timestamp))
         
         logger.debug(f"Econding took {time.time() - encoding_start} seconds")        
         
         
         best_objective = upper_bound
         best_path = None
+        solve_time = None
         while solver_assignment.check() == sat:
             model_assignment = solver_assignment.model()
             result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
@@ -220,6 +229,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 while courier_to_optimize < m:
                     # Check timeout
                     if time.time() >= timeout_timestamp:
+                        solve_time = timeout
                         break
                     if not already_optimized[courier_to_optimize]:
                         logger.debug(f"Courier to optimize = {courier_to_optimize}")
@@ -258,6 +268,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                                 print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                     
                     if time.time() >= timeout_timestamp:
+                        solve_time = timeout
                         break  
                     
                     # If optimized all the couriers in this step
@@ -332,12 +343,13 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             
             now = time.time()
             if now >= timeout_timestamp:
+                solve_time = timeout
                 break
             
             solver_assignment.set('timeout', millisecs_left(now, timeout_timestamp))
         
         result = {
-            "time": math.ceil(time.time() - start_timestamp),
+            "time": math.floor(time.time() - start_timestamp) if solve_time is None else solve_time,
             "optimal": False,
             "obj": None,
             "sol": None

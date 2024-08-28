@@ -1,19 +1,17 @@
 from z3 import *
 import time
-from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit
-import logging
-logger = logging.getLogger(__name__)  
+from .utils import maximum, precedes, millisecs_left, Min, get_element_at_index, subcircuit, subcircuitMTZ
     
-def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, **kwargs):
+def SMT_plain_mtz(m, n, l, s, D, implied_constraints=False, symmetry_breaking=False, timeout=300, random_seed=42, **kwargs):
+    timeout_timestamp = time.time() + timeout
+
     try:
-        encoding_start = time.time()
-        
         DEPOT = n + 1
         COURIERS = range(m)
         ITEMS = range(n)
         
         solver = Solver()
-        solver_assignment = Solver()
+        solver.set("random_seed", random_seed)
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
         # Decision variables
@@ -37,10 +35,10 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         for i in COURIERS:
             for j in ITEMS:
                 solver.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
-                # solver_assignment.add(And([If(ASSIGNMENTS[j] != i + 1, PACKS_PER_COURIER[i][j] == 0, PACKS_PER_COURIER[i][j] == j) for j in ITEMS]))
+        
+        
         
         solver.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
-        solver_assignment.add(And([And(ASSIGNMENTS[j] >= 1, ASSIGNMENTS[j] <= m) for j in ITEMS]))
                 
         for i in COURIERS:
             for j in ITEMS:
@@ -50,7 +48,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                 solver.add(PATH[i][j] >= 1)
                 solver.add(PATH[i][j] <= DEPOT)
                 if j == DEPOT - 1:
-                   solver.add(Implies(COUNT[i] > 0,PATH[i][j] != n + 1))
+                    solver.add(PATH[i][j] != n + 1)
         
         for i in COURIERS:
             solver.add(Distinct(PATH[i]))
@@ -58,16 +56,15 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         # Count constraints
         for i in COURIERS:
             solver.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
-            solver_assignment.add(COUNT[i] == Sum([If(ASSIGNMENTS[j] == i + 1, 1, 0) for j in ITEMS]))
           
         # Subcircuit constraints  
         for i in COURIERS:
-            solver.add(subcircuit(PATH[i], i))
+            # solver.add(subcircuit(PATH[i], i))
+            solver.add(subcircuitMTZ(PATH[i], i))
                             
         # Total weight constraints
         for i in COURIERS:
             solver.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
-            solver_assignment.add(Sum([If(ASSIGNMENTS[j] == i + 1, s[j], 0) for j in ITEMS]) <= l[i])
                         
         # Calculate the distance traveled by each courier
         for i in COURIERS:
@@ -79,26 +76,22 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if symmetry_breaking:
             # --- Ordering on the amount of delivered packages ---
-            for i1 in COURIERS:
-                for i2 in COURIERS:
-                    if i1 < i2 and l[i1] == l[i2]:
-                        solver.add(COUNT[i1] <= COUNT[i2])
-                        solver_assignment.add(COUNT[i1] <= COUNT[i2])
+            # for i1 in COURIERS:
+            #     for i2 in COURIERS:
+            #         if i1 < i2 and l[i1] == l[i2]:
+            #             solver.add(COUNT[i1] <= COUNT[i2])
                         
             # --- Ordering on the index of the delivered packages ---
             for i1 in COURIERS:
                 for i2 in COURIERS:
                     if i1 < i2 and l[i1] == l[i2]:
                         solver.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
-                        solver_assignment.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         # Implied constraints
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        if implied_constraints:
-            for i in COURIERS:
-                solver.add(COUNT[i] > 0)
-                solver_assignment.add(COUNT[i] > 0)
-             
+                
+                    
+                
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Objective function
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,103 +100,70 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         obj = Int('obj')
         solver.add(obj == maximum([DISTANCES[i] for i in COURIERS]))
         
+        
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # Upper and lower bounds
+        # Search strategy
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         lower_bound = max([D[n][j] + D[j][n] for j in ITEMS])
         
         max_distances = [max(D[i][:-1]) for i in range(n)]
         max_distances.sort()
-        upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
+        if implied_constraints:
+            upper_bound = sum(max_distances[m:]) + max(D[n]) + max([D[j][n] for j in range(n)])
+        else:
+            upper_bound = sum(max_distances[1:]) + max(D[n]) + max([D[j][n] for j in range(n)])
 
         solver.add(obj >= lower_bound)
         solver.add(obj <= upper_bound)
         
-        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # Searching
-        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        if time.time() >= timeout_timestamp:
+            return {
+                "time": timeout,
+                "optimal": False,
+                "obj": None,
+                "sol": None
+            }
         
-        
-        timeout_timestamp = time.time() + timeout
         start_timestamp = time.time()
-        
+        solver.push()    
         solver.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        solver_assignment.set('timeout', millisecs_left(start_timestamp, timeout_timestamp))
-        
-        logger.debug(f"Econding took {time.time() - encoding_start} seconds")        
-        
-        
+                
         model = None
-        while solver_assignment.check() == sat:
-            model_assignment = solver_assignment.model()
-            result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
+        start = time.time()
+        while solver.check() == sat:
+            model = solver.model()
+            result_objective = model[obj].as_long()
             
-            logger.debug(f"Result assignment = {result_assignment}")
+            # print(f"New optimal found: {result_objective}")
+            # print(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
+            # print(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
+            # print(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
+            
+            # print("PATH = ")
+            # for i in COURIERS:
+            #     row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
+            #     print(row)
+                
+            # print("PACKS_PER_COURIER = ")
+            # for i in COURIERS:
+            #     row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
+            #     print(row)
+
+            solver.pop()
             solver.push()
-            solver_assignment.push()
-            for j in ITEMS:
-                solver.add(ASSIGNMENTS[j] == result_assignment[j])
-                
+            solver.add(obj < result_objective)
+            
             now = time.time()
             if now >= timeout_timestamp:
                 break
-            
             solver.set('timeout', millisecs_left(now, timeout_timestamp))
-            
-            start = time.time()
-            
-            if solver.check() == sat:
-                model = solver.model()
-                result_objective = model[obj].as_long()
-                solver.pop()
-                logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")    
-                solver.add(obj < result_objective)
-                
-                now = time.time()
-                if now >= timeout_timestamp:
-                    break
-                
-                solver.set('timeout', millisecs_left(now, timeout_timestamp))
-                
-                while solver.check() == sat:
-                    model = solver.model()
-                    result_objective = model[obj].as_long()
-                    logger.debug(f"Found a new solution with objective value {result_objective} in {time.time() - start} seconds")
-                    solver.add(obj < result_objective)
-                    now = time.time()
-                    if now >= timeout_timestamp:
-                        break
-                    
-                    solver.set('timeout', millisecs_left(now, timeout_timestamp))
-                
-            # The new solution must be different from the previous one
-            solver_assignment.add(Or([ASSIGNMENTS[j] != result_assignment[j] for j in ITEMS]))
-            
-            now = time.time()
-            if now >= timeout_timestamp:
-                break
-            
-            solver_assignment.set('timeout', millisecs_left(now, timeout_timestamp))
-            
-            
-            logger.debug(f"New optimal found: {result_objective}")
-            logger.debug(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
-            logger.debug(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
-            logger.debug(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
-            
-            logger.debug("PATH = ")
-            for i in COURIERS:
-                row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
-                logger.debug(row)
-                
-            logger.debug("PACKS_PER_COURIER = ")
-            for i in COURIERS:
-                row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
-                logger.debug(row)
         
+        end = time.time()
+        # print(f"Checking model in {end - start} seconds")
         result = {
-            "time": math.ceil(time.time() - start_timestamp),
+            "time": math.floor(time.time() - start_timestamp),
             "optimal": False,
             "obj": None,
             "sol": None
@@ -234,7 +194,6 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             
         return result
     except z3types.Z3Exception as e:
-        logger.debug(e)
         return  {
             "time": timeout,
             "optimal": False,
@@ -243,7 +202,6 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         }
         
     except Exception as e:
-        logger.debug(e)
         return  {
             "time": timeout,
             "optimal": False,
