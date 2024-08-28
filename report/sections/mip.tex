@@ -1,5 +1,5 @@
 \section{MIP model}
-For the MIP model we choose themsolver-independent language AMPL. Taking inspiration from the AMPL book \cite{AMPL_book}, we developed our model around the idea to use a binary tensor that encodes the travel of each courier through all the possible delivery point, starting and ending at the depot. This travel is an Hamiltonian cycle and we recall here the definition:
+For the MIP model we choose themsolver-independent language AMPL. Taking inspiration from the AMPL book, we developed our model around the idea to use a binary tensor that encodes the travel of each courier through all the possible delivery point, starting and ending at the depot. This travel is an Hamiltonian cycle and we recall here the definition:
 \begin{definition}[Hamiltonian cycle]
 In the mathematical field of graph theory an Hamiltonian cycle (or Hamiltonian circuit) is a cycle that visits each vertex exactly once.
 \end{definition}
@@ -116,20 +116,17 @@ Both SCIP and HIGHS give us the information related to the number of simplex ite
 \subsubsection{Experimental results}
 
 For the first ten instances we plotted three graphs about the execution time (in seconds), the number of simplex iterations and branching nodes explored by the two solvers.
-\newpage
-\begin{figure}[!h]
+\begin{figure}[H]
     \centering
-    \subfloat[Execution Time]{
-        \includegraphics[width=0.3\textwidth]{execution_time_2.png}
-    }
-    \hfill
-    \subfloat[Simplex Iterations]{
-        \includegraphics[width=0.3\textwidth]{simplex_iterations_2.png}
-    }
-    \hfill
-    \subfloat[Branching nodes]{
-        \includegraphics[width=0.3\textwidth]{Figure_2.png}
-    }
+    \begin{subfigure}{0.3\linewidth}
+        \includegraphics[width=\textwidth]{img/mip/execution_time_2.png}
+    \end{subfigure}
+    \begin{subfigure}{0.3\linewidth}
+        \includegraphics[width=\textwidth]{img/mip/simplex_iterations_2.png}
+    \end{subfigure}
+    \begin{subfigure}{0.3\linewidth}
+        \includegraphics[width=\textwidth]{img/mip/Figure_2.png}
+    \end{subfigure}
     \caption{Compared statistics of the performances of the three models, divided by SCIP and HIGHS solvers}
 \end{figure}
 
@@ -139,9 +136,9 @@ But the HIGHS performances are in general significantly better than the SCIP one
 
 Instead here we include the table with all the results given by the two solvers and the three models for all the instances.
 
-\begin{table}[h]
+\begin{table}[H]
         \centering
-        \caption{Results of the scip and highs solvers for the three models}{
+        \caption{Results of the scip and highs solvers for the three models}
         \resizebox{\textwidth}{!}{
         \begin{tabular}{ccccccc}
                 \toprule
