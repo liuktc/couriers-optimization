@@ -8,7 +8,7 @@ on:
       - sat
       - smt
       - milp
-    paths: ["src/**", .github/workflows/status.yml, .github/status_update.py, .github/check_solution_json.py]
+    paths: ["src/**", .github/workflows/status.yml, .github/status_update.py, .github/check_solution_json.py, "results/**"]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
