@@ -28,11 +28,11 @@ minimize ObjectiveMaxDistance:
 #####################
 
 
-#link XY constraints
-subject to LinkXY1{i in PACKS, k in COURIERS}:
+#link XA constraints
+subject to LinkXA1{i in PACKS, k in COURIERS}:
 	sum{j in NODES} X[i,j,k] = A[i,k];
 
-subject to LinkXY2{j in PACKS, k in COURIERS}:
+subject to LinkXA2{j in PACKS, k in COURIERS}:
 	sum{i in NODES} X[i,j,k] = A[j,k];
 
 #each packages has to be assigend constraint
