@@ -1,10 +1,9 @@
 \section{SMT model}
 
-The SMT model is based on the CP model, and follows the same definition of paths of the couriers. 
 
 \subsection{Decision variables}
 
-The SMT model relies on the following decision variables, where boolean variables are from the Propositional Logic Theory, and integer variables are from LIA Theory.
+The SMT model uses the logic of quantifier-free linear integer arithmetic (\texttt{QF\_LIA}) and relies on the following decision variables:
 
 \begin{itemize}
     \item For each package $j$, $A_j \in \{1, \dots, m\}$ (\texttt{ASSIGNMENTS[j]} in Z3) indicates which courier delivers package $j$. More specifically, $A_j = i$ iff the courier $i$ delivers package $j$.
@@ -17,7 +16,7 @@ The SMT model relies on the following decision variables, where boolean variable
 More variables have been defined in order to make it easier to define some constraints and the objective function:
 
 \begin{itemize}
-    \item For each courier $i$, $D_i \in \mathbb{N}$ (\texttt{DISTANCES[i][d]} in Z3) is equal to the distance traveled by each courier.
+    \item For each courier $i$, $D_i \in \mathbb{N}$ (\texttt{DISTANCES[i]} in Z3) is equal to the distance traveled by each courier.
 
     \item For each courier $i$, $C_i \in \mathbb{N}$ (\texttt{COUNT[i]} in Z3) models the number of packages delivered by courier $i$.
 
@@ -55,10 +54,11 @@ The objective function is defined as follows:
     \item Distance constraint:
 
     \begin{equation}
-        \forall i \in \{1, \dots, m\}: \quad D_i = \sum_{j \in \{1, \dots, n+1\}} \begin{cases*}
-                    D_{j,P_{i,j}} & if  $P_{i,j} \neq j$  \\
-                    0 & if $P_{i,j} = j$
-                 \end{cases*}
+        \forall i \in \{1, \dots, m\}: \quad D_i = \sum_{j \in \{1, \dots, n+1\}} 
+            \begin{cases}
+                D_{j,P_{i,j}} & \text{if } P_{i,j} \neq j  \\
+                0 & \text{if } P_{i,j} = j
+            \end{cases}
     \end{equation}
 
     \item Assignment and path constraint:
@@ -86,66 +86,55 @@ See Symmetry breaking constraint of CP, section 2.3.1.
 
 \subsection{Validation}
 
+
 \subsubsection{Experimental design}
-The model was implemented in Z3 using the Python API, \texttt{z3py}. All experiments were conducted on : ????. Due to memory limitations, problem instances after the 10th required more than 5GB of RAM. For this reason, the memory available waas increased to 8GB to ensure the successful computation of the results.
 
-The basic model, using a single solver, failed to find a solution in a reasonable amount of time for problem instances after the 10th. To address this limitation and find a solution, even if suboptimal, for challenging instances, two strategies have been implemented:
+The experimental setup consists of two steps: first, we developed a Python package to automate the generation of SMT-LIB code from a high-level interface, allowing us to easily experiment and compare different solvers. More specifically, as solvers we experimented with Z3, cvc5, OpenSMT, SMTInterpol, and Yices 2. Then, to improve the performances on larger instances, we experimented with two different search strategies using the Z3 Python library (\texttt{z3py}):
+\begin{description}
+    \item[Two solvers approach]
+        As SMT solvers do not allow to assign a priority to the variables, this approach attempts to guide the exploration of the search space by alternating two solvers: the first one finds $A$ and the second one finds $P$ given $A$. In other words, the former decides which courier delivers which package and the latter decides the route taken by each courier, basically solving $m$ different Travelling Salesman Problems. 
 
-\begin{itemize}
-    \item \textbf{Two Solvers Approach}
-    \begin{itemize}
-        \item \textbf{Description}: The first solver  finds $A$ and the second one finds $P$ given $A$. In other words, the first solver decides which courier delivers which package and the second solver decides the route taken by each courier, basically solving $m$ different Travelling Salesman Problems. 
-        \item \textbf{Performance}: This model outperform the single solver model, but still struggle to find a solution in a reasonable amount of time for the bigger instances.
-    \end{itemize}
+    \item[Local search approach]
+        Similarly to the previous one, this approach also uses two solvers to first find $A$ and then $P$. However, instead of letting the second solver find an optimal solution for $P$ on its own, it is manually guided by performing a local search starting from a trivial solution (i.e., a path that delivers the items ordered by index).
+\end{description}
 
-    \item \textbf{Local Search Approach}:
-    \begin{itemize}
-        \item \textbf{Description}: This approach also uses two solver. The first one finds $A$ and the second one finds $P$ given $A$. However, instead of finding an optimal solution for $P$, the second solver performs a local search starting from a trivial solution.
-        \item \textbf{Performance}: The local search strategy enables the model to find a solution in a reasonable amount of time, even for the largest instances.
-    \end{itemize} 
+All experiments use the same random seed and were run as workflows on GitHub Actions which provides two cores at 2.45 GHz and 7 GB of memory, which we software limited to 5 GB to guarantee a safe margin for the Docker container to run.
 
-\end{itemize}
-
-In addition to using \texttt{z3py}, some experiments with SMT-LIB were conducted, in order to expolore different solvers easily. To support these experiments, a Python library was developed that automates the generation of SMT-LIB code from high level python interface. This allowed us to create and test different model with different solvers in a very fast and easy way. Nevertheless, the results are pretty similar to the one obtained using the Z3 solver through the \texttt{z3py} library.
 
 \subsubsection{Experimental results}
 
+The results of our experiments are presented in \Cref{tab:smt_results}.
+Analyzing SMT-LIB results, we can observe that all five solvers perform more or less similarly. The best performing is Yices 2 which solves \texttt{QF\_LIA} logic based on the simplex algorithm \cite{yices2}. On the other hand, the worst performing is SMTInterpol which relies on Craig interpolation \cite{smtinterpol}.
+Furthermore, experiments in \texttt{z3py} show that symmetry breaking and implied constraints do not provide significant contribution in improving the results.
 
-\begin{table}[h]
-	\centering
-	\caption{Caption}
-	\begin{tabular}{cccccccc}
-		\toprule
-		Id & plain & plain-symm & plain-impl & twosolver & ts-symm & ts-impl & local-search \\ 
-		\midrule
-		1 & \textbf{14} & 	\textbf{14} & 	\textbf{14} & 	\textbf{14} & 	\textbf{14} & 	\textbf{14} & 	\textbf{14} \\ 
-		2 & \textbf{226} & 	\textbf{226} & 	\textbf{226} & 	226 & 	226 & 	226 & 	226 \\ 
-		3 & \textbf{12} & 	\textbf{12} & 	\textbf{12} & 	\textbf{12} & 	\textbf{12} & 	\textbf{12} & 	\textbf{12} \\ 
-		4 & \textbf{220} & 	\textbf{220} & 	\textbf{220} & 	220 & 	-- & 	220 & 	220 \\ 
-		5 & \textbf{206} & 	\textbf{206} & 	\textbf{206} & 	\textbf{206} & 	\textbf{206} & 	\textbf{206} & 	\textbf{206} \\ 
-		6 & \textbf{322} & 	\textbf{322} & 	\textbf{322} & 	322 & 	-- & 	322 & 	322 \\ 
-		7 & 174 & 	168 & 	181 & 	167 & 	-- & 	167 & 	167 \\ 
-		8 & \textbf{186} & 	\textbf{186} & 	\textbf{186} & 	186 & 	186 & 	186 & 	186 \\ 
-		9 & \textbf{436} & 	\textbf{436} & 	\textbf{436} & 	436 & 	436 & 	436 & 	436 \\ 
-		10 & \textbf{244} & 	\textbf{244} & 	\textbf{244} & 	244 & 	244 & 	244 & 	244 \\ 
-		11 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	547 \\ 
-		12 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	435 \\ 
-		13 & -- & 	-- & 	-- & 	1812 & 	-- & 	1832 & 	632 \\ 
-		14 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	1177 \\ 
-		15 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	1140 \\ 
-		16 & -- & 	-- & 	-- & 	1510 & 	-- & 	1861 & 	303 \\ 
-		17 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	1525 \\ 
-		18 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	917 \\ 
-		19 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	398 \\ 
-		20 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	1378 \\ 
-		21 & -- & 	-- & 	-- & 	-- & 	-- & 	-- & 	648 \\ 
-		\bottomrule
-	\end{tabular}
+By analyzing the two search approaches, we can observe that using two separate solvers have a negligible impact on the final results with mixed effects when using symmetry breaking constraints. Instead, local search enables the model to find a solution in a reasonable amount of time, even for the largest instances.
+
+\begin{table}[H]
+    \caption{SMT results. Results in \textbf{bold} are solved to optimality. Instances that are all solved to optimality have been omitted.}
+    \label{tab:smt_results}
+    \centerline{
+        \begin{tabular}{c|cccccccccccc}
+            \toprule
+            & \multicolumn{5}{c}{SMT-LIB (plain)} & \multicolumn{7}{c}{\texttt{z3py}} \\
+            \\[-3ex] % Remove vertical line gap
+            \cmidrule(lr){2-6} \cmidrule(lr){7-13}
+            Id          & \rot{Z3}      & \rot{cvc5}    & \rot{OpenSMT} & \rot{SMTInterpol} & \rot{Yices 2} & \rot{plain}   & \rot{\makecell[l]{plain\\[-0.3em]\small+ SB}}  & \rot{\makecell[l]{plain\\[-0.3em]\small+ IC}}  & \rot{2 solvers}   & \rot{\makecell[l]{2 solvers\\[-0.3em]\small+ SB}}  & \rot{\makecell[l]{2 solvers\\[-0.3em]\small+ IC}}  & \rot{Local search}   \\ 
+            \midrule                                     
+            7           & 228           & 210           & 218           & 372               & \textbf{167}  & 174           & 168               & 181               & \textbf{167}      & \textbf{167}          & \textbf{167}          & \textbf{167}          \\ 
+            9           & \textbf{436}  & \textbf{436}  & \textbf{436}  & 437               & \textbf{436}  & \textbf{436}  & \textbf{436}      & \textbf{436}      & \textbf{436}      & \textbf{436}          & \textbf{436}          & \textbf{436}          \\ 
+            10          & \textbf{244}  & \textbf{244}  & \textbf{244}  & 381               & \textbf{244}  & \textbf{244}  & \textbf{244}      & \textbf{244}      & \textbf{244}      & \textbf{244}          & \textbf{244}          & \textbf{244}          \\ 
+            11          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 547                   \\ 
+            12          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 435                   \\ 
+            13          & 1446          & --            & --            & --                & 1490          & --            & --                & --                & 1812              & 1346                  & 1832                  & 632                   \\ 
+            14          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 1177                  \\ 
+            15          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 1140                  \\ 
+            16          & --            & --            & --            & --                & 1032          & --            & --                & --                & 1510              & 1944                  & 1861                  & 303                   \\ 
+            17          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 1525                  \\ 
+            18          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 917                   \\ 
+            19          & --            & --            & --            & --                & --            & --            & --                & --                & --                & 870                   & --                    & 398                   \\ 
+            20          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 1378                  \\ 
+            21          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 648                   \\ 
+            \bottomrule
+        \end{tabular}
+    }
 \end{table}
-
-
-
-
-
-
-    
