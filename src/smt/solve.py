@@ -3,6 +3,7 @@ from .models.z3.model_twosolver import SMT_twosolver
 from .models.z3.model_local_search import SMT_local_search
 from .models.z3.model_plain_mtz import SMT_plain_mtz
 from .solve_smtlib import solve as solve_smtlib
+import gc
 
 import logging
 logger = logging.getLogger(__name__)
@@ -86,6 +87,8 @@ def solve(instance, timeout, cache={}, instance_number=0, **kwargs):
                               implied_constraints=implied_constraints,
                               symmetry_breaking=symmetry_breaking,
                               **kwargs)
+
+        gc.collect()
     
     smtlib_results = solve_smtlib(instance, timeout, cache, **kwargs)
     for key in smtlib_results:

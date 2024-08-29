@@ -217,7 +217,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 if result_objective < best_objective:
                     best_objective = result_objective
                     best_path = path_model
-                    print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
+                    logger.debug(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                 
                 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 # LOCAL SEARCH
@@ -265,7 +265,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                             if result_objective < best_objective:
                                 best_objective = result_objective
                                 best_path = path_model
-                                print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
+                                logger.debug(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                     
                     if time.time() >= timeout_timestamp:
                         solve_time = timeout
@@ -302,7 +302,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                             if result_objective < best_objective:
                                 best_objective = result_objective
                                 best_path = path_model
-                                print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
+                                logger.debug(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                             new_optimal = False
                             continue
                         else:
@@ -327,7 +327,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                     if objective_new < best_objective:
                         best_objective = objective_new
                         best_path = path_model
-                        print(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
+                        logger.debug(f"\n-----------------------------------\nFound a new best solution with objective value {best_objective} in {time.time() - start} seconds\n-----------------------------------\n")
                     
                 else:
                     logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\nModel is not satisfiable\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
@@ -366,7 +366,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             
         return result
     except z3types.Z3Exception as e:
-        print(e)
+        logger.error(e)
         if best_path is not None:
             return {
                 "time": timeout,
@@ -381,20 +381,3 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 "obj": None,
                 "sol": None
             }
-        
-    """ except Exception as e:
-        print(e)
-        if best_path is not None:
-            return {
-                "time": timeout,
-                "optimal": False,
-                "obj": best_objective,
-                "sol": get_solution(best_path, COURIERS, DEPOT)
-            }
-        else:
-            return  {
-                "time": timeout,
-                "optimal": False,
-                "obj": None,
-                "sol": None
-            } """
