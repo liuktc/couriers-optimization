@@ -58,10 +58,62 @@ class Unified_CumulativeConstr_Model():
             if status == unsat:
                 optimality = (objective is not None)
                 solve_time = math.floor(time.time() - init_time)
+                # Provare a inserire le statistiche come output della solve
+                # - :restart : number of restarts 
+                # - :memory : max amount of memory needed
+                # - :mk-bool-var : number of boolean variables
+                # - :conflicts : number of assignments that happen in the theory subsolvers and that did not make the formula true
+                print ("statistics for the last check method...")
+                stat = self.solver.statistics()
+                if 'restarts' in stat.keys():
+                    restart = stat.get_key_value('restarts')
+                else:
+                    restart = 0
+                
+                if 'max memory' in stat.keys():
+                    max_memory = stat.get_key_value('max memory')
+                else:
+                    max_memory = 0
+                
+                if 'mk bool var' in stat.keys():
+                    mk_bool_var = stat.get_key_value('mk bool var')
+                else:
+                    mk_bool_var = 0
+                
+                if 'conflicts' in stat.keys():
+                    conflicts = stat.get_key_value('conflicts')
+                else:
+                    conflicts = 0
                 break
 
             ## Checking timeout:
             if (time.time() >= timeout_timestamp) or status == unknown:
+                # Provare a inserire le statistiche come output della solve
+                # - :restart : number of restarts 
+                # - :memory : max amount of memory needed
+                # - :mk-bool-var : number of boolean variables
+                # - :conflicts : number of assignments that happen in the theory subsolvers and that did not make the formula true
+                print ("statistics for the last check method...")
+                stat = self.solver.statistics()
+                if 'restarts' in stat.keys():
+                    restart = stat.get_key_value('restarts')
+                else:
+                    restart = 0
+                
+                if 'max memory' in stat.keys():
+                    max_memory = stat.get_key_value('max memory')
+                else:
+                    max_memory = 0
+                
+                if 'mk bool var' in stat.keys():
+                    mk_bool_var = stat.get_key_value('mk bool var')
+                else:
+                    mk_bool_var = 0
+                
+                if 'conflicts' in stat.keys():
+                    conflicts = stat.get_key_value('conflicts')
+                else:
+                    conflicts = 0
                 break
             model = self.solver.model()
 
@@ -75,17 +127,14 @@ class Unified_CumulativeConstr_Model():
         
             # Compose solution
             solution = []
-            # paths_distance = []
             for c in COURIERS:
                 courier_path = []
 
                 loc1 = DEPOT
-                # distance = 0
                 while True:
                     step = sum([loc2+1 if model.evaluate(self.paths[c][loc1][loc2]) else 0 for loc2 in LOCATIONS if loc1!=loc2])
                     if step == 0: break # This courier does not deliver anything
 
-                    # distance += self.distances[loc1][step-1]
                     if (step-1) == DEPOT:
                         break
                     else:
@@ -93,34 +142,52 @@ class Unified_CumulativeConstr_Model():
                         courier_path.append(step)
 
                 solution.append(courier_path)
-                # paths_distance.append(distance)
             solution_ls.append(solution)
 
-            # objective = max(paths_distance)
-        
-            # solution = [[sum([loc2+1 for loc2 in LOCATIONS if (model.evaluate(paths[c][loc1][loc2]) and loc1!=loc2)]) for loc1 in LOCATIONS] for c in COURIERS]
-
-            # print(f'Objective: {objective}')
-            # print(f'Solution: {solution}')
-
+            # Estimating lower bound
+            lower_bound = max([self.distances[DEPOT][p] + self.distances[p][DEPOT] for p in PACKS])
+            
+            if objective == lower_bound:
+                optimality = (objective is not None)
+                solve_time = math.floor(time.time() - init_time)
+                # Provare a inserire le statistiche come output della solve
+                # - :restart : number of restarts 
+                # - :memory : max amount of memory needed
+                # - :mk-bool-var : number of boolean variables
+                # - :conflicts : number of assignments that happen in the theory subsolvers and that did not make the formula true
+                print ("statistics for the last check method...")
+                stat = self.solver.statistics()
+                if 'restarts' in stat.keys():
+                    restart = stat.get_key_value('restarts')
+                else:
+                    restart = 0
+                
+                if 'max memory' in stat.keys():
+                    max_memory = stat.get_key_value('max memory')
+                else:
+                    max_memory = 0
+                
+                if 'mk bool var' in stat.keys():
+                    mk_bool_var = stat.get_key_value('mk bool var')
+                else:
+                    mk_bool_var = 0
+                
+                if 'conflicts' in stat.keys():
+                    conflicts = stat.get_key_value('conflicts')
+                else:
+                    conflicts = 0
+                break
+            
+            # Constraining new path distances to be less than already found objective
             for c in COURIERS:
                 total_distance = Sum([If(self.paths[c][loc1][loc2], self.distances[loc1][loc2], 0) for loc1 in LOCATIONS for loc2 in LOCATIONS if loc1!=loc2])
                 self.solver.add(total_distance < objective)
             
-            # Constraint to ensure new assignments are different than ones already tried
-            # self.solver.add(Not(And([model.evaluate(self.assignment[p][c]) == self.assignment[p][c] for c in COURIERS for p in PACKS])))
-
-            # Provare a inserire le statistiche come output della solve
-            # print ("statistics for the last check method...")
-            # print (s.statistics())
-            # # Traversing statistics
-            # for k, v in s.statistics():
-            #     print ("%s : %s" % (k, v))
         
         if (objective is not None):
-            return objective, solution_ls[-1], optimality, solve_time
+            return objective, solution_ls[-1], optimality, solve_time, restart, max_memory, mk_bool_var, conflicts
         else:
-            return None, None, False, solve_time
+            return None, None, False, solve_time, restart, max_memory, mk_bool_var, conflicts
     
 
 def create_model(m, n, loads, sizes, distances):
@@ -145,77 +212,52 @@ def create_model(m, n, loads, sizes, distances):
     for c in COURIERS:
         sum_load = Sum([If(assignments[p][c], sizes[p], 0) for p in PACKS])
         constraints.append(sum_load <= loads[c])
-        # solver_unified.add(sum_load <= loads[c])
     
     # Capacity constraint - ensure that each pack is delivered only by a courier
     for p in PACKS:
         constraints.append(exactly_one([assignments[p][c] for c in COURIERS]))
-        # solver_unified.add(exactly_one([assignments[p][c] for c in COURIERS]))
     
 
     
 
     ###### Previous paths model
     # Decision variables
-    # assignments = [[Bool(f"a_{p}_{c}") for c in COURIERS] for p in PACKS]
     paths = [[[Bool(f'p_{c}_{loc1}_{loc2}') for loc2 in LOCATIONS] for loc1 in LOCATIONS] for c in COURIERS]
 
-    # Auxiliar variables
-    # carry_num = [[Bool(f'c_{c}_{p1}') for p1 in PACKS] for c in COURIERS] # Counter of how many packages a courier is delivering
-
-    # for c in COURIERS:
-    #     for p in PACKS:
-    #         solver_unified.add(carry_num[c][p] == assignments[p][c])
-    
-    # Soft Constraint for symmetry breaking
-    # for c1 in COURIERS:
-    #     for c2 in COURIERS:
-    #         if (c1 < c2 and loads[c1]==loads[c2]):
-    #             for p1 in PACKS:
-    #                 for p2 in PACKS:
-    #                     solver_unified.add(Implies(And(carry_num[c1][p1], carry_num[c2][p2]), p1 <= p2))
-                # solver_paths.add(carry_num[c1] <= carry_num[c2])
-
     ## Path related constraints
-    # 1 - Nel path deve esistere uno step con valore del pacco True con indice = DEPOT (n+1)
+    # 1 - In each courier c path must exist a step loc1 which boolean vector has truth value in index = DEPOT (n+1)
     for c in COURIERS:
         # If courier has at_least_one package to deliver, its path[c][DEPOT] must have a destination != DEPOT
         constraints.append(Implies(at_least_one([assignments[p][c] for p in PACKS]), paths[c][DEPOT][DEPOT]==False))
-        # solver_unified.add(Implies(at_least_one([assignments[p][c] for p in PACKS]), paths[c][DEPOT][DEPOT]==False))
 
         # If courier has no package to deliver, it can stay in DEPOT
         constraints.append(Implies(Not(at_least_one([assignments[p][c] for p in PACKS])), paths[c][DEPOT][DEPOT]==True))
-        # solver_unified.add(Implies(Not(at_least_one([assignments[p][c] for p in PACKS])), paths[c][DEPOT][DEPOT]==True))
 
+        # If courier delivers pack p, its destination must be different from p
         for p in PACKS:
             constraints.append(Implies(assignments[p][c], paths[c][p][p]==False))
             constraints.append(Implies(Not(assignments[p][c]), paths[c][p][p]==True))
-            # solver_unified.add(Implies(assignments[p][c], paths[c][p][p]==False))
-            # solver_unified.add(Implies(Not(assignments[p][c]), paths[c][p][p]==True))
 
-    # 2 - ensuring pack is delivered by a single courier only once
+    # 2 - Ensuring pack is delivered by a single courier only once
     for c in COURIERS:
         for loc in LOCATIONS:
             constraints.append(exactly_one([paths[c][loc][ind] for ind in LOCATIONS]))
-            # solver_unified.add(exactly_one([paths[c][loc][ind] for ind in LOCATIONS]))
 
     ## Subcircuit constraint
-    # 1 - alldifferent per ogni path di ogni courier
+    # 1 - alldifferent for each courier path destination
     for c in COURIERS:
         for loc in LOCATIONS:
             constraints.append(exactly_one([paths[c][ind][loc] for ind in LOCATIONS]))
-            # solver_unified.add(exactly_one([paths[c][ind][loc] for ind in LOCATIONS]))
 
-    # 2 - subtour elimination
+    # 2 - Subtour elimination
     # Variables: u[i] to prevent subtours
     u = [[[Bool(f"u_{i}_{j}_{k}") for k in PACKS] for j in PACKS] for i in COURIERS]
 
     # Constraining assignment of truth value of u decision variable
     for c in COURIERS:
-        # u del primo pacco = 1
+        # u for first pack = 1
         for p in PACKS:
             constraints.append(Implies(paths[c][DEPOT][p], u[c][p][0]==True))
-            # solver_unified.add(Implies(paths[c][DEPOT][p], u[c][p][0]==True))
 
         # u_j >= u_i + 1
         for p1 in PACKS:
@@ -225,13 +267,11 @@ def create_model(m, n, loads, sizes, distances):
 
                 for k in PACKS:
                     constraints.append(Implies(And(paths[c][p1][p2], u[c][p1][k]), And(exactly_one([u[c][p2][i] for i in range(k+1, n)]))))
-                    # solver_unified.add(Implies(And(paths[c][p1][p2], u[c][p1][k]), And(exactly_one([u[c][p2][i] for i in range(k+1, n)]))))
 
     ## Exatcly one true value for each u_p1
     for c in COURIERS:
         for p1 in PACKS:
             constraints.append(exactly_one(u[c][p1]))
-            # solver_unified.add(exactly_one(u[c][p1]))
 
     # Applying MTZ formulation constraint
     # u_i - u_j + 1 <= (n - 1) * (1 - paths[c, i, j])
@@ -244,7 +284,6 @@ def create_model(m, n, loads, sizes, distances):
                 for k1 in PACKS:
                     for k2 in PACKS:
                         constraints.append(Implies(And(u[c][p1][k1], u[c][p2][k2]), k1 - k2 + 1 <= (n-1) * (1-If(paths[c][p1][p2], 1, 0))))
-                        # solver_unified.add(Implies(And(u[c][p1][k1], u[c][p2][k2]), k1 - k2 + 1 <= (n-1) * (1-If(paths[c][p1][p2], 1, 0))))
     
 
     ##### Estimated distance for the minimum path
@@ -259,8 +298,8 @@ def create_model(m, n, loads, sizes, distances):
 
     # Constraint - ensuring distance percurred by each courier to be greater than estimated lower bound
     constraints.append(Objective >= lower_bound)
-    # solver_unified.add(Objective >= lower_bound)
 
+    # Application of constraints just stored
     solver_unified.add(And(*constraints))
 
     return solver_unified, assignments, paths
