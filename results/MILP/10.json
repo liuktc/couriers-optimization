@@ -1,24 +1,256 @@
 {
-   "test1": {
-      "time": 300,
-      "optimal": false,
-      "obj": 14,
+   "initial-model_scip": {
+      "time": 2,
+      "optimal": true,
+      "obj": 244,
       "sol": [
          [
+            12
+         ],
+         [
+            6
+         ],
+         [
+            2,
+            10
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [
+            5,
+            3
+         ],
+         [
+            11,
+            13
+         ],
+         [
+            7
+         ],
+         [
             1
+         ],
+         [
+            4
          ]
       ],
       "_extras": {
          "runner": "github-action"
       }
    },
-   "test2": {
-      "time": 300,
-      "optimal": false,
-      "obj": 16,
+   "initial-model_highs": {
+      "time": 1,
+      "optimal": true,
+      "obj": 244,
       "sol": [
          [
+            8
+         ],
+         [
+            12
+         ],
+         [
+            3
+         ],
+         [
+            10
+         ],
+         [
+            6,
+            9
+         ],
+         [
+            2,
+            13
+         ],
+         [
+            5
+         ],
+         [
+            11
+         ],
+         [
             1
+         ],
+         [
+            4,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "implied-model_scip": {
+      "time": 5,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            8
+         ],
+         [
+            3,
+            9
+         ],
+         [
+            10,
+            1
+         ],
+         [
+            2
+         ],
+         [
+            4,
+            11
+         ],
+         [
+            12
+         ],
+         [
+            6
+         ],
+         [
+            7
+         ],
+         [
+            5
+         ],
+         [
+            13
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "implied-model_highs": {
+      "time": 2,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            11
+         ],
+         [
+            4
+         ],
+         [
+            7,
+            13
+         ],
+         [
+            3
+         ],
+         [
+            9
+         ],
+         [
+            8
+         ],
+         [
+            5,
+            1
+         ],
+         [
+            10
+         ],
+         [
+            12
+         ],
+         [
+            2,
+            6
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "symmetry-model_scip": {
+      "time": 6,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            6
+         ],
+         [
+            5
+         ],
+         [
+            7,
+            13
+         ],
+         [
+            1
+         ],
+         [
+            10,
+            8
+         ],
+         [
+            3
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            11
+         ],
+         [
+            9
+         ],
+         [
+            12
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "symmetry-model_highs": {
+      "time": 1,
+      "optimal": true,
+      "obj": 244,
+      "sol": [
+         [
+            4,
+            7,
+            1
+         ],
+         [
+            12
+         ],
+         [
+            9
+         ],
+         [
+            13
+         ],
+         [
+            5
+         ],
+         [
+            6
+         ],
+         [
+            2
+         ],
+         [
+            8
+         ],
+         [
+            11
+         ],
+         [
+            3,
+            10
          ]
       ],
       "_extras": {

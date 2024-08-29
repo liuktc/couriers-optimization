@@ -3,6 +3,8 @@ import os
 import json
 import logging
 logger = logging.getLogger(__name__)
+import time
+from pathlib import Path
 
 
 
@@ -20,8 +22,8 @@ def parseInstanceForMinizinc(instance):
     return out
 
 
-def __formatCommand(model_path, data_path, solver, timeout_ms, seed):
-    return [
+def __formatCommand(model_path, data_path, solver, timeout_ms, seed, free_search):
+    cmd = [
         "minizinc",
         "--json-stream",
         "--output-mode", "json",
@@ -33,11 +35,14 @@ def __formatCommand(model_path, data_path, solver, timeout_ms, seed):
         "--output-time",
         "--output-objective",
         "--model", f"{os.path.abspath(model_path)}",
-        "--data", f"{os.path.abspath(data_path)}"
+        "--data", f"{os.path.abspath(data_path)}",
     ]
+    if free_search:
+        cmd.append("-f")
+    return cmd
 
 
-def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int, seed: int):
+def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int, seed: int, free_search: bool=False):
     """
         Calls MiniZinc on a model and returns solving statistics and all solutions.
     """
@@ -52,7 +57,7 @@ def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int,
         "solver": None,
         "solution": None
     }
-    minizinc_cmd = __formatCommand(model_path, data_path, solver, timeout_ms, seed)
+    minizinc_cmd = __formatCommand(model_path, data_path, solver, timeout_ms, seed, free_search)
 
     with Popen(minizinc_cmd, stdout=PIPE, stderr=PIPE) as pipe:
         while True:
@@ -61,15 +66,23 @@ def minizincSolve(model_path: str, data_path: str, solver: str, timeout_ms: int,
             data = json.loads(out_stream)
 
             if data["type"] == "statistics":
-                # MiniZinc outputs 3 statistics at different times.
-                if statistics["compiler"] is None: 
-                    statistics["compiler"] = data["statistics"]
-                elif statistics["solver"] is None: 
-                    statistics["solver"] = data["statistics"]
-                elif statistics["solution"] is None: 
-                    statistics["solution"] = data["statistics"]
-                else: 
-                    logger.warning("Unexpected statistics from MiniZinc")
+                if solver in ["gecode", "chuffed"]:
+                    # Gecode/Chuffed outputs 3 statistics at different times.
+                    if statistics["compiler"] is None: 
+                        statistics["compiler"] = data["statistics"]
+                    elif statistics["solver"] is None: 
+                        statistics["solver"] = data["statistics"]
+                    elif statistics["solution"] is None: 
+                        statistics["solution"] = data["statistics"]
+                    else: 
+                        logger.warning("Unexpected statistics from Gecode/Chuffed")
+                elif "ortools" in solver:
+                    if statistics["compiler"] is None: 
+                        statistics["compiler"] = data["statistics"]
+                    else:
+                        pass # OR-tools sends statistics for each intermediate solution
+                else:
+                    logger.warning("Unknown solver")
             elif data["type"] == "solution":
                 # Each intermediate solution is stored
                 sol = {

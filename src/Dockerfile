@@ -43,6 +43,12 @@ RUN wget https://github.com/SRI-CSL/yices2/releases/download/Yices-2.6.5/yices-2
     cp -r yices-2.6.5/include/* /usr/local/include &&\
     cp -r yices-2.6.5/lib/* /usr/local/lib
     
+# Install amplpy and all necessary amplpy.modules:
+ARG AMPL_KEY 
+RUN python3 -m pip install amplpy --no-cache-dir # Install amplpy
+RUN python3 -m amplpy.modules install highs cbc scip --no-cache-dir # Install modules
+RUN python3 -m amplpy.modules activate ${AMPL_KEY}
+
 
 RUN chmod +x ./entrypoint.sh
 
