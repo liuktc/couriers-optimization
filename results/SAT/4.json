@@ -3,23 +3,24 @@
       "obj": 220,
       "sol": [
          [],
+         [],
          [
-            3,
-            4
+            3
          ],
          [
+            6
+         ],
+         [
+            4,
             1
          ],
-         [],
          [
+            9,
             2,
-            6,
-            9
-         ],
-         [],
-         [
             5,
-            10,
+            10
+         ],
+         [
             7
          ],
          [
@@ -27,9 +28,50 @@
          ]
       ],
       "optimal": true,
-      "time": 33,
+      "time": 20,
+      "restart": 8,
+      "max_memory": 148.66,
+      "mk_bool_var": 32596,
+      "conflicts": 1241,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
+      }
+   },
+   "un-symm-model": {
+      "obj": 220,
+      "sol": [
+         [],
+         [
+            2,
+            7,
+            9
+         ],
+         [
+            5,
+            10,
+            4
+         ],
+         [
+            8
+         ],
+         [
+            3,
+            6
+         ],
+         [
+            1
+         ],
+         [],
+         []
+      ],
+      "optimal": true,
+      "time": 21,
+      "restart": 15,
+      "max_memory": 151.22,
+      "mk_bool_var": 41344,
+      "conflicts": 2027,
+      "_extras": {
+         "runner": ""
       }
    },
    "un-cumulative-constraints-model": {
@@ -60,9 +102,13 @@
          ]
       ],
       "optimal": true,
-      "time": 33,
+      "time": 21,
+      "restart": 19,
+      "max_memory": 152.78,
+      "mk_bool_var": 30783,
+      "conflicts": 2610,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
    "un-heule-encoding-model": {
@@ -93,42 +139,53 @@
          []
       ],
       "optimal": true,
-      "time": 32,
+      "time": 21,
+      "restart": 12,
+      "max_memory": 258.08,
+      "mk_bool_var": 68240,
+      "conflicts": 1705,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
-   "unified-model": {
+   "matrix-model": {
       "obj": 220,
       "sol": [
-         [],
          [
-            3,
             4
          ],
          [
-            1
-         ],
-         [],
-         [
-            2,
-            6,
-            9
-         ],
-         [],
-         [
             5,
-            10,
-            7
+            6
          ],
          [
             8
+         ],
+         [
+            2
+         ],
+         [
+            10
+         ],
+         [
+            9
+         ],
+         [
+            1,
+            3
+         ],
+         [
+            7
          ]
       ],
       "optimal": true,
-      "time": 33,
+      "time": 6,
+      "restart": 9,
+      "max_memory": 133.12,
+      "mk_bool_var": 160384,
+      "conflicts": 1005,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    }
 }

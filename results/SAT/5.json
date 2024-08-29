@@ -12,8 +12,33 @@
       ],
       "optimal": true,
       "time": 0,
+      "restart": 0,
+      "max_memory": 21.93,
+      "mk_bool_var": 592,
+      "conflicts": 20,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
+      }
+   },
+   "un-symm-model": {
+      "obj": 206,
+      "sol": [
+         [
+            2
+         ],
+         [
+            1,
+            3
+         ]
+      ],
+      "optimal": true,
+      "time": 0,
+      "restart": 0,
+      "max_memory": 22.09,
+      "mk_bool_var": 1547,
+      "conflicts": 92,
+      "_extras": {
+         "runner": ""
       }
    },
    "un-cumulative-constraints-model": {
@@ -29,8 +54,12 @@
       ],
       "optimal": true,
       "time": 0,
+      "restart": 0,
+      "max_memory": 21.95,
+      "mk_bool_var": 544,
+      "conflicts": 21,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
    "un-heule-encoding-model": {
@@ -46,11 +75,15 @@
       ],
       "optimal": true,
       "time": 0,
+      "restart": 0,
+      "max_memory": 21.93,
+      "mk_bool_var": 544,
+      "conflicts": 21,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
-   "unified-model": {
+   "matrix-model": {
       "obj": 206,
       "sol": [
          [
@@ -63,8 +96,12 @@
       ],
       "optimal": true,
       "time": 0,
+      "restart": 0,
+      "max_memory": 21.91,
+      "mk_bool_var": 1061,
+      "conflicts": 21,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    }
 }

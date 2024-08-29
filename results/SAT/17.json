@@ -8,6 +8,15 @@
          "runner": "github-action"
       }
    },
+   "un-symm-model": {
+      "obj": null,
+      "sol": null,
+      "optimal": false,
+      "time": 300,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
    "un-cumulative-constraints-model": {
       "obj": null,
       "sol": null,
@@ -26,7 +35,7 @@
          "runner": "github-action"
       }
    },
-   "unified-model": {
+   "matrix-model": {
       "obj": null,
       "sol": null,
       "optimal": false,

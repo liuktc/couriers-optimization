@@ -3,31 +3,68 @@
       "obj": 226,
       "sol": [
          [
-            7,
-            3
+            6
          ],
          [
             8,
             9
          ],
+         [],
+         [
+            3,
+            5,
+            7
+         ],
+         [
+            4,
+            1
+         ],
          [
             2
+         ]
+      ],
+      "optimal": true,
+      "time": 9,
+      "restart": 13,
+      "max_memory": 83.05,
+      "mk_bool_var": 14217,
+      "conflicts": 1747,
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "un-symm-model": {
+      "obj": 226,
+      "sol": [
+         [],
+         [
+            8
+         ],
+         [
+            6,
+            9
+         ],
+         [
+            3,
+            5
          ],
          [
             1,
             4
          ],
          [
-            5
-         ],
-         [
-            6
+            7,
+            2
          ]
       ],
       "optimal": true,
-      "time": 15,
+      "time": 10,
+      "restart": 12,
+      "max_memory": 85.21,
+      "mk_bool_var": 28184,
+      "conflicts": 1705,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
    "un-cumulative-constraints-model": {
@@ -56,9 +93,13 @@
          ]
       ],
       "optimal": true,
-      "time": 14,
+      "time": 9,
+      "restart": 8,
+      "max_memory": 85.43,
+      "mk_bool_var": 22517,
+      "conflicts": 1079,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
    "un-heule-encoding-model": {
@@ -85,40 +126,48 @@
          ]
       ],
       "optimal": true,
-      "time": 17,
+      "time": 10,
+      "restart": 10,
+      "max_memory": 135.97,
+      "mk_bool_var": 47916,
+      "conflicts": 1840,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
-   "unified-model": {
+   "matrix-model": {
       "obj": 226,
       "sol": [
          [
-            7,
-            3
+            7
          ],
          [
-            8,
+            5,
             9
          ],
          [
+            8
+         ],
+         [
+            4,
+            1
+         ],
+         [
+            3,
             2
-         ],
-         [
-            1,
-            4
-         ],
-         [
-            5
          ],
          [
             6
          ]
       ],
       "optimal": true,
-      "time": 14,
+      "time": 4,
+      "restart": 6,
+      "max_memory": 74.79,
+      "mk_bool_var": 101151,
+      "conflicts": 741,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    }
 }
