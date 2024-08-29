@@ -351,7 +351,7 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             solver_assignment.set('timeout', millisecs_left(now, timeout_timestamp))
         
         result = {
-            "time": math.floor(time.time() - start_timestamp) if solve_time is None else solve_time,
+            "time": math.ceil(time.time() - start_timestamp) if solve_time is None else solve_time,
             "optimal": False,
             "obj": None,
             "sol": None
@@ -365,7 +365,8 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
                 
             result["obj"] = best_objective
             result["sol"] = get_solution(best_path, COURIERS, DEPOT)
-            
+        else:
+            result["time"] = timeout
         return result
     except z3types.Z3Exception as e:
         logger.error(e)

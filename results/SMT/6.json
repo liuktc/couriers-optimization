@@ -118,10 +118,29 @@
       }
    },
    "twosolver_symm": {
-      "time": 300,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
+      "time": 2,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            2,
+            6
+         ],
+         [],
+         [],
+         [
+            7,
+            4,
+            1,
+            3
+         ],
+         [
+            5
+         ],
+         [
+            8
+         ]
+      ],
       "_extras": {
          "runner": ""
       }

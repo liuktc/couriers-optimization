@@ -142,10 +142,36 @@
       }
    },
    "twosolver_symm": {
-      "time": 300,
-      "optimal": false,
-      "obj": null,
-      "sol": null,
+      "time": 5,
+      "optimal": true,
+      "obj": 186,
+      "sol": [
+         [
+            9
+         ],
+         [
+            5,
+            10,
+            6
+         ],
+         [
+            4,
+            7
+         ],
+         [],
+         [
+            3
+         ],
+         [
+            1
+         ],
+         [
+            8
+         ],
+         [
+            2
+         ]
+      ],
       "_extras": {
          "runner": ""
       }

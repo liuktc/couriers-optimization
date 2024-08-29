@@ -85,14 +85,14 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             for i1 in COURIERS:
                 for i2 in COURIERS:
                     if i1 < i2 and l[i1] == l[i2]:
-                        solver.add(COUNT[i1] <= COUNT[i2])
+                        # solver.add(COUNT[i1] <= COUNT[i2])
                         solver_assignment.add(COUNT[i1] <= COUNT[i2])
                         
             # --- Ordering on the index of the delivered packages ---
             for i1 in COURIERS:
                 for i2 in COURIERS:
                     if i1 < i2 and l[i1] == l[i2]:
-                        solver.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
+                        # solver.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
                         solver_assignment.add(precedes(PACKS_PER_COURIER[i1], PACKS_PER_COURIER[i2]))
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         # Implied constraints
@@ -201,8 +201,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             
             solver_assignment.set('timeout', millisecs_left(now, timeout_timestamp))
             
-            
-            logger.debug(f"New optimal found: {result_objective}")
+            logger.debug(f"New optimal found: {best_model[obj]}")
             logger.debug(f"Distances = {[best_model[DISTANCES[i]].as_long() for i in COURIERS]}")
             logger.debug(f"Counts = {[best_model[COUNT[i]].as_long() for i in COURIERS]}")
             logger.debug(f"Assignments = {[best_model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
@@ -218,7 +217,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                 logger.debug(row)
         
         result = {
-            "time": math.floor(time.time() - start_timestamp) if solve_time is None else solve_time,
+            "time": math.ceil(time.time() - start_timestamp) if solve_time is None else solve_time,
             "optimal": False,
             "obj": None,
             "sol": None
@@ -246,7 +245,8 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                 solution.append(items_delivered)
 
             result["sol"] = solution
-            
+        else:
+            result["time"] = timeout
         return result
     except z3types.Z3Exception as e:
         logger.debug(e)
