@@ -90,30 +90,31 @@
       }
    },
    "twosolver": {
-      "time": 300,
-      "optimal": false,
+      "time": 1,
+      "optimal": true,
       "obj": 322,
       "sol": [
-         [],
-         [],
-         [],
          [
-            7,
-            6,
-            3
+            1,
+            8
          ],
          [
-            4,
             5,
             2
          ],
+         [],
          [
-            8,
-            1
-         ]
+            3
+         ],
+         [
+            6,
+            7,
+            4
+         ],
+         []
       ],
       "_extras": {
-         "runner": "Huawei_Laptop"
+         "runner": ""
       }
    },
    "twosolver_symm": {
@@ -122,67 +123,67 @@
       "obj": null,
       "sol": null,
       "_extras": {
-         "runner": "Huawei_Laptop"
+         "runner": ""
       }
    },
    "twosolver_impl": {
-      "time": 300,
-      "optimal": false,
+      "time": 0,
+      "optimal": true,
       "obj": 322,
       "sol": [
          [
-            6
+            8
          ],
          [
-            5
+            6
          ],
          [
             2
          ],
          [
+            3
+         ],
+         [
+            1
+         ],
+         [
+            7,
+            4,
+            5
+         ]
+      ],
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "local_search": {
+      "time": 0,
+      "optimal": true,
+      "obj": 322,
+      "sol": [
+         [
+            2,
             7
+         ],
+         [
+            5
+         ],
+         [
+            6
+         ],
+         [
+            3
          ],
          [
             8,
             4
          ],
          [
-            3,
             1
          ]
       ],
       "_extras": {
-         "runner": "Huawei_Laptop"
-      }
-   },
-   "local_search": {
-      "time": 300,
-      "optimal": false,
-      "obj": 322,
-      "sol": [
-         [
-            1,
-            2
-         ],
-         [
-            5
-         ],
-         [
-            4
-         ],
-         [
-            3,
-            6
-         ],
-         [
-            8
-         ],
-         [
-            7
-         ]
-      ],
-      "_extras": {
-         "runner": "Huawei_Laptop"
+         "runner": ""
       }
    },
    "smt2-plain-linear-z3": {

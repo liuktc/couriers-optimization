@@ -51,7 +51,7 @@
       }
    },
    "twosolver": {
-      "time": 1,
+      "time": 0,
       "optimal": true,
       "obj": 206,
       "sol": [
@@ -64,11 +64,11 @@
          ]
       ],
       "_extras": {
-         "runner": "Huawei_Laptop"
+         "runner": ""
       }
    },
    "twosolver_symm": {
-      "time": 1,
+      "time": 0,
       "optimal": true,
       "obj": 206,
       "sol": [
@@ -81,11 +81,11 @@
          ]
       ],
       "_extras": {
-         "runner": "Huawei_Laptop"
+         "runner": ""
       }
    },
    "twosolver_impl": {
-      "time": 1,
+      "time": 0,
       "optimal": true,
       "obj": 206,
       "sol": [
@@ -98,11 +98,11 @@
          ]
       ],
       "_extras": {
-         "runner": "Huawei_Laptop"
+         "runner": ""
       }
    },
    "local_search": {
-      "time": 1,
+      "time": 0,
       "optimal": true,
       "obj": 206,
       "sol": [
@@ -115,7 +115,7 @@
          ]
       ],
       "_extras": {
-         "runner": "Huawei_Laptop"
+         "runner": ""
       }
    },
    "smt2-plain-linear-z3": {

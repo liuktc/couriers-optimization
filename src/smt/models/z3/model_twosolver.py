@@ -143,6 +143,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
         
         model = None
         solve_time = None
+        best_model = None
         while solver_assignment.check() == sat:
             model_assignment = solver_assignment.model()
             result_assignment = [model_assignment.evaluate(ASSIGNMENTS[j]).as_long() for j in ITEMS]
@@ -170,6 +171,7 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                 
                 now = time.time()
                 if now >= timeout_timestamp:
+                    solve_time = timeout
                     break
                 
                 solver.set('timeout', millisecs_left(now, timeout_timestamp))
@@ -181,10 +183,14 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
                     solver.add(obj < result_objective)
                     now = time.time()
                     if now >= timeout_timestamp:
+                        solve_time = timeout
                         break
                     
                     solver.set('timeout', millisecs_left(now, timeout_timestamp))
-                
+            
+                if (best_model is None) or (result_objective < best_model[obj].as_long()):
+                    best_model = model
+                if result_objective == lower_bound: break
             # The new solution must be different from the previous one
             solver_assignment.add(Or([ASSIGNMENTS[j] != result_assignment[j] for j in ITEMS]))
             
@@ -197,18 +203,18 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             
             
             logger.debug(f"New optimal found: {result_objective}")
-            logger.debug(f"Distances = {[model[DISTANCES[i]].as_long() for i in COURIERS]}")
-            logger.debug(f"Counts = {[model[COUNT[i]].as_long() for i in COURIERS]}")
-            logger.debug(f"Assignments = {[model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
+            logger.debug(f"Distances = {[best_model[DISTANCES[i]].as_long() for i in COURIERS]}")
+            logger.debug(f"Counts = {[best_model[COUNT[i]].as_long() for i in COURIERS]}")
+            logger.debug(f"Assignments = {[best_model[ASSIGNMENTS[j]].as_long() for j in ITEMS]}")
             
             logger.debug("PATH = ")
             for i in COURIERS:
-                row = [model[PATH[i][j]].as_long() for j in range(DEPOT)]
+                row = [best_model[PATH[i][j]].as_long() for j in range(DEPOT)]
                 logger.debug(row)
                 
             logger.debug("PACKS_PER_COURIER = ")
             for i in COURIERS:
-                row = [model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
+                row = [best_model[PACKS_PER_COURIER[i][j]].as_long() for j in ITEMS]
                 logger.debug(row)
         
         result = {
@@ -217,25 +223,25 @@ def SMT_twosolver(m, n, l, s, D, implied_constraints=False, symmetry_breaking=Fa
             "obj": None,
             "sol": None
         }
-        if model is not None:
+        if best_model is not None:
             if result["time"] >= timeout:
                 result["time"] = timeout
                 result["optimal"] = False
             else:
                 result["optimal"] = True
                 
-            result["obj"] = model[obj].as_long()
+            result["obj"] = best_model[obj].as_long()
             
             # Calculate the solution
             solution = []
             for i in COURIERS:
                 items_delivered = []
                 
-                first_item = int(model[PATH[i][DEPOT - 1]].as_long())
+                first_item = int(best_model[PATH[i][DEPOT - 1]].as_long())
                 next_item = first_item
                 while next_item != DEPOT:
                     items_delivered.append(next_item)
-                    next_item = int(model[PATH[i][next_item - 1]].as_long())
+                    next_item = int(best_model[PATH[i][next_item - 1]].as_long())
                 
                 solution.append(items_delivered)
 

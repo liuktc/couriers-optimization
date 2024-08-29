@@ -341,6 +341,8 @@ def SMT_local_search(m, n, l, s, D, implied_constraints=False, symmetry_breaking
             # The new solution must be different from the previous one
             solver_assignment.add(Or([ASSIGNMENTS[j] != result_assignment[j] for j in ITEMS]))
             
+            if best_objective == lower_bound: break
+
             now = time.time()
             if now >= timeout_timestamp:
                 solve_time = timeout
