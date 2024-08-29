@@ -1,7 +1,8 @@
 from .total_sat import Unified_Model
+from .total_sat_symm import Unified_Symm_Model
 from .total_cumconstr_sat import Unified_CumulativeConstr_Model
 from .total_diff_enc_sat import Unified_HeuleEnc_Model
-from .milp_like_sat import Unified_MILPlike_Model
+from .matrix_sat import Matrix_Model
 import time
 import multiprocessing
 import logging
@@ -23,7 +24,7 @@ def modelRunner(ModelClass, instance, timeout, random_seed, queue):
         model_init_time = round(time.time() - start_model_init)
         logger.info(f"Model created")
         
-        objective, solution, optimality, solve_time = def_model.solve(timeout-model_init_time, random_seed)
+        objective, solution, optimality, solve_time, restart, max_memory, mk_bool_var, conflicts = def_model.solve(timeout-model_init_time, random_seed)
         solve_time = solve_time + model_init_time
     except Exception as e:
         logger.error(f"Exception {e}")
@@ -37,6 +38,10 @@ def modelRunner(ModelClass, instance, timeout, random_seed, queue):
             'sol': solution,
             'optimal': optimality,
             'time': solve_time,
+            'restart' : restart,
+            'max_memory': max_memory,
+            'mk_bool_var': mk_bool_var,
+            'conflicts': conflicts
         }
     else:
         result = {
@@ -44,6 +49,10 @@ def modelRunner(ModelClass, instance, timeout, random_seed, queue):
             'sol': None,
             'optimal': False,
             'time': timeout,
+            'restart' : None,
+            'max_memory': None,
+            'mk_bool_var': None,
+            'conflicts': None
         }
     queue.put(result, block=False)
 
@@ -52,9 +61,10 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     
     models = {
         'un-model': Unified_Model,
+        'un-symm-model': Unified_Symm_Model,
         'un-cumulative-constraints-model': Unified_CumulativeConstr_Model,
         'un-heule-encoding-model': Unified_HeuleEnc_Model,
-        # 'un-milplike-model': Unified_MILPlike_Model, # still some problem or in the model or in the solve
+        'matrix-model': Matrix_Model,
     }
 
     results = {}
@@ -86,6 +96,10 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
                 'sol': None,
                 'optimal': False,
                 'time': timeout,
+                'restart' : None,
+                'max_memory': None,
+                'mk_bool_var': None,
+                'conflicts': None
             }
         else:
             results[model] = res
