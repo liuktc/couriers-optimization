@@ -1,10 +1,204 @@
 {
-   "test1": {
-      "time": 300,
-      "optimal": false,
-      "obj": 14,
+   "plain": {
+      "time": 1,
+      "optimal": true,
+      "obj": 12,
       "sol": [
          [
+            5,
+            4,
+            2
+         ],
+         [
+            6,
+            3
+         ],
+         [
+            7,
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_symm": {
+      "time": 1,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            4,
+            2
+         ],
+         [
+            6,
+            3
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_impl": {
+      "time": 1,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            6,
+            3
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            3,
+            6,
+            5
+         ],
+         [
+            4,
+            2
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "twosolver_symm": {
+      "time": 1,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            4,
+            2
+         ],
+         [
+            3,
+            7
+         ],
+         [
+            1,
+            6
+         ]
+      ],
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "twosolver_impl": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            3,
+            6,
+            5
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "local_search": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            3,
+            6,
+            5
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "smt2-plain-linear-z3": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            3,
+            6,
+            5
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-cvc5": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            6,
+            3
+         ],
+         [
+            4,
+            2
+         ],
+         [
+            7,
             1
          ]
       ],
@@ -12,12 +206,68 @@
          "runner": "github-action"
       }
    },
-   "test2": {
-      "time": 300,
-      "optimal": false,
-      "obj": 16,
+   "smt2-plain-linear-opensmt": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
       "sol": [
          [
+            5,
+            4,
+            2
+         ],
+         [
+            3,
+            7
+         ],
+         [
+            6,
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-smtinterpol": {
+      "time": 1,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            4,
+            2
+         ],
+         [
+            7,
+            3
+         ],
+         [
+            6,
+            1
+         ]
+      ],
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-yices2": {
+      "time": 0,
+      "optimal": true,
+      "obj": 12,
+      "sol": [
+         [
+            5,
+            4,
+            2
+         ],
+         [
+            3,
+            7
+         ],
+         [
+            6,
             1
          ]
       ],

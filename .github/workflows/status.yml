@@ -7,6 +7,7 @@ on:
       - cp
       - sat
       - smt
+      - smt-lib
       - milp
     paths: ["src/**", .github/workflows/status.yml, .github/status_update.py, .github/check_solution_json.py, "results/**"]
 
@@ -42,6 +43,10 @@ jobs:
           echo "METHODS=sat" >> $GITHUB_ENV
       - name: Set env for methods to run (SMT)
         if: endsWith(github.ref, '/smt')
+        run: |
+          echo "METHODS=smt" >> $GITHUB_ENV
+      - name: Set env for methods to run (SMT-LIB)
+        if: endsWith(github.ref, '/smt-lib')
         run: |
           echo "METHODS=smt" >> $GITHUB_ENV
       - name: Set env for methods to run (MILP)

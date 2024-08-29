@@ -6,10 +6,12 @@ from input_parser import parseInstanceFile
 import argparse
 import os
 import json
-import resource
+import platform
 import logging
 logger = logging.getLogger(__name__)
 
+if platform.system() != "Windows":
+    import resource
 
 def __loadCache(results_file_path):
     if not os.path.isfile(results_file_path): return {}
@@ -45,7 +47,7 @@ if __name__ == "__main__":
         instances = [ (num, inst) for num, inst in instances if num in args.instances]
 
     # Set memory limit if needed
-    if args.mem_limit >= 0:
+    if args.mem_limit >= 0 and platform.system() != "Windows":
         resource.setrlimit(resource.RLIMIT_AS, (args.mem_limit*1024*1024, args.mem_limit*1024*1024))
 
     # Create output directories
