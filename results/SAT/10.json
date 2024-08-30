@@ -1,28 +1,225 @@
 {
-   "test1": {
-      "time": 300,
-      "optimal": false,
-      "obj": 14,
+   "un-model": {
+      "obj": 244,
       "sol": [
          [
-            1
+            13
+         ],
+         [
+            1,
+            7
+         ],
+         [
+            10
+         ],
+         [],
+         [
+            6,
+            2,
+            11
+         ],
+         [],
+         [
+            8
+         ],
+         [
+            4,
+            5
+         ],
+         [
+            9,
+            3
+         ],
+         [
+            12
          ]
       ],
+      "optimal": true,
+      "time": 129,
+      "restart": 192,
+      "max_memory": 494.78,
+      "mk_bool_var": 44822,
+      "conflicts": 24170,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
-   "test2": {
-      "time": 300,
-      "optimal": false,
-      "obj": 16,
+   "un-symm-model": {
+      "obj": 244,
       "sol": [
+         [],
+         [],
          [
-            1
+            7,
+            11,
+            5
+         ],
+         [
+            6
+         ],
+         [],
+         [
+            1,
+            8
+         ],
+         [
+            9
+         ],
+         [
+            13
+         ],
+         [
+            3,
+            2,
+            4,
+            10
+         ],
+         [
+            12
          ]
       ],
+      "optimal": true,
+      "time": 120,
+      "restart": 127,
+      "max_memory": 505.13,
+      "mk_bool_var": 70594,
+      "conflicts": 15909,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
+      }
+   },
+   "un-cumulative-constraints-model": {
+      "obj": 244,
+      "sol": [
+         [],
+         [],
+         [],
+         [
+            6,
+            9
+         ],
+         [
+            11,
+            10
+         ],
+         [
+            7,
+            1,
+            5,
+            3
+         ],
+         [],
+         [
+            8
+         ],
+         [
+            2,
+            13,
+            4
+         ],
+         [
+            12
+         ]
+      ],
+      "optimal": true,
+      "time": 145,
+      "restart": 229,
+      "max_memory": 522.77,
+      "mk_bool_var": 49835,
+      "conflicts": 29132,
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "un-heule-encoding-model": {
+      "obj": 244,
+      "sol": [
+         [
+            9
+         ],
+         [
+            8
+         ],
+         [
+            4,
+            7,
+            2,
+            1
+         ],
+         [
+            6,
+            11
+         ],
+         [
+            3,
+            10,
+            5
+         ],
+         [],
+         [
+            13
+         ],
+         [],
+         [],
+         [
+            12
+         ]
+      ],
+      "optimal": true,
+      "time": 129,
+      "restart": 166,
+      "max_memory": 654.25,
+      "mk_bool_var": 274080,
+      "conflicts": 21026,
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "matrix-model": {
+      "obj": 244,
+      "sol": [
+         [
+            7
+         ],
+         [
+            4,
+            1,
+            5,
+            3
+         ],
+         [
+            13
+         ],
+         [
+            8
+         ],
+         [
+            9
+         ],
+         [
+            10
+         ],
+         [
+            2
+         ],
+         [
+            12
+         ],
+         [
+            11
+         ],
+         [
+            6
+         ]
+      ],
+      "optimal": true,
+      "time": 60,
+      "restart": 15,
+      "max_memory": 389.95,
+      "mk_bool_var": 378113,
+      "conflicts": 1696,
+      "_extras": {
+         "runner": ""
       }
    }
 }

@@ -1,28 +1,137 @@
 {
-   "test1": {
-      "time": 300,
-      "optimal": false,
-      "obj": 14,
+   "un-model": {
+      "obj": 12,
       "sol": [
          [
+            5,
+            4,
+            2
+         ],
+         [
+            6,
+            3
+         ],
+         [
+            7,
             1
          ]
       ],
+      "optimal": true,
+      "time": 1,
+      "restart": 3,
+      "max_memory": 29.38,
+      "mk_bool_var": 10002,
+      "conflicts": 357,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
       }
    },
-   "test2": {
-      "time": 300,
-      "optimal": false,
-      "obj": 16,
+   "un-symm-model": {
+      "obj": 12,
       "sol": [
          [
+            5,
+            6,
+            3
+         ],
+         [
+            4,
+            2
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "optimal": true,
+      "time": 1,
+      "restart": 3,
+      "max_memory": 30.01,
+      "mk_bool_var": 8296,
+      "conflicts": 409,
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "un-cumulative-constraints-model": {
+      "obj": 12,
+      "sol": [
+         [
+            3,
+            6,
+            5
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "optimal": true,
+      "time": 1,
+      "restart": 2,
+      "max_memory": 30.08,
+      "mk_bool_var": 9680,
+      "conflicts": 338,
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "un-heule-encoding-model": {
+      "obj": 12,
+      "sol": [
+         [
+            3,
+            6,
+            5
+         ],
+         [
+            2,
+            4
+         ],
+         [
+            7,
             1
          ]
       ],
+      "optimal": true,
+      "time": 1,
+      "restart": 2,
+      "max_memory": 30.36,
+      "mk_bool_var": 15173,
+      "conflicts": 361,
       "_extras": {
-         "runner": "github-action"
+         "runner": ""
+      }
+   },
+   "matrix-model": {
+      "obj": 12,
+      "sol": [
+         [
+            3,
+            6,
+            5
+         ],
+         [
+            4,
+            2
+         ],
+         [
+            1,
+            7
+         ]
+      ],
+      "optimal": true,
+      "time": 2,
+      "restart": 39,
+      "max_memory": 31.06,
+      "mk_bool_var": 49164,
+      "conflicts": 4762,
+      "_extras": {
+         "runner": ""
       }
    }
 }
