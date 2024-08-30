@@ -9,6 +9,7 @@
 \usepackage{caption, subcaption}
 \usepackage{float}
 \usepackage[bottom]{footmisc}
+\usepackage[inline]{enumitem}
 \usepackage{biblatex}
 \addbibresource{references.bib}
 \hypersetup{ colorlinks, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black, linktoc=all }
@@ -35,7 +36,46 @@
     \end{titlepage}
 
 
-    \section{Introduction}
+    \section{Introduction} \label{sec:intro}
+    The problem of this project is known in the literature as the vehicle routing problem. We tackle this problem by virtually splitting it into two sub-problems: first we look for an assignment of the items to the couriers and then search for the routes of each of them (i.e., by solving multiple traveling salesman problems). To solve the latter, we follow the approach presented in \cite{vrp} where the route of a courier is modelled through the variables $P_d \in [1, n+1]$ with $d \in [1, n+1]$ defined as follows:
+    \begin{equation}
+        \label{eq:path_def}
+        P_{d_1} = \begin{cases}
+            d_2 & \text{iff the location $d_2 \neq d_1$ is visited immediately after $d_1$}\\
+            d_1 & \text{iff $d_1$ is not part of the route of the courier}
+        \end{cases}
+    \end{equation} 
+    With proper assignment and subtour elimination constraints, $P_d$ allows to define a Hamiltonian cycle that passes through the items that the courier delivers and the solution can be extracted by following the cycle starting from the depot $n+1$.
+
+    The lower-bound of the objective function is common to all models and is defined as the maximum path cost that involves a single package:
+    \begin{equation}
+        \max_{p \in \{ 1, \dots, n \}} \left\{ D_{n+1, p} + D_{p, n+1} \right\}
+    \end{equation}
+
+    Symmetry breaking constraints are also common to all models. By considering couriers with the same capacity, the following constraints can be used to avoid symmetries:
+    \begin{itemize}
+        \item By imposing an ordering on the amount of assigned packages:
+            \begin{equation}
+                \label{eq:cp_symm_amount}
+                \forall c_1, c_2 \in [1, m]: (c_1 < c_2 \land l_{c_1} = l_{c_2}) \Rightarrow Q_{c_1} \leq Q_{c_2}
+            \end{equation}
+            where $Q_c$ is the amount of packages delivered by the courier $c$.
+        \item By imposing an ordering on indexes of the assigned packages:
+            \begin{equation}
+                \label{eq:cp_symm_packs}
+                \forall c_1, c_2 \in [1, m]: (c_1 < c_2 \land l_{c_1} = l_{c_2}) \Rightarrow A_{c_1} <_\texttt{lex} A_{c_2}
+            \end{equation}
+            where $A_c$ is an ordered vector containing the packages delivered by the courier $c$.
+    \end{itemize}
+
+    All experiments use the same random seed and were run as workflows on GitHub Actions which provides two cores at 2.45 GHz and 7 GB of memory, which we software limited to 5 GB to guarantee a safe margin for the Docker container to run.
+
+    The work has been completed in approximately one month and has been roughly split in the following way: Xia did the CP part, Costa worked on SAT, Domeniconi did the SMT models, and Maiolino completed the MIP part. The main difficulties we encountered are the following: 
+    \begin{enumerate*}[label=(\roman*)]
+        \item lack of proper documentation for many tools we used,
+        \item aaa.
+    \end{enumerate*}
+
 
     \input{./sections/cp.tex}
     \input{./sections/sat.tex}

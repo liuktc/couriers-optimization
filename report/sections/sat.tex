@@ -1,103 +1,76 @@
 \section{SAT model}
 
-The resolution of the problem is approached following two models.
+% The resolution of the problem is approached following two models.
+
+% \begin{itemize}
+%     \item \textbf{Unified model}:
+%     based on the definition of two decision variables \texttt{assignments} and \texttt{paths}.
+%     \item \textbf{Matrix model}:
+%     based on the definition of one decision variable $X$.
+% \end{itemize}
+
+% Some modifications were applied to those model in order to visualize eventual differences in terms of performances.
+
+% The discussion is going to be much more focused on the Unified model just to mantain a logical thread within the explication of models used for other solvers.
+
+% \subsection{Unified Model}
+
+% \paragraph*{General Definition}
+% The Unified model aims to find the correct assignment to both decision variables, in such a way that it satisfy all constraints.\\
+% The idea behind this kind of model is based on the separation of the two task just specified in one.
+
+% \paragraph*{Original Workflow}
+% The original workflow follows the next steps:
+% \begin{enumerate}
+%     \item find satisfying values for the \texttt{assignments} variable, else end the algorithm
+%     \item find satisfying values for the \texttt{paths} variable, else proceed to step $4$
+%     \item repeat step $2$ to find a new optimized solution,
+%     \item repeat step $1$ just to find another assignment
+% \end{enumerate}
+
+% \paragraph*{New Workflow}
+% The new algorithm simply tries to optimize the assignment to both variable.
+
+% \paragraph*{Pro}
+% The model was designed to improve certain intrinsic problems of the definition of a problem through SAT:
+% \begin{itemize}
+%     \item \textbf{Specificity of constraints}: constraining much more the assignments of the two variable guarantes to mantain lower width of exploration of the resolution tree.
+% \end{itemize} 
+
+% \paragraph*{Contro}
+% The model falls into a few issues such:
+
+% \begin{itemize}
+%     \item \textbf{Dimension}: being based on two decision variables, the dimension of the problem scale exponentially with them. \footnote{The scaling dimension of the problem implies higher needs of time to build the model.}
+% \end{itemize}
+
+\subsection{Decision variables}
+
+For SAT, we defined two different models:
+\begin{description}
+    \item[Unified model] based on the definition of the two decision variables $A$ (\texttt{assignments} in Z3) and $P$ (\texttt{paths} in Z3) as defined in \Cref{sec:intro}.
+
+    \item[Matrix model] based on the definition of a single matrix $X$ such that $X\texttt{[$c$, $p$, $k$]} = 1$ iff courier $c$ delivers item $p$ as its $k$-th package.
+\end{description}
+
+Our discussion will be focused on the former to maintain coherence with the models defined in the other methods and obtain more comparable results. It decision variables are the following:
 
 \begin{itemize}
-    \item \textbf{Unified model}:
-    based on the definition of two decision variables \texttt{assignments} and \texttt{paths}.
-    \item \textbf{Matrix model}:
-    based on the definition of one decision variable $X$.
-\end{itemize}
+    \item $A$ is an $n \times m$ matrix such that $A\texttt{[$p$, $c$]} = 1$ iff courier $c$ delivers item $p$.
 
-Some modifications were applied to those model in order to visualize eventual differences in terms of performances.
+    \item $P$ is an $m \times (n+1) \times (n+1)$ matrix such that $P\texttt{[$c$, $loc_1$, $loc_2$]} = 1$ iff courier $c$ moves from location $loc_1$ to $loc_2$.
 
-The discussion is going to be much more focused on the Unified model just to mantain a logical thread within the explication of models used for other solvers.
-
-\subsection{Unified Model}
-
-\paragraph*{General Definition}
-The Unified model aims to find the correct assignment to both decision variables, in such a way that it satisfy all constraints.\\
-The idea behind this kind of model is based on the separation of the two task just specified in one.
-
-\paragraph*{Original Workflow}
-The original workflow follows the next steps:
-\begin{enumerate}
-    \item find satisfying values for the \texttt{assignments} variable, else end the algorithm
-    \item find satisfying values for the \texttt{paths} variable, else proceed to step $4$
-    \item repeat step $2$ to find a new optimized solution,
-    \item repeat step $1$ just to find another assignment
-\end{enumerate}
-
-\paragraph*{New Workflow}
-The new algorithm simply tries to optimize the assignment to both variable.
-
-\paragraph*{Pro}
-The model was designed to improve certain intrinsic problems of the definition of a problem through SAT:
-\begin{itemize}
-    \item \textbf{Specificity of constraints}: constraining much more the assignments of the two variable guarantes to mantain lower width of exploration of the resolution tree.
-\end{itemize} 
-
-\paragraph*{Contro}
-The model falls into a few issues such:
-
-\begin{itemize}
-    \item \textbf{Dimension}: being based on two decision variables, the dimension of the problem scale exponentially with them. \footnote{The scaling dimension of the problem implies higher needs of time to build the model.}
-\end{itemize}
-
-\subsubsection{Decision variables}
-
-\begin{itemize}
-    \item \texttt{assignments}: $n \times m$ boolean matrix
-    \begin{equation}
-        \label{eq:assignments}
-        \texttt{assignments[$p$, $c$] = 1 }
-        % \quad
-        % \texttt{if courier $c$ delivers pack $p$}
-    \end{equation}
-    \begin{center}
-        \texttt{if courier $c$ delivers pack $p$}
-    \end{center}
-
-    \item \texttt{paths}: $m \times (n+1) \times (n+1)$ boolean matrix
-    \begin{equation}
-        \label{eq:paths}
-        \texttt{paths[$c$, $loc_1$, $loc_2$] = 1 }
-    \end{equation}
-    \begin{center}
-        \texttt{if courier $c$ moves from location $loc_1$ to $loc_2$}
-    \end{center}
-
-    \item \texttt{u}: $m \times n \times n$ boolean matrix\footnote{The definition of the \texttt{u} variable is useful for the MTZ formulation.}
-    \begin{equation}
-        \label{eq:u}
-        \texttt{u[$c$, $p_1$, $p_2$] = 1 }
-    \end{equation}
-    \begin{center}
-        \texttt{if in the courier $c$ path the node $p_1$ is associated to value $p_2$}
-    \end{center}
-    
+    \item $U$ is an $m \times n \times n$ matrix to implement the MTZ subtour elimination \cite{mtz_subtour}. $U\texttt{[$c$, $p$, $k$]} = 1$ iff for the courier $c$ the item $p$ is delivered as the $k$-th.
 \end{itemize}
 
 \subsubsection{Objective function}
 
-The model aims to minimize the maximum distance travelled by any courier.
-The objective function can estimated as the maximum between the total distances of each courier:
-
+The objective function is computed as follows:
 \begin{equation}
     \label{eq:obj_fun}
     \max_{c \in \{ 1, \dots, m \}}
-    \sum_{loc_1=1}^{n+1} \sum_{loc_2=1}^{n+1} \texttt{D[$loc_1$, $loc_2$]}*
-    \texttt{paths[$c$, $loc_1$, $loc_2$]}
+    \sum_{loc_1=1}^{n+1} \sum_{loc_2=1, loc_2 \neq loc_1}^{n+1} \texttt{D[$loc_1$, $loc_2$]} \cdot P\texttt{[$c$, $loc_1$, $loc_2$]}
 \end{equation}
-
-A lower bound is set to costrain the objective during the resolution phase.
-\begin{equation}
-    \label{eq:lower_bound}
-    \max_{p \in \{ 1, \dots, n \}}
-    \texttt{D[$n+1$, $p$] + D[$p$, $n+1$]}
-\end{equation}
-Its value is hypotesized to be the maximum between the minimum distance paths that a courier can travel. And this can be computed as the distance needed for a courier to reach a certain pack and return to the depot.
-
 
 
 \subsubsection{Constraints}
@@ -111,13 +84,12 @@ Its value is hypotesized to be the maximum between the minimum distance paths th
         \begin{equation}
             \label{eq:capacity1}
             \forall c \in \{1 \ldots m\}:
-            \quad
-            \sum_{p=1}^{n} \texttt{assignments[$p$, $c$] * sizes[$p$]} \leq \texttt{loads[$c$]}
+            \sum_{p=1}^{n} A\texttt{[$p$, $c$]} \cdot s\texttt{[$p$]} \leq \texttt{$l$[$c$]}
         \end{equation}
         \item Each pack must be delivered only by a courier
         \begin{equation}
             \label{eq:capacity2}
-            \forall p \in \{1, \ldots, n\}: \exists! c \in \{1, \ldots, m\} \quad \texttt{s.t.} \quad \texttt{assignments[$p$, $c$]} = \texttt{1}
+            \forall p \in \{1, \ldots, n\}, \exists! c \in \{1, \ldots, m\}: A\texttt{[$p$, $c$]} = 1
         \end{equation}
     \end{itemize}
 \end{itemize}
@@ -246,6 +218,7 @@ The original Unified Model was modified in three different versions:
 As we can notice from the following table the performances were not very much different from the basic model. Only in the first 10 instances it has been possible to rach at least a suboptimal solution, while for the remaining ones the construction of the model required too much time causing the exceeding of the timeout limit.
 \begin{table}[h]
     \centering
+    \caption{Objective value through instances}
     \begin{tabular}{cccccc}
             \toprule
             Id & un-model & un-symm-model & un-cum-constr-model & un-heule-enc-model & matrix-model \\ 
@@ -260,20 +233,8 @@ As we can notice from the following table the performances were not very much di
             8 & \textbf{186} &      \textbf{186} &  \textbf{186} &  \textbf{186} &  \textbf{186} \\ 
             9 & \textbf{436} &      \textbf{436} &  \textbf{436} &  \textbf{436} &  \textbf{436} \\ 
             10 & \textbf{244} &     \textbf{244} &  \textbf{244} &  \textbf{244} &  \textbf{244} \\ 
-            11 & -- &       -- &    -- &    -- &    -- \\ 
-            12 & -- &       -- &    -- &    -- &    -- \\ 
-            13 & -- &       -- &    -- &    -- &    -- \\ 
-            14 & -- &       -- &    -- &    -- &    -- \\ 
-            15 & -- &       -- &    -- &    -- &    -- \\ 
-            16 & -- &       -- &    -- &    -- &    -- \\ 
-            17 & -- &       -- &    -- &    -- &    -- \\ 
-            18 & -- &       -- &    -- &    -- &    -- \\ 
-            19 & -- &       -- &    -- &    -- &    -- \\ 
-            20 & -- &       -- &    -- &    -- &    -- \\ 
-            21 & -- &       -- &    -- &    -- &    -- \\ 
             \bottomrule
     \end{tabular}
-    \caption{Objective value through instances}
 \end{table}
 
 
