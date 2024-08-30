@@ -7,8 +7,9 @@ on:
       - cp
       - sat
       - smt
+      - smt-lib
       - milp
-    paths: ["src/**", .github/workflows/status.yml, .github/status_update.py, .github/check_solution_json.py]
+    paths: ["src/**", .github/workflows/status.yml, .github/status_update.py, .github/check_solution_json.py, "results/**"]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,7 +26,7 @@ jobs:
       - name: Build Dockerfile
         run: |
           cd ${GITHUB_WORKSPACE}/src
-          docker build . -t cdmo
+          docker build . -t cdmo --build-arg="AMPL_KEY=${{secrets.AMPL_KEY}}"
 
 
       - name: Set env for methods to run (main)
@@ -42,6 +43,10 @@ jobs:
           echo "METHODS=sat" >> $GITHUB_ENV
       - name: Set env for methods to run (SMT)
         if: endsWith(github.ref, '/smt')
+        run: |
+          echo "METHODS=smt" >> $GITHUB_ENV
+      - name: Set env for methods to run (SMT-LIB)
+        if: endsWith(github.ref, '/smt-lib')
         run: |
           echo "METHODS=smt" >> $GITHUB_ENV
       - name: Set env for methods to run (MILP)

@@ -3,11 +3,138 @@
 
 \subsection{Decision variables}
 
+The SMT model uses the logic of quantifier-free linear integer arithmetic (\texttt{QF\_LIA}) and relies on the following decision variables:
+
+\begin{itemize}
+    \item For each package $j$, $A_j \in \{1, \dots, m\}$ (\texttt{ASSIGNMENTS[j]} in Z3) indicates which courier delivers package $j$. More specifically, $A_j = i$ iff the courier $i$ delivers package $j$.
+    
+    \item For each courier $i$, $P_{i,d} \in \{1, \dots, n + 1\}$ for $d \in \{1, \dots, n + 1\}$ (\texttt{PATH[i][d]} in Z3) models the path taken by the courier $i$. The path is defined such that $P_{i, d_1} = d_1$ iff the location $d_1$ is not part of the route of the courier $i$ and $P_{i, d_1} = d_2$ iff $d_2$ is visited immediately after $d_1$ in the route of $c$. In other words, each relevant location indicates which is its successor and the overall route is defined as a Hamiltonian cycle that starts from $n+1$ (i.e., the depot).
+
+\end{itemize}
+
+\subsection{Auxiliary variables}
+More variables have been defined in order to make it easier to define some constraints and the objective function:
+
+\begin{itemize}
+    \item For each courier $i$, $D_i \in \mathbb{N}$ (\texttt{DISTANCES[i]} in Z3) is equal to the distance traveled by each courier.
+
+    \item For each courier $i$, $C_i \in \mathbb{N}$ (\texttt{COUNT[i]} in Z3) models the number of packages delivered by courier $i$.
+
+    \item For each item $j$ and for each courier $i$, $PPC_{i,j}$ (\texttt{PACKS\_PER\_COURIER[i][j]} in Z3) model the packages delivered by each courier and it is used for symmetry breaking only.
+\end{itemize}
 
 \subsection{Objective function}
+The objective function is defined as follows:
 
+\[ \texttt{obj} = \max_{i \in \{1, \dots, m\}} D_i  \]
 
 \subsection{Constraints}
 
+\begin{itemize}
+    \item All the elements of each row of $P$ should be distinct:
+
+    \begin{equation}
+        \forall i \in \{1, \dots, m\}: \quad P_{i,j_1} \neq P_{i,j_2} \quad \forall j_1,j_2 \in \{1, \dots, n+1\}, j_1 \neq j_2 
+    \end{equation}
+
+    \item Count constraint: 
+
+    \begin{equation}
+        \forall i \in \{ 1, \dots, m \}: \quad C_i = | \{ j \in \{1, \dots, n\} | A_j = i \}|
+    \end{equation}
+
+
+    \item Weight constraint: 
+    \begin{equation}
+        \forall i \in \{ 1, \dots, m \}: \sum_{j \in \{1, \dots, n\}: A_j = i} s_j \leq l_i 
+    \end{equation}
+
+    \item Subcircuit constraint: each row $P_i$ should define a subcircuit, that is a Hamiltonian path that ignores all the elements $P_{i,j} = j$, namely the packages that the courier $i$ don't deliver.
+
+    \item Distance constraint:
+
+    \begin{equation}
+        \forall i \in \{1, \dots, m\}: \quad D_i = \sum_{j \in \{1, \dots, n+1\}} 
+            \begin{cases}
+                D_{j,P_{i,j}} & \text{if } P_{i,j} \neq j  \\
+                0 & \text{if } P_{i,j} = j
+            \end{cases}
+    \end{equation}
+
+    \item Assignment and path constraint:
+    \begin{equation}
+        \forall j \in \{1, \dots, n\}: \quad A_j = i \Longleftrightarrow P_{i,j} \neq j
+    \end{equation}
+
+    \begin{equation}
+        \forall j \in \{1, \dots, n\}: \quad A_j \neq i \Longleftrightarrow P_{i,j} = j
+    \end{equation}
+\end{itemize}
+
+\subsubsection{Symmetry breaking constraints}
+See Symmetry breaking constraint of CP, section 2.3.1. 
+
+\subsubsection{Implied constraints}
+
+\begin{itemize}
+    \item In order to ensure that each courier delivers at least one package:
+    \begin{equation}
+        \forall i \in \{1, \dots, m\}: \quad C_i \geq 1  
+    \end{equation}
+\end{itemize}
+
 
 \subsection{Validation}
+
+
+\subsubsection{Experimental design}
+
+The experimental setup consists of two steps: first, we developed a Python package to automate the generation of SMT-LIB code from a high-level interface, allowing us to easily experiment and compare different solvers. More specifically, as solvers we experimented with Z3, cvc5, OpenSMT, SMTInterpol, and Yices 2. Then, to improve the performances on larger instances, we experimented with two different search strategies using the Z3 Python library (\texttt{z3py}):
+\begin{description}
+    \item[Two solvers approach]
+        As SMT solvers do not allow to assign a priority to the variables, this approach attempts to guide the exploration of the search space by alternating two solvers: the first one finds $A$ and the second one finds $P$ given $A$. In other words, the former decides which courier delivers which package and the latter decides the route taken by each courier, basically solving $m$ different Travelling Salesman Problems. 
+
+    \item[Local search approach]
+        Similarly to the previous one, this approach also uses two solvers to first find $A$ and then $P$. However, instead of letting the second solver find an optimal solution for $P$ on its own, it is manually guided by performing a local search starting from a trivial solution (i.e., a path that delivers the items ordered by index).
+\end{description}
+
+All experiments use the same random seed and were run as workflows on GitHub Actions which provides two cores at 2.45 GHz and 7 GB of memory, which we software limited to 5 GB to guarantee a safe margin for the Docker container to run.
+
+
+\subsubsection{Experimental results}
+
+The results of our experiments are presented in \Cref{tab:smt_results}.
+Analyzing SMT-LIB results, we can observe that all five solvers perform more or less similarly. The best performing is Yices 2 which solves \texttt{QF\_LIA} logic based on the simplex algorithm \cite{yices2}. On the other hand, the worst performing is SMTInterpol which relies on Craig interpolation \cite{smtinterpol}.
+Furthermore, experiments in \texttt{z3py} show that symmetry breaking and implied constraints do not provide significant contribution in improving the results.
+
+By analyzing the two search approaches, we can observe that using two separate solvers have a negligible impact on the final results with mixed effects when using symmetry breaking constraints. Instead, local search enables the model to find a solution in a reasonable amount of time, even for the largest instances.
+
+\begin{table}[H]
+    \caption{SMT results. Results in \textbf{bold} are solved to optimality. Instances that are all solved to optimality have been omitted.}
+    \label{tab:smt_results}
+    \centerline{
+        \begin{tabular}{c|cccccccccccc}
+            \toprule
+            & \multicolumn{5}{c}{SMT-LIB (plain)} & \multicolumn{7}{c}{\texttt{z3py}} \\
+            \\[-3ex] % Remove vertical line gap
+            \cmidrule(lr){2-6} \cmidrule(lr){7-13}
+            Id          & \rot{Z3}      & \rot{cvc5}    & \rot{OpenSMT} & \rot{SMTInterpol} & \rot{Yices 2} & \rot{plain}   & \rot{\makecell[l]{plain\\[-0.3em]\small+ SB}}  & \rot{\makecell[l]{plain\\[-0.3em]\small+ IC}}  & \rot{2 solvers}   & \rot{\makecell[l]{2 solvers\\[-0.3em]\small+ SB}}  & \rot{\makecell[l]{2 solvers\\[-0.3em]\small+ IC}}  & \rot{Local search}   \\ 
+            \midrule                                     
+            7           & 228           & 210           & 218           & 372               & \textbf{167}  & 174           & 168               & 181               & \textbf{167}      & \textbf{167}          & \textbf{167}          & \textbf{167}          \\ 
+            9           & \textbf{436}  & \textbf{436}  & \textbf{436}  & 437               & \textbf{436}  & \textbf{436}  & \textbf{436}      & \textbf{436}      & \textbf{436}      & \textbf{436}          & \textbf{436}          & \textbf{436}          \\ 
+            10          & \textbf{244}  & \textbf{244}  & \textbf{244}  & 381               & \textbf{244}  & \textbf{244}  & \textbf{244}      & \textbf{244}      & \textbf{244}      & \textbf{244}          & \textbf{244}          & \textbf{244}          \\ 
+            11          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 547                   \\ 
+            12          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 435                   \\ 
+            13          & 1446          & --            & --            & --                & 1490          & --            & --                & --                & 1812              & 1346                  & 1832                  & 632                   \\ 
+            14          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 1177                  \\ 
+            15          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 1140                  \\ 
+            16          & --            & --            & --            & --                & 1032          & --            & --                & --                & 1510              & 1944                  & 1861                  & 303                   \\ 
+            17          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 1525                  \\ 
+            18          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 917                   \\ 
+            19          & --            & --            & --            & --                & --            & --            & --                & --                & --                & 870                   & --                    & 398                   \\ 
+            20          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 1378                  \\ 
+            21          & --            & --            & --            & --                & --            & --            & --                & --                & --                & --                    & --                    & 648                   \\ 
+            \bottomrule
+        \end{tabular}
+    }
+\end{table}

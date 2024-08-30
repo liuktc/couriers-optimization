@@ -1,26 +1,292 @@
 {
-   "test1": {
+   "plain": {
       "time": 300,
       "optimal": false,
-      "obj": 14,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_symm": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_impl": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_symm": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "twosolver_impl": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 547,
       "sol": [
          [
-            1
+            12,
+            22,
+            73,
+            96,
+            103,
+            114,
+            13
+         ],
+         [
+            44,
+            45,
+            60,
+            101,
+            118,
+            4,
+            142
+         ],
+         [
+            8,
+            18,
+            26,
+            9,
+            83,
+            123,
+            133
+         ],
+         [
+            6,
+            25,
+            40,
+            43,
+            71,
+            78,
+            81
+         ],
+         [
+            82,
+            94,
+            58,
+            64,
+            99,
+            113,
+            115
+         ],
+         [
+            10,
+            34,
+            90,
+            91,
+            107,
+            67,
+            85
+         ],
+         [
+            2,
+            70,
+            33,
+            57,
+            74,
+            125,
+            132
+         ],
+         [
+            87,
+            1,
+            7,
+            80,
+            111,
+            20,
+            59
+         ],
+         [
+            11,
+            86,
+            89,
+            105,
+            119,
+            69,
+            122
+         ],
+         [
+            23,
+            84,
+            102,
+            130,
+            95,
+            36,
+            68
+         ],
+         [
+            27,
+            28,
+            35,
+            128,
+            129,
+            136,
+            140
+         ],
+         [
+            39,
+            42,
+            109,
+            16,
+            120,
+            126,
+            139
+         ],
+         [
+            29,
+            47,
+            31,
+            55,
+            93,
+            98,
+            127
+         ],
+         [
+            37,
+            50,
+            104,
+            121,
+            134,
+            131,
+            137
+         ],
+         [
+            46,
+            53,
+            65,
+            72,
+            75,
+            77,
+            79,
+            106
+         ],
+         [
+            15,
+            24,
+            76,
+            97,
+            108,
+            135,
+            143
+         ],
+         [
+            54,
+            100,
+            14,
+            62,
+            49,
+            63,
+            38
+         ],
+         [
+            110,
+            61,
+            116,
+            52,
+            124,
+            21,
+            138
+         ],
+         [
+            5,
+            88,
+            32,
+            112,
+            41,
+            92,
+            17,
+            51
+         ],
+         [
+            3,
+            19,
+            117,
+            30,
+            48,
+            56,
+            66,
+            141
          ]
       ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "smt2-plain-linear-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
       "_extras": {
          "runner": "github-action"
       }
    },
-   "test2": {
+   "smt2-plain-linear-cvc5": {
       "time": 300,
       "optimal": false,
-      "obj": 16,
-      "sol": [
-         [
-            1
-         ]
-      ],
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-opensmt": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-smtinterpol": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-yices2": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
       "_extras": {
          "runner": "github-action"
       }

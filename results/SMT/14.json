@@ -1,26 +1,364 @@
 {
-   "test1": {
+   "plain": {
       "time": 300,
       "optimal": false,
-      "obj": 14,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_symm": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "plain_impl": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "twosolver_symm": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": ""
+      }
+   },
+   "twosolver_impl": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "local_search": {
+      "time": 300,
+      "optimal": false,
+      "obj": 1177,
       "sol": [
          [
-            1
+            60,
+            83,
+            99,
+            103,
+            108,
+            156,
+            169,
+            175,
+            189,
+            191
+         ],
+         [
+            38,
+            39,
+            62,
+            66,
+            118,
+            161,
+            166,
+            173,
+            186,
+            187
+         ],
+         [
+            36,
+            40,
+            43,
+            82,
+            84,
+            87,
+            131,
+            160,
+            167,
+            215
+         ],
+         [
+            24,
+            33,
+            37,
+            79,
+            86,
+            112,
+            143,
+            146,
+            148,
+            200
+         ],
+         [
+            1,
+            27,
+            51,
+            67,
+            80,
+            88,
+            90,
+            135,
+            209,
+            210
+         ],
+         [
+            5,
+            7,
+            50,
+            64,
+            91,
+            130,
+            151,
+            155,
+            163,
+            176,
+            179
+         ],
+         [
+            58,
+            102,
+            109,
+            115,
+            142,
+            165,
+            178,
+            184,
+            185,
+            196,
+            211
+         ],
+         [
+            41,
+            104,
+            106,
+            45,
+            74,
+            85,
+            107,
+            141,
+            158,
+            164,
+            174
+         ],
+         [
+            21,
+            22,
+            35,
+            78,
+            92,
+            100,
+            114,
+            153,
+            159,
+            171,
+            181
+         ],
+         [
+            2,
+            63,
+            76,
+            170,
+            89,
+            101,
+            124,
+            138,
+            149,
+            168,
+            214
+         ],
+         [
+            4,
+            95,
+            97,
+            16,
+            17,
+            28,
+            42,
+            44,
+            150,
+            180,
+            204
+         ],
+         [
+            23,
+            31,
+            47,
+            49,
+            93,
+            111,
+            123,
+            133,
+            137,
+            202,
+            203
+         ],
+         [
+            15,
+            30,
+            56,
+            77,
+            116,
+            121,
+            147,
+            172,
+            190,
+            198,
+            213
+         ],
+         [
+            11,
+            32,
+            194,
+            199,
+            201,
+            212,
+            69,
+            119,
+            122,
+            136,
+            193
+         ],
+         [
+            18,
+            20,
+            46,
+            52,
+            81,
+            96,
+            117,
+            120,
+            125,
+            127,
+            197
+         ],
+         [
+            8,
+            13,
+            25,
+            34,
+            54,
+            61,
+            72,
+            75,
+            113,
+            144,
+            177
+         ],
+         [
+            9,
+            19,
+            29,
+            53,
+            70,
+            110,
+            129,
+            140,
+            152,
+            154,
+            206
+         ],
+         [
+            12,
+            48,
+            55,
+            59,
+            71,
+            73,
+            157,
+            162,
+            183,
+            188,
+            195
+         ],
+         [
+            10,
+            26,
+            57,
+            65,
+            98,
+            128,
+            134,
+            139,
+            145,
+            182,
+            208
+         ],
+         [
+            3,
+            6,
+            14,
+            68,
+            94,
+            105,
+            126,
+            132,
+            192,
+            205,
+            207
          ]
       ],
+      "_extras": {
+         "runner": "Huawei_Laptop"
+      }
+   },
+   "smt2-plain-linear-z3": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
       "_extras": {
          "runner": "github-action"
       }
    },
-   "test2": {
+   "smt2-plain-linear-cvc5": {
       "time": 300,
       "optimal": false,
-      "obj": 16,
-      "sol": [
-         [
-            1
-         ]
-      ],
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-opensmt": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-smtinterpol": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
+      "_extras": {
+         "runner": "github-action"
+      }
+   },
+   "smt2-plain-linear-yices2": {
+      "time": 300,
+      "optimal": false,
+      "obj": null,
+      "sol": null,
       "_extras": {
          "runner": "github-action"
       }

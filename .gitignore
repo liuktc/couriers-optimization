@@ -169,8 +169,14 @@ report/*.fdb_latexmk
 report/*.fls
 report/*.synctex.gz
 report/*.out
+report/*.bbl
+report/*.bcf
+report/*.blg
+report/*.run.xml
 
 *.ozn
 *.fzn
 
 .old
+
+.vscode
