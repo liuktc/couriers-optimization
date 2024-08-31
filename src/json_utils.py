@@ -19,6 +19,14 @@ if __name__ == "__main__":
             for model in args.others:
                 if model in res:
                     del res[model]
+        elif args.command[0] == "submit":
+            for key in res:
+                res[key] = {
+                    "time": res[key]["time"],
+                    "optimal": res[key]["optimal"],
+                    "obj": res[key]["obj"],
+                    "sol": res[key]["sol"]
+                }
 
         with open(os.path.join(args.path, f_name), "w") as f:
             json.dump(res, f, indent=3)

@@ -22,9 +22,9 @@ def __loadCache(results_file_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="Instance solver")
-    parser.add_argument("--instances-path", type=str, default="./instances")
+    parser.add_argument("--instances-path", type=str, default="./instances", help="Path to the input instances")
     parser.add_argument("--timeout", type=int, default=300, help="Timeout in seconds")
-    parser.add_argument("--output-path", type=str, default="./res")
+    parser.add_argument("--output-path", type=str, default="./res", help="Results directory")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--overwrite-old", action="store_true", help="If set, old results with the same name will be run again")
     parser.add_argument("--instances", type=lambda arg: sorted([*map(int, arg.split(","))]), required=False, default=[], 
@@ -36,6 +36,7 @@ if __name__ == "__main__":
     parser.add_argument("--runner-label", type=str, required=False, default="", help="Name of the machine that is executing")
     parser.add_argument("--methods", type=lambda arg: arg.split(","), required=False, default=["cp", "sat", "smt", "mip"], 
                         help="Methods to run, comma separated")
+    parser.add_argument("--submit-mode", action="store_true", help="If set, the output results will be in the format required for submission")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -110,6 +111,16 @@ if __name__ == "__main__":
             for key in instance_results:
                 if "_extras" not in instance_results[key]: instance_results[key]["_extras"] = {}
                 if "runner" not in instance_results[key]["_extras"]: instance_results[key]["_extras"]["runner"] = args.runner_label
+
+            # Remove extra fields for submission
+            if args.submit_mode:
+                for key in instance_results:
+                    instance_results[key] = {
+                        "time": instance_results[key]["time"],
+                        "optimal": instance_results[key]["optimal"],
+                        "obj": instance_results[key]["obj"],
+                        "sol": instance_results[key]["sol"]
+                    }
 
             # Saving instance results
             results_file_path = os.path.join(out_dir, f"{instance_number}.json")
