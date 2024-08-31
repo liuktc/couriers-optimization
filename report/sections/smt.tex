@@ -34,20 +34,20 @@ where $\texttt{DISTANCES}_i$ is equal to the distance traveled by each courier.
 \begin{itemize}
     \item Weight constraint: 
     \begin{equation}
-        \forall i \in \{ 1, \dots, m \}: \sum_{j \in \{1, \dots, n\}: A_j = i} s_j \leq l_i 
+        \forall i \in [1, m]: \sum_{j \in [1, n]: A_j = i} s_j \leq l_i 
     \end{equation}
 
     \item Assignment and path constraint:
     \begin{equation}
-        \forall j \in \{1, \dots, n\}: \quad A_j = i \Longleftrightarrow P_{i,j} \neq j
+        \forall j \in [1, n]: \quad A_j = i \Longleftrightarrow P_{i,j} \neq j
     \end{equation}
     \begin{equation}
-        \forall j \in \{1, \dots, n\}: \quad A_j \neq i \Longleftrightarrow P_{i,j} = j
+        \forall j \in [1, n]: \quad A_j \neq i \Longleftrightarrow P_{i,j} = j
     \end{equation}
 
     \item All the elements of each row of $P$ should be distinct:
     \begin{equation}
-        \forall i \in \{1, \dots, m\}: \quad P_{i,j_1} \neq P_{i,j_2} \quad \forall j_1,j_2 \in \{1, \dots, n+1\}, j_1 \neq j_2 
+        \forall i \in [1, m]: \quad P_{i,j_1} \neq P_{i,j_2} \quad \forall j_1,j_2 \in [1, n+1], j_1 \neq j_2 
     \end{equation}
 
     % \item Count constraint: 

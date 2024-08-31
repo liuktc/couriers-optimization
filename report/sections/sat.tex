@@ -106,8 +106,8 @@ The objective function is computed as follows:
                     \forall c \in [1, m],
                     \forall p \in [1, n]:
                     \begin{cases}
-                        P\texttt{[$c$, DEPOT, DEPOT]}=0 & \text{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} \geq \texttt{1}\\
-                        P\texttt{[$c$, DEPOT, DEPOT]}=1 & \text{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} = \texttt{0} % or otherwise
+                        P\texttt{[$c$, DEPOT, DEPOT]}=0 & \text{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} \geq 1\\
+                        P\texttt{[$c$, DEPOT, DEPOT]}=1 & \text{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} = 0 % or otherwise
                     \end{cases}
                 $}
             \end{equation}

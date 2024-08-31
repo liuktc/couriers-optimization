@@ -15,7 +15,7 @@ The CP model relies on the following decision variables:
 \subsection{Objective function}
 Once the route of each courier has been found, the objective function is computed as follows:
 \begin{equation}
-    \max_{c \in \{ 1, \dots, m \}} \sum_{\substack{d \in \{1, \dots, n+1\}:\\P_{c, d} \neq d}} \texttt{D[$d$, $P_{c, d}$]} 
+    \max_{c \in [1, m]} \sum_{\substack{d \in [1, n+1]:\\P_{c, d} \neq d}} \texttt{D[$d$, $P_{c, d}$]} 
 \end{equation}
 
 
@@ -23,24 +23,24 @@ Once the route of each courier has been found, the objective function is compute
 
 To respect the capacity limits of each courier, the following constraint can be defined:
 \begin{equation}
-    \forall c \in \{ 1, \dots, m \}: \sum_{p \in \{1, \dots, n\}: A_p = c} s_p \leq l_c 
+    \forall c \in [1, m]: \sum_{p \in [1, n]: A_p = c} s_p \leq l_c 
 \end{equation}
 In MiniZinc, the global constraint \texttt{bin\_packing\_capa} also models this. In our experiments, we did not notice significant differences between the two formulations and decided to use the latter following the best practice of preferring global constraints.
 
 To model the route, the following constraints have to be imposed:
 \begin{equation}
     \label{eq:cp_constr_route_depot}
-    \forall c \in \{ 1, \dots, m \}: 
+    \forall c \in [1, m]: 
     \begin{cases}
-        P_{c, n+1} = n+1    & \text{if $\nexists p \in \{ 1, \dots, n \}: A_p = c$} \\ 
-        P_{c, n+1} \neq n+1 & \text{if $\exists p \in \{ 1, \dots, n \}: A_p = c$} 
+        P_{c, n+1} = n+1    & \text{if $\nexists p \in [1, n]: A_p = c$} \\ 
+        P_{c, n+1} \neq n+1 & \text{if $\exists p \in [1, n]: A_p = c$} 
     \end{cases}
 \end{equation}
 
 \begin{equation}
     \label{eq:cp_constr_route_packs}
-    \forall c \in \{ 1, \dots, m \},
-    \forall p \in \{ 1, \dots, n \}: 
+    \forall c \in [1, m],
+    \forall p \in [1, n]: 
     \begin{cases}
         P_{c, p} = p    & \text{if $A_p \neq c$} \\
         P_{c, p} \neq p & \text{if $A_p = c$} 
