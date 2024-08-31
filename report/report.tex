@@ -10,6 +10,7 @@
 \usepackage{float}
 \usepackage[bottom]{footmisc}
 \usepackage[inline]{enumitem}
+\usepackage{appendix}
 \usepackage{biblatex}
 \addbibresource{references.bib}
 \hypersetup{ colorlinks, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black, linktoc=all }
@@ -51,6 +52,10 @@
     \begin{equation}
         \max_{p \in \{ 1, \dots, n \}} \left\{ D_{n+1, p} + D_{p, n+1} \right\}
     \end{equation}
+    As upper-bound, we observed that it does not provide any improvements to the results. Nevertheless, we defined it as:
+    \begin{equation}
+        \sum_{d_1 \in [1, n+1]} \max_{d_2 \in [1, n+1]} D_{d_1, d_2}
+    \end{equation}
 
     Symmetry breaking constraints are also common to all models. By considering couriers with the same capacity, the following constraints can be used to avoid symmetries:
     \begin{itemize}
@@ -68,6 +73,14 @@
             where $A_c$ is an ordered vector containing the packages delivered by the courier $c$.
     \end{itemize}
 
+    As the triangle inequality holds, we also identified an implied constraint that consists of imposing that each courier delivers at least a package (a short proof is provided in \Cref{sec:impl_proof}):
+    \begin{equation}
+        \label{eq:impl_constr}
+        \forall c \in [1, m]: Q_c \geq 1  
+    \end{equation}
+    where $Q_c$ is the amount of packages delivered by the courier $c$.
+    This obviously is applicable only if the size of the packages is compatible with the load capacity of each courier.
+
     All experiments use the same random seed and were run as workflows on GitHub Actions which provides two cores at 2.45 GHz and 7 GB of memory, which we software limited to 5 GB to guarantee a safe margin for the Docker container to run.
 
     The work has been completed in approximately one month and has been roughly split in the following way: Xia did the CP part, Costa worked on SAT, Domeniconi did the SMT models, and Maiolino completed the MIP part. The main difficulties we encountered are the following: 
@@ -82,6 +95,29 @@
     \input{./sections/smt.tex}
     \input{./sections/mip.tex}
 
+
+    \section{Conclusions}
+
+
     \printbibliography
+
+    \begin{appendices}
+        \section{Implied constraint proof} \label{sec:impl_proof}
+        \begin{lem}
+            If the solution is optimal then every courier has to bring at least one package.
+        \end{lem}
+        \begin{proof}
+            Let's assume for the sake of contradiction that we have found an optimal solution where there are one or plus couriers which don't bring any package, calling him $k_1$. Let's suppose that the courier $k_j$ is the one that cover the maximum distance $D_j$. If we assign one package, calling $i$, that $k_j$ brought, to $k_1$ then, due to the triangular inequality, the two new distances, $D_1$, travelled by the courier $k_1$, and $D_2$, travelled by the courier $k_j$, are less or equal to $D_j$, in fact:
+            \begin{equation}
+            D_1 = D[depot,i] + D[i,depot] \leq D[depot, i_1] + \dots + D[i_r, i] + D[i, i_s] + \dots + D[i_t, depot] = D_j.
+            \end{equation}
+            \begin{align}
+            D_2 = D[depot,i_1] + \dots D[i_r,i_s] + \dots D[i_t, depot] \leq D[depot, i_1]
+            + \dots \\
+            \dots + D[i_r, i] + D[i, i_s] + \dots + D[i_t, depot] = D_j.
+            \end{align}
+            Therefore, $D_j$ is not an optimal solution and we have found a contradiction.
+            \end{proof}
+    \end{appendices}
 
 \end{document}
