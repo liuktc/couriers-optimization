@@ -88,14 +88,14 @@ models_setup = [
         "name": "initial-model",
         "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/initial_model.mod"),
     },
-    #{
-    #    "name": "implied-model",
-    #    "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_implied_constraint.mod"),
-    #},
-    #{
-    #    "name": "symmetry-model",
-    #    "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_symmetry_breaking.mod"),
-    #}
+    {
+        "name": "implied-model",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_implied_constraint.mod"),
+    },
+    {
+        "name": "symmetry-model",
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_symmetry_breaking.mod"),
+    }
     
 ]
 
