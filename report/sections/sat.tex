@@ -140,7 +140,7 @@ The objective function is computed as follows:
             \quad
             \sum_{loc_1=1}^{n+1} P\texttt{[$c$, $loc_1$, $loc_2$]} = 1
         \end{equation}
-        \item Subtour elimination
+        \item MTZ formulation constraint for Subtour elimination
         \begin{itemize}
             \item $u$ relative to first pack $p$ of courier $c$ path must have value = 1
             \begin{equation}
@@ -167,10 +167,7 @@ The objective function is computed as follows:
                 \sum_{p_2=1}^{n} U\texttt{[$c$, $p_1$, $p_2$]} = 1
             \end{equation}
 
-            \item MTZ formulation constraint:
-            \begin{center}
-                $u_i - u_j + 1 \leq (n - 1)$ * $(1 - P[c, i, j] )$
-            \end{center}
+            \item $u_i - u_j + 1 \leq (n - 1)$ * $(1 - P[c, i, j] )$:
             \begin{equation}
                 \label{eq:subtour_constr5}
                 \forall c \in [1, m], \ \forall i, j, k_1, k_2 \in [1, n]: 
@@ -185,8 +182,7 @@ The objective function is computed as follows:
 
 \paragraph*{Symmetry breaking constraint}
 
-A possible way to reduce tree exploration is to introduce symmetry breaking constraints.
-One of them in this case can consist in constraining the order of assignments of packs between couriers with the same amount of load capacity.
+A possible way to reduce tree exploration is to introduce symmetry breaking constraints. In particular, for SAT, we experimented only with the one defined in \Cref{eq:cp_symm_packs}.
 
 But the experimentation didn't lead to major improvements.
 
@@ -194,7 +190,7 @@ But the experimentation didn't lead to major improvements.
 
 \subsubsection*{Experimental design}
 
-Some modifications were applied to the basic model in order to visualize eventuale differences in performances.
+Some modifications were applied to the basic model in order to visualize eventual differences in performances.
 The original Unified Model was modified in three different versions:
 \begin{itemize}
     \item Unified Model with Symmetry Breaking Constraint
@@ -203,7 +199,7 @@ The original Unified Model was modified in three different versions:
 \end{itemize}
 \subsubsection*{Experimental results}
 
-As we can notice from the following table the performances were not very much different from the basic model. Only in the first 10 instances it has been possible to rach at least a suboptimal solution, while for the remaining ones the construction of the model required too much time causing the exceeding of the timeout limit.
+As we can notice from the following table the performances were not very much different from the basic model. Only in the first 10 instances it has been possible to reach at least a suboptimal solution, while for the remaining ones the construction of the model required too much time causing the exceeding of the timeout limit.
 \begin{table}[H]
     \centering
     \caption{Objective value through instances}
@@ -225,6 +221,14 @@ As we can notice from the following table the performances were not very much di
     \end{tabular}
 \end{table}
 
+For all models were extracted some statistics, as we can observe in the following plots:
+\begin{enumerate*}[label=(\roman*)]
+    \item \textit{time}: similar interval of time for all unified models variants, while the matrix model ensure in some instances a better performance;
+    \item \textit{number of conflicts}: useful for estimating the size of the search space (the lower the better);
+    \item \textit{max memory}: max amount of memory needed by the solver to build the model.
+\end{enumerate*}
+
+
 
 \begin{figure}[H]
     \centering
@@ -240,13 +244,13 @@ As we can notice from the following table the performances were not very much di
         \includegraphics[width=\linewidth]{sat_images/conflicts.pdf}
         \caption{Number of conflicts for each instance}
     \end{subfigure}
-    % \hfill
-    % \centering
-    % \begin{subfigure}{0.49\linewidth}
-        % \centering
-        % \includegraphics[width=\linewidth]{sat_images/max_memory.pdf}
-        % \caption{Maximum amount of memory required for each instance}
-    % \end{subfigure}
+    \hfill
+    \centering
+    \begin{subfigure}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{sat_images/max_memory.pdf}
+        \caption{Maximum amount of memory required for each instance}
+    \end{subfigure}
     % \hfill
     % \centering
     % \begin{subfigure}{0.49\linewidth}
