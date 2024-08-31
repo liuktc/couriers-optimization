@@ -4,7 +4,7 @@
 ## Status
 <!-- Do NOT remove the comments below -->
 <!-- begin-status -->
-| Instance | [CP](./method-statuses/cp-status.md) | [SAT](./method-statuses/sat-status.md) | [SMT](./method-statuses/smt-status.md) | [MILP](./method-statuses/milp-status.md) |
+| Instance | [CP](./method-statuses/cp-status.md) | [SAT](./method-statuses/sat-status.md) | [SMT](./method-statuses/smt-status.md) | [MIP](./method-statuses/mip-status.md) |
 |:-:| :---:|:---:|:---:|:---:|
 | $1$ | $\color{green}\text{0 s (obj: 14)}$</br>$\color{green}\text{vrp-plain-gecode}$ | $\color{green}\text{0 s (obj: 14)}$</br>$\color{green}\text{un-symm-model}$ | $\color{green}\text{0 s (obj: 14)}$</br>$\color{green}\text{twosolver}$ | $\color{green}\text{0 s (obj: 14)}$</br>$\color{green}\text{initial-model-scip}$ | 
 | $2$ | $\color{green}\text{0 s (obj: 226)}$</br>$\color{green}\text{vrp-plain-gecode}$ | $\color{green}\text{4 s (obj: 226)}$</br>$\color{green}\text{matrix-model}$ | $\color{green}\text{0 s (obj: 226)}$</br>$\color{green}\text{twosolver-impl}$ | $\color{green}\text{0 s (obj: 226)}$</br>$\color{green}\text{initial-model-highs}$ | 
