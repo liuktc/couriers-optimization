@@ -11,7 +11,7 @@ param l{COURIERS} integer; #array of capacity of each coureirs
 param s{PACKS} integer; #array of size of each packs
 param D{i in NODES, j in NODES} integer; #matrix of distances
 
-param UpperBound := sum(i in NODES)(max{j in NODES}(D[i, j]));
+param UpperBound := sum{i in NODES}(max{j in NODES}(D[i, j]));
 param LowerBound := max{i in PACKS}(D[DEPOT,i] + D[i,DEPOT]);
 
 #####################
@@ -47,11 +47,11 @@ subject to NoSelfLoop {k in COURIERS, i in NODES}:
 	X[i,i,k] = 0;	
 
 #Visit-once constraints (only to the internal nodes, not the depot that is visited by each couriers)
-subject to OneArrivalPerNode {j in PACKS}:
-	sum{i in NODES, k in COURIERS} X[i,j,k] = 1;
+# subject to OneArrivalPerNode {j in PACKS}:
+# 	sum{i in NODES, k in COURIERS} X[i,j,k] = 1;
 	
-subject to OneDeparturePerNode {i in PACKS}:
-	sum{j in NODES, k in COURIERS}  X[i,j,k] = 1;
+# subject to OneDeparturePerNode {i in PACKS}:
+# 	sum{j in NODES, k in COURIERS}  X[i,j,k] = 1;
 
 #Flow-preseving constraints
 subject to Flow {j in PACKS, k in COURIERS}:
