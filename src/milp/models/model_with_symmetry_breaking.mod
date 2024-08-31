@@ -11,7 +11,7 @@ param l{COURIERS} integer; #array of capacity of each coureirs
 param s{PACKS} integer; #array of size of each packs
 param D{i in NODES, j in NODES} integer; #matrix of distances
 
-param UpperBound := sum{i in NODES, j in NODES} D[i,j]; 
+param UpperBound := sum(i in NODES)(max{j in NODES}(D[i, j]));
 param LowerBound := max{i in PACKS}(D[DEPOT,i] + D[i,DEPOT]);
 
 #####################
