@@ -30,16 +30,16 @@ def main(args):
   warnings = []  
   results_folder = args[2]
   for subfolder in os.listdir(results_folder):
-    if subfolder.startswith('.') or subfolder != 'SMT':
+    if subfolder.startswith('.'):
       # Skip hidden folders.
       continue
-    folder = os.path.join(results_folder, subfolder)
+    folder = results_folder + subfolder
     print(f'\nChecking results in {folder} folder')
     for results_file in sorted(os.listdir(folder)):
       if results_file.startswith('.'):
         # Skip hidden folders.
         continue
-      results = read_json_file(folder + os.sep + results_file)
+      results = read_json_file(folder + '/' + results_file)
       print(f'\tChecking results for instance {results_file}')
       inst_number = re.search('\d+', results_file).group()
       if len(inst_number) == 1:
