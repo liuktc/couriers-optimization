@@ -83,13 +83,13 @@ The objective function is computed as follows:
         \item Sum of sizes of packs delivered by a singular courier must be under its load limit
         \begin{equation}
             \label{eq:capacity1}
-            \forall c \in \{1 \ldots m\}:
+            \forall c \in [1, m]:
             \sum_{p=1}^{n} A\texttt{[$p$, $c$]} \cdot s\texttt{[$p$]} \leq \texttt{$l$[$c$]}
         \end{equation}
         \item Each pack must be delivered only by a courier
         \begin{equation}
             \label{eq:capacity2}
-            \forall p \in \{1, \ldots, n\}, \exists! c \in \{1, \ldots, m\}: A\texttt{[$p$, $c$]} = 1
+            \forall p \in [1, n], \exists! c \in [1, m]: A\texttt{[$p$, $c$]} = 1
         \end{equation}
     \end{itemize}
 \end{itemize}
@@ -102,36 +102,32 @@ The objective function is computed as follows:
         \item If courier delivers at least one package, there must exist a destination from DEPOT\footnote{DEPOT is the original position, hypotesized as \texttt{n+1}.} with true value, else it can stay in DEPOT
         \begin{equation}
             \label{eq:gen_path_constr1}
-            \forall c \in \{1 \ldots m\}:
-            \forall p \in \{1 \ldots n\}:
-            \left\{
-                \begin{array}{lr}
-                    \texttt{NOT(paths[$c$, DEPOT, DEPOT])} & \texttt{iff } \sum_{p=1}^{n} \texttt{assignments[$p$, $c$]} \geq \texttt{1}\\
-                    \texttt{paths[$c$, DEPOT, DEPOT]} & \texttt{iff } \sum_{p=1}^{n} \texttt{assignments[$p$, $c$]} = \texttt{0} % or otherwise
-                \end{array}
-            \right\}
+            \forall c \in [1, m],
+            \forall p \in [1, n]:
+            \begin{cases}
+                P\texttt{[$c$, DEPOT, DEPOT]}=0 & \texttt{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} \geq \texttt{1}\\
+                P\texttt{[$c$, DEPOT, DEPOT]}=1 & \texttt{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} = \texttt{0} % or otherwise
+            \end{cases}
         \end{equation}
 
         \item If courier delivers pack p, its destination must be different from p 
         \begin{equation}
             \label{eq:gen_path_constr2}
-            \forall c \in \{1 \ldots m\}:
-            \forall p \in \{1 \ldots n\}:
-            \left\{
-                \begin{array}{lr}
-                    \texttt{NOT(paths[$c$, $p$, $p$])} & \texttt{iff } \texttt{assignments[$p$, $c$]}\\
-                    \texttt{paths[$c$, $p$, $p$]} & \texttt{iff } \texttt{NOT(assignments[$p$, $c$])} % or otherwise
-                \end{array}
-            \right\}
+            \forall c \in [1, m],
+            \forall p \in [1, n]:
+            \begin{cases}
+                P\texttt{[$c$, $p$, $p$]}=0 & \texttt{if } A\texttt{[$p$, $c$]}=1\\
+                P\texttt{[$c$, $p$, $p$]}=1 & \texttt{if } A\texttt{[$p$, $c$]}=0 % or otherwise
+            \end{cases}
         \end{equation}
 
         \item Each pack must be delivered by a single courier only once
         \begin{equation}
             \label{eq:gen_path_constr3}
-            \forall c \in \{1 \ldots m\}:
-            \forall loc_1 \in \{1 \ldots n+1\}:
+            \forall c \in [1, m],
+            \forall loc_1 \in [1, n+1]:
             \quad
-            \sum_{loc_2=1}^{n+1} \texttt{paths[$c$, $loc_1$, $loc_2$]} = \texttt{1}
+            \sum_{loc_2=1}^{n+1} P\texttt{[$c$, $loc_1$, $loc_2$]} = 1
         \end{equation}
     \end{itemize}
     \item Subcircuit constraints
@@ -139,58 +135,50 @@ The objective function is computed as follows:
         \item Only a single courier must deliver pack in location $loc_2$ from $loc_1$
         \begin{equation}
             \label{eq:subtour_constr1}
-            \forall c \in \{1 \ldots m\}:
-            \forall loc_2 \in \{1 \ldots n+1\}:
+            \forall c \in [1, m],
+            \forall loc_2 \in [1, n+1]:
             \quad
-            \sum_{loc_1=1}^{n+1} \texttt{paths[$c$, $loc_1$, $loc_2$]} = \texttt{1}
+            \sum_{loc_1=1}^{n+1} P\texttt{[$c$, $loc_1$, $loc_2$]} = 1
         \end{equation}
         \item Subtour elimination
         \begin{itemize}
             \item $u$ relative to first pack $p$ of courier $c$ path must have value = 1
             \begin{equation}
                 \label{eq:subtour_constr2}
-                \forall c \in \{1 \ldots m\}:
-                \forall p \in \{1 \ldots n\}:
-                \quad
-                \texttt{iff}
-                \quad
-                \texttt{paths[$c$, DEPOT, $p$]}
-                \quad
-                \texttt{then}
-                \quad
-                \texttt{u[$c$, $p$, $1$]}
+                \forall c \in [1, m],
+                \forall p \in [1, n]:
+                P\texttt{[$c$, DEPOT, $p$]}=1
+                \Rightarrow
+                U\texttt{[$c$, $p$, $1$]}=1
             \end{equation}
             \item $u_j \geq u_i + 1$
             \begin{equation}
                 \label{eq:subtour_constr3}
-                \forall c \in \{1, \dots, m\}: \ \forall i, j, k \in \{1, \dots, n\}: \quad
-                \texttt{paths}[c, i, j] \land \texttt{u}[c, i, k] \Longrightarrow
-                \sum_{l=k+1}^{n} \texttt{u}[c, j, l] = 1
+                \forall c \in [1, m], \ \forall i, j, k \in [1, n]: \quad
+                P\texttt{[$c$, $i$, $j$]} \land U\texttt{[$c$, $i$, $k$]} \Rightarrow
+                \sum_{l=k+1}^{n} U\texttt{[$c$, $j$, $l$]} = 1
             \end{equation}
             
-            \item Exatcly one true value for each \texttt{u[$c, p, :$]} vector
+            \item Exatcly one true value for each U\texttt{[$c, p, :$]} vector
             \begin{equation}
                 \label{eq:subtour_constr4}
-                \forall c \in 1 \ldots m:
-                \forall p_1 \in 1 \ldots n:
-                \quad
-                \sum_{p_2=1}^{n} \texttt{u[$c$, $p_1$, $p_2$]} = \texttt{1}
+                \forall c \in [1, m],
+                \forall p_1 \in [1, n]:
+                \sum_{p_2=1}^{n} U\texttt{[$c$, $p_1$, $p_2$]} = 1
             \end{equation}
 
             \item MTZ formulation constraint:
             \begin{center}
-                $u_i - u_j + 1 \leq (n - 1)$ * $(1 - paths[c, i, j] )$
+                $u_i - u_j + 1 \leq (n - 1)$ * $(1 - P[c, i, j] )$
             \end{center}
             \begin{equation}
                 \label{eq:subtour_constr5}
-                \forall c \in \{1, \dots, m\}, \ \forall i, j, k_1, k_2 \in \{1, \dots, n\}: 
+                \forall c \in [1, m], \ \forall i, j, k_1, k_2 \in [1, n]: 
             \end{equation}
-            \begin{center}\[
-                \quad
-                \texttt{u}[c, i, k_1] \land \texttt{u}[c, j, k_2] \Longrightarrow
-                (k_1 - k_2 + 1) \leq (n-1) \cdot (1 - \texttt{paths}[c, i, j])
-                \]
-            \end{center}
+            \[
+                U\texttt{[$c$, $i$, $k_1$]} \land U\texttt{[$c$, $j$, $k_2$]} \Rightarrow
+                (k_1 - k_2 + 1) \leq (n-1) \cdot (1 - P\texttt{[$c$, $i$, $j$]})
+            \]
         \end{itemize}
     \end{itemize}
 \end{itemize}
@@ -216,7 +204,7 @@ The original Unified Model was modified in three different versions:
 \subsubsection*{Experimental results}
 
 As we can notice from the following table the performances were not very much different from the basic model. Only in the first 10 instances it has been possible to rach at least a suboptimal solution, while for the remaining ones the construction of the model required too much time causing the exceeding of the timeout limit.
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \caption{Objective value through instances}
     \begin{tabular}{cccccc}
