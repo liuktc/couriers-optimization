@@ -38,7 +38,7 @@
 
 
     \section{Introduction} \label{sec:intro}
-    The problem of this project is known in the literature as the vehicle routing problem. We tackle this problem by virtually splitting it into two sub-problems: first we look for an assignment of the items to the couriers and then search for the routes of each of them (i.e., by solving multiple traveling salesman problems). To solve the latter, we follow the approach presented in \cite{vrp} where the route of a courier is modelled through the variables $P_d \in [1, n+1]$ with $d \in [1, n+1]$ defined as follows:
+    The problem of this project is known in the literature as the capacitated vehicle routing problem and can be easily proven to be NP-hard. We tackle this problem by virtually splitting it into two sub-problems: first we look for an assignment of the items to the couriers and then search for the routes of each of them (i.e., by solving multiple traveling salesman problems). To solve the latter, we follow the approach presented in \cite{vrp} where the route of a courier is modelled through the variables $P_d \in [1, n+1]$ with $d \in [1, n+1]$ defined as follows:
     \begin{equation}
         \label{eq:path_def}
         P_{d_1} = \begin{cases}
@@ -86,7 +86,8 @@
     The work has been completed in approximately one month and has been roughly split in the following way: Xia did the CP part, Costa worked on SAT, Domeniconi did the SMT models, and Maiolino completed the MIP part. The main difficulties we encountered are the following: 
     \begin{enumerate*}[label=(\roman*)]
         \item lack of proper documentation for many tools we used,
-        \item aaa.
+        \item difficulties to find a more efficient way to solve bigger instances,
+        \item need of time to experiment on all instances.
     \end{enumerate*}
 
 
@@ -98,26 +99,37 @@
 
     \section{Conclusions}
 
+    We experimented several models using different methods and attempted to implement the same core idea across the whole project to make results comparable. Overall, all approaches are able to solve the smaller instances while, for bigger instances, only CP and SMT were able to at least produce a suboptimal solution by using proper search heuristics. Moreover, for this problem, we surprisingly observed that symmetry breaking constraints generally tend, except in a few cases, to worsen the results.
 
     \printbibliography
 
     \begin{appendices}
         \section{Implied constraint proof} \label{sec:impl_proof}
         \begin{lem}
-            If the solution is optimal then every courier has to bring at least one package.
+            Assuming that the capacity of each courier allows delivering at least a package, if there exists an optimal solution, then there exists an optimal solution where each courier delivers at least one package.
         \end{lem}
         \begin{proof}
-            Let's assume for the sake of contradiction that we have found an optimal solution where there are one or plus couriers which don't bring any package, calling him $k_1$. Let's suppose that the courier $k_j$ is the one that cover the maximum distance $D_j$. If we assign one package, calling $i$, that $k_j$ brought, to $k_1$ then, due to the triangular inequality, the two new distances, $D_1$, travelled by the courier $k_1$, and $D_2$, travelled by the courier $k_j$, are less or equal to $D_j$, in fact:
+            Let us assume that the optimal solution is $D_j$ and there is a courier, say $k_1$, which do not deliver any package. Let us also suppose that the courier $k_j$ is the one that covers the maximum distance $D_j$. If we assign one package that $k_j$ brings, say $i$, to $k_1$, then, due to the triangle inequality, the two new distances $D_1$, travelled by the courier $k_1$ with $i$, and $D_2$, travelled by the courier $k_j$ without $i$, are less or equal to $D_j$. In fact:
             \begin{equation}
-            D_1 = D[depot,i] + D[i,depot] \leq D[depot, i_1] + \dots + D[i_r, i] + D[i, i_s] + \dots + D[i_t, depot] = D_j.
+                \begin{split}
+                    D_1 = &D[\texttt{depot},i] + D[i,\texttt{depot}] \leq\\
+                        & D[\texttt{depot}, i_1] + \dots + D[i_r, i] + D[i, i_s] + \dots + D[i_t, \texttt{depot}] = D_j.
+                \end{split}
             \end{equation}
-            \begin{align}
-            D_2 = D[depot,i_1] + \dots D[i_r,i_s] + \dots D[i_t, depot] \leq D[depot, i_1]
-            + \dots \\
-            \dots + D[i_r, i] + D[i, i_s] + \dots + D[i_t, depot] = D_j.
-            \end{align}
-            Therefore, $D_j$ is not an optimal solution and we have found a contradiction.
-            \end{proof}
+            \begin{equation}
+                \begin{split}
+                    D_2 = &D[\texttt{depot},i_1] + \dots + D[i_r,i_s] + \dots + D[i_t, \texttt{depot}] \leq\\
+                    &D[\texttt{depot}, i_1] + \dots + D[i_r, i] + D[i, i_s] + \dots + D[i_t, \texttt{depot}] = D_j.
+                \end{split}
+            \end{equation}
+            Therefore, there are the following cases:
+            \begin{itemize}
+                \item If $D_1 = D_2$, either both $k_1$ and $k_j$ cover the maximum distance or neither of them do, and another courier has a route of cost $D_j$.
+                \item If $D_1 > D_2$, either $k_1$ covers the maximum distance or another courier does.
+                \item If $D_1 < D_2$, same as above for $k_j$.
+            \end{itemize}
+            So, an optimal solution still exists and has as objective value $D_j$.
+        \end{proof}
     \end{appendices}
 
 \end{document}

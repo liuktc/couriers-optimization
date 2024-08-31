@@ -63,7 +63,7 @@ Our discussion will be focused on the former to maintain coherence with the mode
     \item $U$ is an $m \times n \times n$ matrix to implement the MTZ subtour elimination \cite{mtz_subtour}. $U\texttt{[$c$, $p$, $k$]} = 1$ iff for the courier $c$ the item $p$ is delivered as the $k$-th.
 \end{itemize}
 
-\subsubsection{Objective function}
+\subsection{Objective function}
 
 The objective function is computed as follows:
 \begin{equation}
@@ -73,20 +73,20 @@ The objective function is computed as follows:
 \end{equation}
 
 
-\subsubsection{Constraints}
+\subsection{Constraints}
 
 \paragraph*{Assignment related constraints}
 
 \begin{itemize}
     \item Capacity constraint:
     \begin{itemize}
-        \item Sum of sizes of packs delivered by a singular courier must be under its load limit
+        \item The sum of the sizes of the items delivered by a courier must be within its load limit:
         \begin{equation}
             \label{eq:capacity1}
             \forall c \in [1, m]:
             \sum_{p=1}^{n} A\texttt{[$p$, $c$]} \cdot s\texttt{[$p$]} \leq \texttt{$l$[$c$]}
         \end{equation}
-        \item Each pack must be delivered only by a courier
+        \item Each item must be delivered by only one courier:
         \begin{equation}
             \label{eq:capacity2}
             \forall p \in [1, n], \exists! c \in [1, m]: A\texttt{[$p$, $c$]} = 1
@@ -99,29 +99,31 @@ The objective function is computed as follows:
 \begin{itemize}
     \item General path constraints
     \begin{itemize}
-        \item If courier delivers at least one package, there must exist a destination from DEPOT\footnote{DEPOT is the original position, hypotesized as \texttt{n+1}.} with true value, else it can stay in DEPOT
-        \begin{equation}
-            \label{eq:gen_path_constr1}
-            \forall c \in [1, m],
-            \forall p \in [1, n]:
-            \begin{cases}
-                P\texttt{[$c$, DEPOT, DEPOT]}=0 & \texttt{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} \geq \texttt{1}\\
-                P\texttt{[$c$, DEPOT, DEPOT]}=1 & \texttt{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} = \texttt{0} % or otherwise
-            \end{cases}
-        \end{equation}
-
-        \item If courier delivers pack p, its destination must be different from p 
+        \item If a courier delivers at least one package, there must exist a destination from $\texttt{DEPOT}=n+1$ with true value, else it can stay in \texttt{DEPOT}:
+            \begin{equation}
+                \label{eq:gen_path_constr1}
+                \makebox[\displaywidth]{$
+                    \forall c \in [1, m],
+                    \forall p \in [1, n]:
+                    \begin{cases}
+                        P\texttt{[$c$, DEPOT, DEPOT]}=0 & \text{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} \geq \texttt{1}\\
+                        P\texttt{[$c$, DEPOT, DEPOT]}=1 & \text{if } \sum_{p=1}^{n} A\texttt{[$p$, $c$]} = \texttt{0} % or otherwise
+                    \end{cases}
+                $}
+            \end{equation}
+        
+        \item If a courier delivers item $p$, its successor in $P$ must be different from $p$:
         \begin{equation}
             \label{eq:gen_path_constr2}
             \forall c \in [1, m],
             \forall p \in [1, n]:
             \begin{cases}
-                P\texttt{[$c$, $p$, $p$]}=0 & \texttt{if } A\texttt{[$p$, $c$]}=1\\
-                P\texttt{[$c$, $p$, $p$]}=1 & \texttt{if } A\texttt{[$p$, $c$]}=0 % or otherwise
+                P\texttt{[$c$, $p$, $p$]}=0 & \text{if } A\texttt{[$p$, $c$]}=1\\
+                P\texttt{[$c$, $p$, $p$]}=1 & \text{if } A\texttt{[$p$, $c$]}=0 % or otherwise
             \end{cases}
         \end{equation}
 
-        \item Each pack must be delivered by a single courier only once
+        \item For each courier, there is exactly one successor location:
         \begin{equation}
             \label{eq:gen_path_constr3}
             \forall c \in [1, m],
@@ -129,10 +131,8 @@ The objective function is computed as follows:
             \quad
             \sum_{loc_2=1}^{n+1} P\texttt{[$c$, $loc_1$, $loc_2$]} = 1
         \end{equation}
-    \end{itemize}
-    \item Subcircuit constraints
-    \begin{itemize}
-        \item Only a single courier must deliver pack in location $loc_2$ from $loc_1$
+
+        \item For each courier, there is exactly one predecessor location:
         \begin{equation}
             \label{eq:subtour_constr1}
             \forall c \in [1, m],
@@ -140,9 +140,11 @@ The objective function is computed as follows:
             \quad
             \sum_{loc_1=1}^{n+1} P\texttt{[$c$, $loc_1$, $loc_2$]} = 1
         \end{equation}
-        \item MTZ formulation constraint for Subtour elimination
+    \end{itemize}
+
+    \item MTZ subtour elimination constraint
         \begin{itemize}
-            \item $u$ relative to first pack $p$ of courier $c$ path must have value = 1
+            \item $U$ relative to first item $p$ of courier $c$ path must be 1:
             \begin{equation}
                 \label{eq:subtour_constr2}
                 \forall c \in [1, m],
@@ -151,15 +153,18 @@ The objective function is computed as follows:
                 \Rightarrow
                 U\texttt{[$c$, $p$, $1$]}=1
             \end{equation}
-            \item $u_j \geq u_i + 1$
+            
+            \item $U$ relative to an item $j$ delivered after $i$ should be greater:
             \begin{equation}
-                \label{eq:subtour_constr3}
-                \forall c \in [1, m], \ \forall i, j, k \in [1, n]: \quad
-                P\texttt{[$c$, $i$, $j$]} \land U\texttt{[$c$, $i$, $k$]} \Rightarrow
-                \sum_{l=k+1}^{n} U\texttt{[$c$, $j$, $l$]} = 1
+                \makebox[\displaywidth]{$
+                    \label{eq:subtour_constr3}
+                    \forall c \in [1, m], \ \forall i, j, k \in [1, n]:
+                    \left(P\texttt{[$c$, $i$, $j$]} \land U\texttt{[$c$, $i$, $k$]}\right) \Rightarrow
+                    \sum_{l=k+1}^{n} U\texttt{[$c$, $j$, $l$]} = 1
+                $}
             \end{equation}
             
-            \item Exatcly one true value for each U\texttt{[$c, p, :$]} vector
+            \item $U$ relative to an item $p$ of a courier must have exactly one value associated:
             \begin{equation}
                 \label{eq:subtour_constr4}
                 \forall c \in [1, m],
@@ -167,43 +172,48 @@ The objective function is computed as follows:
                 \sum_{p_2=1}^{n} U\texttt{[$c$, $p_1$, $p_2$]} = 1
             \end{equation}
 
-            \item $u_i - u_j + 1 \leq (n - 1)$ * $(1 - P[c, i, j] )$:
+            \item MTZ formulation:
             \begin{equation}
                 \label{eq:subtour_constr5}
-                \forall c \in [1, m], \ \forall i, j, k_1, k_2 \in [1, n]: 
+                \makebox[\displaywidth]{$
+                    \begin{split}
+                        &\forall c \in [1, m], \ \forall i, j, k_1, k_2 \in [1, n]: \\
+                        &(U\texttt{[$c$, $i$, $k_1$]} \land U\texttt{[$c$, $j$, $k_2$]})\Rightarrow
+                        (k_1 - k_2 + 1) \leq (n-1) \cdot (1 - P\texttt{[$c$, $i$, $j$]})
+                    \end{split}
+                $}
             \end{equation}
-            \[
-                U\texttt{[$c$, $i$, $k_1$]} \land U\texttt{[$c$, $j$, $k_2$]} \Rightarrow
-                (k_1 - k_2 + 1) \leq (n-1) \cdot (1 - P\texttt{[$c$, $i$, $j$]})
-            \]
         \end{itemize}
-    \end{itemize}
 \end{itemize}
 
-\paragraph*{Symmetry breaking constraint}
+\subsubsection{Symmetry breaking constraint}
 
 A possible way to reduce tree exploration is to introduce symmetry breaking constraints. In particular, for SAT, we experimented only with the one defined in \Cref{eq:cp_symm_packs}.
 
-But the experimentation didn't lead to major improvements.
 
 \subsection{Validation}
 
-\subsubsection*{Experimental design}
+\subsubsection{Experimental design}
 
-Some modifications were applied to the basic model in order to visualize eventual differences in performances.
+Some modifications were applied to the basic model in order to visualize possible differences in performance.
 The original Unified Model was modified in three different versions:
-\begin{itemize}
-    \item Unified Model with Symmetry Breaking Constraint
-    \item Unified Model with Cumulative Constraint Application
-    \item Unified Model with Heule Encoding approach for \texttt{at\_most\_one()}
-\end{itemize}
-\subsubsection*{Experimental results}
+\begin{enumerate*}[label=(\roman*)]
+    \item with Symmetry Breaking Constraints,
+    \item with Cumulative Constraint Application,
+    \item with the Heule Encoding for \texttt{at\_most\_one()}.
+\end{enumerate*}
 
-As we can notice from the following table the performances were not very much different from the basic model. Only in the first 10 instances it has been possible to reach at least a suboptimal solution, while for the remaining ones the construction of the model required too much time causing the exceeding of the timeout limit.
+
+\subsubsection{Experimental results}
+
+As we can notice from \Cref{tab:sat_results}, the performances were not very much different from the basic model. Only in the first 10 instances it has been possible to reach at least a suboptimal solution, while for the remaining ones the construction of the model required too much time causing to exceed the timeout limit. Symmetry breaking also did not contribute to improve the results. 
+
 \begin{table}[H]
     \centering
     \caption{Objective value through instances}
-    \begin{tabular}{cccccc}
+    \label{tab:sat_results}
+    \centerline{
+        \begin{tabular}{cccccc}
             \toprule
             Id & un-model & un-symm-model & un-cum-constr-model & un-heule-enc-model & matrix-model \\ 
             \midrule
@@ -218,53 +228,55 @@ As we can notice from the following table the performances were not very much di
             9 & \textbf{436} &      \textbf{436} &  \textbf{436} &  \textbf{436} &  \textbf{436} \\ 
             10 & \textbf{244} &     \textbf{244} &  \textbf{244} &  \textbf{244} &  \textbf{244} \\ 
             \bottomrule
-    \end{tabular}
+        \end{tabular}
+    }
 \end{table}
 
-For all models were extracted some statistics, as we can observe in the following plots:
-\begin{enumerate*}[label=(\roman*)]
-    \item \textit{time}: similar interval of time for all unified models variants, while the matrix model ensure in some instances a better performance;
-    \item \textit{number of conflicts}: useful for estimating the size of the search space (the lower the better);
-    \item \textit{max memory}: max amount of memory needed by the solver to build the model.
-\end{enumerate*}
 
-
-
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{sat_images/time.pdf}
-        \caption{Resolution time for each instance}
+        \includegraphics[width=\linewidth]{img/sat/time.pdf}
+        \caption{Resolution time}
     \end{subfigure}
     \hfill
     \centering
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{sat_images/conflicts.pdf}
-        \caption{Number of conflicts for each instance}
+        \includegraphics[width=\linewidth]{img/sat/conflicts.pdf}
+        \caption{Number of conflicts}
     \end{subfigure}
-    \hfill
+    \\
     \centering
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{sat_images/max_memory.pdf}
-        \caption{Maximum amount of memory required for each instance}
+        \includegraphics[width=\linewidth]{img/sat/max_memory.pdf}
+        \caption{Maximum amount of memory required}
     \end{subfigure}
     % \hfill
     % \centering
     % \begin{subfigure}{0.49\linewidth}
         % \centering
-        % \includegraphics[width=\linewidth]{sat_images/mk_bool_var.pdf}
-        % \caption{Number of boolean variables for each instance}
+        % \includegraphics[width=\linewidth]{img/sat/mk_bool_var.pdf}
+        % \caption{Number of boolean variables}
     % \end{subfigure}
     % \hfill
     % \centering
+    % \hfill
+    % \centering
     % \begin{subfigure}{0.49\linewidth}
-        % \centering
-        % \includegraphics[width=\linewidth]{sat_images/restart.pdf}
-        % \caption{Number of restarts for each instance}
+    %     \centering
+    %     \includegraphics[width=\linewidth]{img/sat/restart.pdf}
+    %     \caption{Number of restarts}
     % \end{subfigure}
     \caption{Statistics about the resolution of the problem for the first 10 instances}
-    \label{fig:sat_plots}\footnote{These are the only ones which reach at least a suboptimal solution.}
+    \label{fig:sat_plots}
 \end{figure}
+
+For all models, some statistics were extracted and are presented in \Cref{fig:sat_plots}:
+\begin{enumerate*}[label=(\roman*)]
+    \item \textit{time}: similar interval of time for all unified models variants, while the matrix model ensure in some instances a better performance;
+    \item \textit{number of conflicts}: useful for estimating the size of the search space (the lower the better)\footnote{\url{https://stackoverflow.com/questions/17856574/how-to-interpret-statistics-z3}}. We can observe that the matrix model manage to have fewer conflicts, which is in line with its resolution time;
+    \item \textit{max memory}: also in line with the previous observations, the matrix model tend to require less memory to solve the problem.
+\end{enumerate*}

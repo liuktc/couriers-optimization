@@ -103,22 +103,22 @@ def run_ampl_model(model_file, data_file, solver, timeout):
 models_setup = [
     {
         "name": "initial-model",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/initial_model.mod"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "../models/initial_model.mod"),
     },
     {
         "name": "implied-model",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_implied_constraint.mod"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "../models/model_with_implied_constraint.mod"),
     },
     {
         "name": "symmetry-model",
-        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "./models/model_with_symmetry_breaking.mod"),
+        "model_path": os.path.join(pathlib.Path(__file__).parent.resolve(), "../models/model_with_symmetry_breaking.mod"),
     },
 ]
 
 
 def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
     
-    data_dir = os.path.join(pathlib.Path(__file__).parent.resolve(), './data')
+    data_dir = os.path.join(pathlib.Path(__file__).parent.resolve(), '../data')
     data_instance = sorted([f for f in os.listdir(data_dir) if f.endswith('.dat')])[instance_number-1]
     data_file = os.path.join(data_dir, data_instance)
     
@@ -191,41 +191,57 @@ def access_statistics():
         nodes_symmetry_model_highs.append(bn['symmetry-model_highs'])
     
     
-    plt.subplot(1,2,1)
-    plt.plot(range(1,11), iterations_implied_model_scip, marker='o', linestyle='-')
-    plt.plot(range(1,11), iterations_initial_model_scip, marker='o', linestyle='-')
-    plt.plot(range(1,11), iterations_symmetry_model_scip, marker='o', linestyle='-'  )
-    plt.title('scip')
-    plt.legend(['implied-model', 'initial-model', 'symmetry-model'])
-    plt.xlabel('Istances')
-    plt.ylabel('Simplex iterations')
-    plt.subplot(1,2,2)
-    plt.plot(range(1,11), iterations_implied_model_highs, marker='o', linestyle='-')
-    plt.plot(range(1,11), iterations_initial_model_highs, marker='o', linestyle='-')
-    plt.plot(range(1,11), iterations_symmetry_model_highs, marker='o', linestyle='-')
-    plt.title('highs')
-    plt.legend(['implied-model', 'initial-model', 'symmetry-model'])
-    plt.xlabel('Istances')
-    plt.ylabel('Simplex iterations')
-    plt.show()
+    with open("data.json", "w") as f:
+        json.dump({
+            "iterations_initial_model_scip": iterations_initial_model_scip,
+            "iterations_initial_model_highs": iterations_initial_model_highs,
+            "iterations_implied_model_scip": iterations_implied_model_scip,
+            "iterations_implied_model_highs": iterations_implied_model_highs,
+            "iterations_symmetry_model_scip": iterations_symmetry_model_scip,
+            "iterations_symmetry_model_highs": iterations_symmetry_model_highs,
+            "nodes_initial_model_scip": nodes_initial_model_scip,
+            "nodes_initial_model_highs": nodes_initial_model_highs,
+            "nodes_implied_model_scip": nodes_implied_model_scip,
+            "nodes_implied_model_highs": nodes_implied_model_highs,
+            "nodes_symmetry_model_scip": nodes_symmetry_model_scip,
+            "nodes_symmetry_model_highs": nodes_symmetry_model_highs,
+        }, f, indent=4)
+
+    # plt.subplot(1,2,1)
+    # plt.plot(range(1,11), iterations_implied_model_scip, marker='o', linestyle='-')
+    # plt.plot(range(1,11), iterations_initial_model_scip, marker='o', linestyle='-')
+    # plt.plot(range(1,11), iterations_symmetry_model_scip, marker='o', linestyle='-'  )
+    # plt.title('scip')
+    # plt.legend(['implied-model', 'initial-model', 'symmetry-model'])
+    # plt.xlabel('Istances')
+    # plt.ylabel('Simplex iterations')
+    # plt.subplot(1,2,2)
+    # plt.plot(range(1,11), iterations_implied_model_highs, marker='o', linestyle='-')
+    # plt.plot(range(1,11), iterations_initial_model_highs, marker='o', linestyle='-')
+    # plt.plot(range(1,11), iterations_symmetry_model_highs, marker='o', linestyle='-')
+    # plt.title('highs')
+    # plt.legend(['implied-model', 'initial-model', 'symmetry-model'])
+    # plt.xlabel('Istances')
+    # plt.ylabel('Simplex iterations')
+    # plt.show()
     
-    plt.subplot(1,2,1)
-    plt.plot(range(1,11), nodes_implied_model_scip, marker='o', linestyle='-')
-    plt.plot(range(1,11), nodes_initial_model_scip, marker='o', linestyle='-')
-    plt.plot(range(1,11), nodes_symmetry_model_scip, marker='o', linestyle='-')
-    plt.title('scip')
-    plt.legend(['implied-model', 'initial-model', 'symmetry-model'])
-    plt.xlabel('Istances')
-    plt.ylabel('Branching nodes')
-    plt.subplot(1,2,2)
-    plt.plot(range(1,11), nodes_implied_model_highs, marker='o', linestyle='-')
-    plt.plot(range(1,11), nodes_initial_model_highs, marker='o', linestyle='-')
-    plt.plot(range(1,11), nodes_symmetry_model_highs, marker='o', linestyle='-')
-    plt.title('highs')
-    plt.legend(['implied-model', 'initial-model', 'symmetry-model'])
-    plt.xlabel('Istances')
-    plt.ylabel('Branching nodes')
-    plt.show()
+    # plt.subplot(1,2,1)
+    # plt.plot(range(1,11), nodes_implied_model_scip, marker='o', linestyle='-')
+    # plt.plot(range(1,11), nodes_initial_model_scip, marker='o', linestyle='-')
+    # plt.plot(range(1,11), nodes_symmetry_model_scip, marker='o', linestyle='-')
+    # plt.title('scip')
+    # plt.legend(['implied-model', 'initial-model', 'symmetry-model'])
+    # plt.xlabel('Istances')
+    # plt.ylabel('Branching nodes')
+    # plt.subplot(1,2,2)
+    # plt.plot(range(1,11), nodes_implied_model_highs, marker='o', linestyle='-')
+    # plt.plot(range(1,11), nodes_initial_model_highs, marker='o', linestyle='-')
+    # plt.plot(range(1,11), nodes_symmetry_model_highs, marker='o', linestyle='-')
+    # plt.title('highs')
+    # plt.legend(['implied-model', 'initial-model', 'symmetry-model'])
+    # plt.xlabel('Istances')
+    # plt.ylabel('Branching nodes')
+    # plt.show()
 
 
 if __name__ == '__main__':

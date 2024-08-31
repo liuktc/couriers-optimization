@@ -83,7 +83,7 @@ For SMT, we experiment both symmetry breaking approaches as presented in \Cref{e
 
 \subsubsection{Experimental design}
 
-The experimental setup consists of two steps: first, we developed a Python package to automate the generation of SMT-LIB code from a high-level interface, allowing us to easily experiment and compare different solvers. More specifically, as solvers we experimented with Z3, cvc5, OpenSMT, SMTInterpol, and Yices 2. Then, to improve the performances on larger instances, we experimented with two different search strategies using the Z3 Python library (\texttt{z3py}):
+The experimental setup consists of two steps: first, we developed a Python package to automate the generation of SMT-LIB code from a high-level interface, allowing us to easily experiment and compare different solvers. More specifically, as solvers we experimented with Z3, cvc5, OpenSMT, SMTInterpol, and Yices 2 using both linear and binary optimization approaches. Then, to improve the performances on larger instances, we experimented with two different search strategies using the Z3 Python library (\texttt{z3py}):
 \begin{description}
     \item[Two solvers approach]
         As SMT solvers do not allow to assign a priority to the variables, this approach attempts to guide the exploration of the search space by alternating two solvers: the first one finds $A$ and the second one finds $P$ given $A$. In other words, the former decides which courier delivers which package and the latter decides the route taken by each courier, basically solving $m$ different Travelling Salesman Problems. 
@@ -95,7 +95,7 @@ The experimental setup consists of two steps: first, we developed a Python packa
 
 \subsubsection{Experimental results}
 
-The results of our experiments are presented in \Cref{tab:smt_results}.
+The results of our experiments are presented in \Cref{tab:smt_results}. As linear optimization always outperformed binary search, we only present the former.
 Analyzing SMT-LIB results, we can observe that all five solvers perform more or less similarly. The best performing is Yices 2 which solves \texttt{QF\_LIA} logic based on the simplex algorithm \cite{yices2}. On the other hand, the worst performing is SMTInterpol which relies on Craig interpolation \cite{smtinterpol}.
 Furthermore, experiments in \texttt{z3py} show that symmetry breaking and implied constraints do not provide significant contribution in improving the results.
 
