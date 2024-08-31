@@ -57,7 +57,7 @@ def modelRunner(ModelClass, instance, timeout, random_seed, queue):
     queue.put(result, block=False)
 
 
-def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
+def solve(instance, instance_number, timeout, cache={}, random_seed=42, models_filter=None, **kwargs):
     
     models = {
         'un-model': Unified_Model,
@@ -70,6 +70,8 @@ def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
     results = {}
 
     for model in models.keys():
+        if (models_filter is not None) and (model not in models_filter):
+            continue
         logger.info(f"Starting model {model}")
 
         # Check if result is in cache

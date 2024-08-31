@@ -205,8 +205,7 @@ models_setup = [
     
 ]
 
-
-def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
+def solve(instance, instance_number, timeout=300, cache={}, random_seed=42, models_filter=None, **kwargs):
     
     data_dir = os.path.join(pathlib.Path(__file__).parent.resolve(), './data')
     data_instance = sorted([f for f in os.listdir(data_dir) if f.endswith('.dat')])[instance_number-1]
@@ -215,8 +214,10 @@ def solve(instance, instance_number, timeout=300, cache={}, random_seed = 42):
     out_results = {}
     for model in models_setup:
         for solver in SOLVERS:
-            logger.info(f"Starting model {model['name']} with {solver}")
             model_str = model['name'] + '_' + solver
+            if (models_filter is not None) and (model_str not in models_filter):
+                continue
+            logger.info(f"Starting model {model['name']} with {solver}")
             # Check if result is in cache
             if model_str in cache:
                 logger.info(f"Cache hit")

@@ -154,11 +154,15 @@ experiments = [
 ]
 
 
-def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
+def solve(instance, instance_number, timeout=300, cache={}, random_seed=42, models_filter=None, **kwargs):
     results = {}
 
     for exp in experiments:
+        if (models_filter is not None) and (exp["name"] not in models_filter):
+            continue
         logger.info(f"Starting model {exp['name']}")
+
+        # Check if in cache
         if exp["name"] in cache:
             logger.info(f"Cache hit")
             results[exp["name"]] = cache[exp["name"]]

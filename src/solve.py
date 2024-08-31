@@ -29,6 +29,9 @@ if __name__ == "__main__":
     parser.add_argument("--overwrite-old", action="store_true", help="If set, old results with the same name will be run again")
     parser.add_argument("--instances", type=lambda arg: sorted([*map(int, arg.split(","))]), required=False, default=[], 
                         help="Number of the instances to run, comma separated")
+    parser.add_argument("--models", type=lambda arg: arg.split(","), required=False, default=None, 
+                        help="Name of the models to run, comma separated")
+    parser.add_argument("--seed", type=int, required=False, default=42, help="Seed for random operations")
     parser.add_argument("--mem-limit", type=int, required=False, default=-1, help="Memory usage limit in MB")
     parser.add_argument("--runner-label", type=str, required=False, default="", help="Name of the machine that is executing")
     parser.add_argument("--methods", type=lambda arg: arg.split(","), required=False, default=["cp", "sat", "smt", "milp"], 
@@ -90,15 +93,18 @@ if __name__ == "__main__":
             logger.info(f"Starting instance {instance_number}")
             instance_results = solve_fn(
                 instance = instance,
+                instance_number = instance_number,
                 timeout = args.timeout,
                 cache = cached_results,
-                instance_number = instance_number
+                random_seed = args.seed,
+                models_filter = args.models
             ) 
             
             # Adding missing cached results
-            for key in cached_results:
-                if key not in instance_results:
-                    instance_results[key] = cached_results[key]
+            if (not args.overwrite_old) and (args.models is None):
+                for key in cached_results:
+                    if key not in instance_results:
+                        instance_results[key] = cached_results[key]
 
             # Adding runner label
             for key in instance_results:

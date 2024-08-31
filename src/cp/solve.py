@@ -304,11 +304,13 @@ experiments_setup = (
 )
 
 
-def solve(instance, timeout, cache={}, random_seed=42, **kwargs):
+def solve(instance, instance_number, timeout, cache={}, random_seed=42, models_filter=None, **kwargs):
     instance_path = os.path.join(pathlib.Path(__file__).parent.resolve(), ".instance.dzn")
     out_results = {}
 
     for experiment in experiments_setup:
+        if (models_filter is not None) and (experiment["name"] not in models_filter):
+            continue
         logger.info(f"Starting model {experiment['name']} with {experiment['solver']}")
 
         # Check if result is in cache

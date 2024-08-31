@@ -54,10 +54,12 @@ experiments = [
 ]
 
 
-def solve(instance, timeout, cache={}, instance_number=0, **kwargs):
+def solve(instance, instance_number, timeout, cache={}, random_seed=42, models_filter=None, **kwargs):
     results = {}
     
     for experiment in experiments:
+        if (models_filter is not None) and (experiment["name"] not in models_filter):
+            continue
         logger.info(f"Starting model {experiment['name']}")
         name, model, symmetry_breaking, implied_constraints = experiment["name"], experiment["model"], experiment["symmetry_breaking"], experiment["implied_constraints"]
 
@@ -90,7 +92,7 @@ def solve(instance, timeout, cache={}, instance_number=0, **kwargs):
 
         gc.collect()
     
-    smtlib_results = solve_smtlib(instance, timeout, cache, **kwargs)
+    smtlib_results = solve_smtlib(instance, instance_number, timeout, cache, random_seed, models_filter, **kwargs)
     for key in smtlib_results:
         results[key] = smtlib_results[key]
 
