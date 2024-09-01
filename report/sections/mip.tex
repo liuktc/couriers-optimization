@@ -76,16 +76,29 @@ We defined the following constraints:
     \end{equation}
 
     \item Constraints for MTZ subtour elimination:
-    \begin{equation}
-        u[i,k] - u[j,k] + 1 \leq n(1 - X[i,j,k]) \qquad \forall i \in 1 \dots n, \forall j \in 1 \dots n+1, \forall k \in 1 \dots m.
-    \end{equation}
-    \begin{equation}
-        u[i,k] \leq X[n+1,i,k] + (n+1)(1-X[n+1,i,k]) \qquad \forall i \in 1 \dots n, \forall k \in 1 \dots m.
-    \end{equation}
-    \begin{equation}
-        u[j,k] \geq (u[i,k] + 1)X[i,j,k] \qquad \forall i \in 1 \dots n, \forall j \in 1 \dots n+1, \forall k \in 1 \dots m.
-    \end{equation}
+    \begin{itemize}
+        \item MTZ condition:
+            \begin{equation}
+            \makebox[\displaywidth]{$
+                u[i,k] - u[j,k] + 1 \leq (n-1)(1 - X[i,j,k]) \qquad \forall i \in 1 \dots n, \forall j \in 1 \dots n+1, \forall k \in 1 \dots m.
+            $}
+            \end{equation}
 
+        \item $u[i, k] = 1$ iff $i$ is the first item delivered by $k$:
+            \begin{equation}
+            \makebox[\displaywidth]{$
+                u[i,k] \leq X[n+1,i,k] + (n+1)(1-X[n+1,i,k]) \qquad \forall i \in 1 \dots n, \forall k \in 1 \dots m.
+            $}
+            \end{equation}
+
+        \item $u[j, k] \geq u[i, k] + 1$ iff $i$ is delivered before $j$:
+            \begin{equation}
+            \makebox[\displaywidth]{$
+                u[j,k] \geq (u[i,k] + 1)X[i,j,k] \qquad \forall i \in 1 \dots n, \forall j \in 1 \dots n+1, \forall k \in 1 \dots m.
+            $}
+            \end{equation}
+    \end{itemize}
+    
     \subsubsection{Implied Model}
     For the implied model we added one more constraint with the same meaning of \Cref{eq:impl_constr}:
     \begin{equation}

@@ -26,7 +26,7 @@ The SMT model uses the logic of quantifier-free linear integer arithmetic (\text
 \subsection{Objective function}
 The objective function is defined as follows:
 
-\[ \max_{i \in \{1, \dots, m\}} \texttt{DISTANCES}_i  \]
+\[ \max_{i \in [1, m]} \texttt{DISTANCES}_i  \]
 where $\texttt{DISTANCES}_i$ is equal to the distance traveled by each courier.
 
 \subsection{Constraints}
@@ -39,10 +39,10 @@ where $\texttt{DISTANCES}_i$ is equal to the distance traveled by each courier.
 
     \item Assignment and path constraint:
     \begin{equation}
-        \forall j \in [1, n]: \quad A_j = i \Longleftrightarrow P_{i,j} \neq j
+        \forall i \in [1, m], \forall j \in [1, n]: \quad A_j = i \Longleftrightarrow P_{i,j} \neq j
     \end{equation}
     \begin{equation}
-        \forall j \in [1, n]: \quad A_j \neq i \Longleftrightarrow P_{i,j} = j
+        \forall i \in [1, m], \forall j \in [1, n]: \quad A_j \neq i \Longleftrightarrow P_{i,j} = j
     \end{equation}
 
     \item All the elements of each row of $P$ should be distinct:

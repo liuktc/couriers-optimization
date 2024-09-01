@@ -24,10 +24,9 @@
 
 
 \begin{document}
-
     \begin{titlepage}
         \begin{center}
-            {\LARGE Very\_cool\_project.mzn}
+            {\LARGE Multiple Couriers Problem}
             \vspace*{1em}
             
             Valerio Costa, Luca Domeniconi, Claudia Maiolino, Tian Cheng Xia
@@ -36,6 +35,7 @@
         \end{center}
     \end{titlepage}
 
+    \thispagestyle{plain}
 
     \section{Introduction} \label{sec:intro}
     The problem of this project is known in the literature as the capacitated vehicle routing problem and can be easily proven to be NP-hard. We tackle this problem by virtually splitting it into two sub-problems: first we look for an assignment of the items to the couriers and then search for the routes of each of them (i.e., by solving multiple traveling salesman problems). To solve the latter, we follow the approach presented in \cite{vrp} where the route of a courier is modelled through the variables $P_d \in [1, n+1]$ with $d \in [1, n+1]$ defined as follows:
@@ -46,13 +46,14 @@
             d_1 & \text{iff $d_1$ is not part of the route of the courier}
         \end{cases}
     \end{equation} 
-    With proper assignment and subtour elimination constraints, $P_d$ allows to define a Hamiltonian cycle that passes through the items that the courier delivers and the solution can be extracted by following the cycle starting from the depot $n+1$.
+    With proper assignment and subtour elimination constraints, $P_d$ allows to define a Hamiltonian cycle that passes through the items that the courier delivers and the solution can be extracted by traversing the cycle starting from the depot $n+1$.
 
     The lower-bound of the objective function is common to all models and is defined as the maximum path cost that involves a single package:
     \begin{equation}
-        \max_{p \in \{ 1, \dots, n \}} \left\{ D_{n+1, p} + D_{p, n+1} \right\}
+        \max_{p \in [1, n]} \left\{ D_{n+1, p} + D_{p, n+1} \right\}
     \end{equation}
-    As upper-bound, we observed that it does not provide any improvements to the results. Nevertheless, we defined it as:
+
+    As upper-bound, also common to all models, we observed that it does not provide any improvement to the results. Nevertheless, we defined it as:
     \begin{equation}
         \sum_{d_1 \in [1, n+1]} \max_{d_2 \in [1, n+1]} D_{d_1, d_2}
     \end{equation}
@@ -65,7 +66,7 @@
                 \forall c_1, c_2 \in [1, m]: (c_1 < c_2 \land l_{c_1} = l_{c_2}) \Rightarrow Q_{c_1} \leq Q_{c_2}
             \end{equation}
             where $Q_c$ is the amount of packages delivered by the courier $c$.
-        \item By imposing an ordering on indexes of the assigned packages:
+        \item By imposing an ordering on the indexes of the assigned packages:
             \begin{equation}
                 \label{eq:cp_symm_packs}
                 \forall c_1, c_2 \in [1, m]: (c_1 < c_2 \land l_{c_1} = l_{c_2}) \Rightarrow A_{c_1} <_\texttt{lex} A_{c_2}
@@ -79,15 +80,15 @@
         \forall c \in [1, m]: Q_c \geq 1  
     \end{equation}
     where $Q_c$ is the amount of packages delivered by the courier $c$.
-    This obviously is applicable only if the size of the packages is compatible with the load capacity of each courier.
+    This obviously is applicable only if each courier is able to carry at least an item.
 
-    All experiments use the same random seed and were run as workflows on GitHub Actions which provides two cores at 2.45 GHz and 7 GB of memory, which we software limited to 5 GB to guarantee a safe margin for the Docker container to run.
+    All experiments were done using the same random seed and were run as workflows on GitHub Actions which provides two cores at 2.45 GHz and 7 GB of memory. To guarantee a safe margin for the Docker container to run, the actual usable memory was capped to 5 GB.
 
     The work has been completed in approximately one month and has been roughly split in the following way: Xia did the CP part, Costa worked on SAT, Domeniconi did the SMT models, and Maiolino completed the MIP part. The main difficulties we encountered are the following: 
     \begin{enumerate*}[label=(\roman*)]
         \item lack of proper documentation for many tools we used,
         \item difficulties to find a more efficient way to solve bigger instances,
-        \item need of time to experiment on all instances.
+        \item the need of time to run the experiments on all instances.
     \end{enumerate*}
 
 
@@ -125,7 +126,7 @@
             Therefore, there are the following cases:
             \begin{itemize}
                 \item If $D_1 = D_2$, either both $k_1$ and $k_j$ cover the maximum distance or neither of them do, and another courier has a route of cost $D_j$.
-                \item If $D_1 > D_2$, either $k_1$ covers the maximum distance or another courier does.
+                \item If $D_1 > D_2$, either $k_1$ covers the maximum distance or another courier that is not $k_1$ and $k_j$ does.
                 \item If $D_1 < D_2$, same as above for $k_j$.
             \end{itemize}
             So, an optimal solution still exists and has as objective value $D_j$.

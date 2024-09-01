@@ -15,13 +15,13 @@ The CP model relies on the following decision variables:
 \subsection{Objective function}
 Once the route of each courier has been found, the objective function is computed as follows:
 \begin{equation}
-    \max_{c \in [1, m]} \sum_{\substack{d \in [1, n+1]:\\P_{c, d} \neq d}} \texttt{D[$d$, $P_{c, d}$]} 
+    \max_{c \in [1, m]} \sum_{\substack{d \in [1, n+1]:\\P_{c, d} \neq d}} D_{d, P_{c, d}}
 \end{equation}
 
 
 \subsection{Constraints}
 
-To respect the capacity limits of each courier, the following constraint can be defined:
+To respect the capacity limit of each courier, the following constraint can be defined:
 \begin{equation}
     \forall c \in [1, m]: \sum_{p \in [1, n]: A_p = c} s_p \leq l_c 
 \end{equation}
@@ -66,12 +66,12 @@ where $L_c$ is the actual load carried by the courier $c$.
 
 \subsubsection{Experimental design}
 
-We experimented variations of our models using as solvers Gecode, Chuffed, and OR-Tools. The search order for all models assigns the packages (\texttt{assignments}) first and then searches for the route (\texttt{path}) of each courier in decreasing order of capacity. Regarding search, we experimented several combinations of variable selection and assignment strategies on a subset of instances and used only the best ones to obtain the final complete results.
+We experimented variations of our models using as solvers Gecode, Chuffed, and OR-Tools. The search order for all models assigns the packages (\texttt{assignments}) first and then searches for the route (\texttt{path}) of each courier in decreasing order of capacity. Regarding search, we experimented several combinations of variable selection and assignment strategies on a subset of instances and only used the best ones to obtain the final complete results.
 
 
 \subsubsection{Experimental results}
 
-From some preliminary experiments, we observed that first fail and largest domain with weighted degree (\texttt{dom\_w\_deg}) are the best performing search strategies. Therefore, we performed the full experiments using as search strategy \texttt{dow\_w\_deg} for \texttt{assignments} and \texttt{first\_fail} for \texttt{path}, respectively. Moreover, between the two symmetry breaking constraints, we observed that the lexicographic ordering defined in \Cref{eq:cp_symm_packs} has better performances and therefore present only those results. The objective values found by the most significant models are reported in \Cref{tab:cp_results}.
+From some preliminary experiments, we observed that first fail and largest domain with weighted degree (\texttt{dom\_w\_deg}) are the best performing search strategies. Therefore, we performed the full experiments using as search strategy \texttt{dom\_w\_deg} for \texttt{assignments} and \texttt{first\_fail} for \texttt{path}, respectively. Moreover, between the two symmetry breaking constraints, we observed that the lexicographic ordering defined in \Cref{eq:cp_symm_packs} has better performances and therefore present only those results. The objective values found by the most significant models are reported in \Cref{tab:cp_results}.
 
 \begin{table}[ht]
     \caption{Selected subset of CP results. Results in \textbf{bold} are solved to optimality. Instances that are all solved to optimality have been omitted.}

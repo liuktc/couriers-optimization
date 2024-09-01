@@ -53,14 +53,14 @@ For SAT, we defined two different models:
     \item[Matrix model] based on the definition of a single matrix $X$ such that $X\texttt{[$c$, $p$, $k$]} = 1$ iff courier $c$ delivers item $p$ as its $k$-th package.
 \end{description}
 
-Our discussion will be focused on the former to maintain coherence with the models defined in the other methods and obtain more comparable results. It decision variables are the following:
+Our discussion will be focused on the former to maintain coherence with the models defined in the other methods and obtain more comparable results. Its decision variables are the following:
 
 \begin{itemize}
     \item $A$ is an $n \times m$ matrix such that $A\texttt{[$p$, $c$]} = 1$ iff courier $c$ delivers item $p$.
 
     \item $P$ is an $m \times (n+1) \times (n+1)$ matrix such that $P\texttt{[$c$, $loc_1$, $loc_2$]} = 1$ iff courier $c$ moves from location $loc_1$ to $loc_2$.
 
-    \item $U$ is an $m \times n \times n$ matrix to implement the MTZ subtour elimination \cite{mtz_subtour}. $U\texttt{[$c$, $p$, $k$]} = 1$ iff for the courier $c$ the item $p$ is delivered as the $k$-th.
+    \item $U$ is an $m \times n \times n$ matrix to implement MTZ subtour elimination \cite{mtz_subtour}. $U\texttt{[$c$, $p$, $k$]} = 1$ iff for the courier $c$ the item $p$ is delivered as the $k$-th.
 \end{itemize}
 
 \subsection{Objective function}
@@ -68,8 +68,8 @@ Our discussion will be focused on the former to maintain coherence with the mode
 The objective function is computed as follows:
 \begin{equation}
     \label{eq:obj_fun}
-    \max_{c \in \{ 1, \dots, m \}}
-    \sum_{loc_1=1}^{n+1} \sum_{loc_2=1, loc_2 \neq loc_1}^{n+1} \texttt{D[$loc_1$, $loc_2$]} \cdot P\texttt{[$c$, $loc_1$, $loc_2$]}
+    \max_{c \in [1, m]}
+    \sum_{loc_1=1}^{n+1} \sum_{\substack{loc_2=1,\\loc_2 \neq loc_1}}^{n+1} \texttt{D[$loc_1$, $loc_2$]} \cdot P\texttt{[$c$, $loc_1$, $loc_2$]}
 \end{equation}
 
 
@@ -80,7 +80,7 @@ The objective function is computed as follows:
 \begin{itemize}
     \item Capacity constraint:
     \begin{itemize}
-        \item The sum of the sizes of the items delivered by a courier must be within its load limit:
+        \item The sum of the size of the items delivered by a courier must be within its load limit:
         \begin{equation}
             \label{eq:capacity1}
             \forall c \in [1, m]:
@@ -99,7 +99,7 @@ The objective function is computed as follows:
 \begin{itemize}
     \item General path constraints
     \begin{itemize}
-        \item If a courier delivers at least one package, there must exist a destination from $\texttt{DEPOT}=n+1$ with true value, else it can stay in \texttt{DEPOT}:
+        \item If a courier delivers at least one package, there must exist a destination from $\texttt{DEPOT}=n+1$ with its value set to true, else it stays in \texttt{DEPOT}:
             \begin{equation}
                 \label{eq:gen_path_constr1}
                 \makebox[\displaywidth]{$
@@ -142,9 +142,9 @@ The objective function is computed as follows:
         \end{equation}
     \end{itemize}
 
-    \item MTZ subtour elimination constraint
+    \item MTZ subtour elimination constraints
         \begin{itemize}
-            \item $U$ relative to first item $p$ of courier $c$ path must be 1:
+            \item $U$ relative to the first item $p$ of the path of a courier $c$ must be 1:
             \begin{equation}
                 \label{eq:subtour_constr2}
                 \forall c \in [1, m],
@@ -154,7 +154,7 @@ The objective function is computed as follows:
                 U\texttt{[$c$, $p$, $1$]}=1
             \end{equation}
             
-            \item $U$ relative to an item $j$ delivered after $i$ should be greater:
+            \item $U$ relative to an item $j$ delivered after $i$ should be greater ($U_j \geq U_i+1$):
             \begin{equation}
                 \makebox[\displaywidth]{$
                     \label{eq:subtour_constr3}
@@ -168,8 +168,8 @@ The objective function is computed as follows:
             \begin{equation}
                 \label{eq:subtour_constr4}
                 \forall c \in [1, m],
-                \forall p_1 \in [1, n]:
-                \sum_{p_2=1}^{n} U\texttt{[$c$, $p_1$, $p_2$]} = 1
+                \forall p \in [1, n]:
+                \sum_{k=1}^{n} U\texttt{[$c$, $p$, $k$]} = 1
             \end{equation}
 
             \item MTZ formulation:
@@ -202,6 +202,8 @@ The original Unified Model was modified in three different versions:
     \item with Cumulative Constraint Application,
     \item with the Heule Encoding for \texttt{at\_most\_one()}.
 \end{enumerate*}
+
+To optimize the objective function, we follow the standard approach of iteratively solving the problem and imposing as new constraint the fact that a new objective must be lower than the one already found.
 
 
 \subsubsection{Experimental results}
