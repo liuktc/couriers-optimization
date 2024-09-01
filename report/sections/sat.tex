@@ -208,11 +208,11 @@ To optimize the objective function, we follow the standard approach of iterative
 
 \subsubsection{Experimental results}
 
-As we can notice from \Cref{tab:sat_results}, the performances were not very much different from the basic model. Only in the first 10 instances it has been possible to reach at least a suboptimal solution, while for the remaining ones the construction of the model required too much time causing to exceed the timeout limit. Symmetry breaking also did not contribute to improve the results. 
+As we can notice from \Cref{tab:sat_results}, the performances were not very much different from the basic model. Only for the first 10 instances it has been possible to reach at least a suboptimal solution, while for the remaining ones the construction of the model required too much time causing to exceed the timeout limit. Symmetry breaking also did not contribute to improve the results. 
 
 \begin{table}[H]
     \centering
-    \caption{Objective value through instances}
+    \caption{SAT results. Results in \textbf{bold} are solved to optimality. Instances that are all without a solution have been omitted.}
     \label{tab:sat_results}
     \centerline{
         \begin{tabular}{cccccc}
@@ -278,7 +278,7 @@ As we can notice from \Cref{tab:sat_results}, the performances were not very muc
 
 For all models, some statistics were extracted and are presented in \Cref{fig:sat_plots}:
 \begin{enumerate*}[label=(\roman*)]
-    \item \textit{time}: similar interval of time for all unified models variants, while the matrix model ensure in some instances a better performance;
-    \item \textit{number of conflicts}: useful for estimating the size of the search space (the lower the better)\footnote{\url{https://stackoverflow.com/questions/17856574/how-to-interpret-statistics-z3}}. We can observe that the matrix model manage to have fewer conflicts, which is in line with its resolution time;
+    \item \textit{time}: there are similar intervals of time for all unified model variants, while the matrix model ensures in some instances a better performance;
+    \item \textit{number of conflicts}: it useful for estimating the size of the search space (the lower the better)\footnote{\url{https://stackoverflow.com/questions/17856574/how-to-interpret-statistics-z3}}. We can observe that the matrix model manages to have fewer conflicts, which is in line with its resolution time;
     \item \textit{max memory}: also in line with the previous observations, the matrix model tend to require less memory to solve the problem.
 \end{enumerate*}

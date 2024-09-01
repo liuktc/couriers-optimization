@@ -9,19 +9,19 @@ The MIP models also follow the same idea presented in \Cref{sec:intro}.
 % \begin{definition}[Hamiltonian cycle]
 % In the mathematical field of graph theory an Hamiltonian cycle (or Hamiltonian circuit) is a cycle that visits each vertex exactly once.
 % \end{definition}
-% In order to preserve the properties of the Hamiltonian cycle and to avoid the possible presence of sub-circuits we added some constraints, and in particular for the last case we followed the Miller–Tucker–Zemlin (MTZ) approach.\\
+% In order to preserve the properties of the Hamiltonian cycle and to avoid the possible presence of subcircuits we added some constraints, and in particular for the last case we followed the Miller–Tucker–Zemlin (MTZ) approach.\\
 The models are based on the following three variables:
 \begin{itemize}
-    \item A binary tensor $X \in \{0,1\}^{(n+1) \times (n+1) \times m}$, where $X[i,j,k] = 1$ if and only if the courier $k$ depart from the $i$-th delivery point and arrive at the $j$-th one. This formulation is inspired from the AMPL book \cite{AMPLbook}.
+    \item A binary tensor $X \in \{0,1\}^{(n+1) \times (n+1) \times m}$, where $X[i,j,k] = 1$ if and only if the courier $k$ departs from the $i$-th delivery point and arrives at the $j$-th one. This formulation is inspired from the AMPL book \cite{AMPLbook}.
 
-    \item A binary matrix $A \in \{0,1\}^{n \times m}$, where $A[i,k] = 1$ if and only if the the package $i$ is delivered by the courier $k$. We observe that these variables are not strictly necessary for the model, but they allowed us to write some constraints in an easier way.
+    \item A binary matrix $A \in \{0,1\}^{n \times m}$, where $A[i,k] = 1$ if and only if the package $i$ is delivered by the courier $k$. We observe that these variables are not strictly necessary for the model, but they allowed us to write some constraints in an easier way.
 
-    \item An auxiliary matrix $u \in \{1,\dots,n+1\}^{(n+1) \times m}$ that keeps track of the order in which nodes are visited by each courier starting from $1$. It is necessary, following the MTZ formulation, for the sub-circuits elimination. The interpretation is that, fixing the courier $k$, $u[i,k] < u[j,k]$ implies that the node $i$ is visited before the node $j$ by the courier $k$.
+    \item An auxiliary matrix $u \in \{1,\dots,n+1\}^{(n+1) \times m}$ that keeps track of the order in which the nodes are visited by each courier starting from $1$. It is necessary, following the MTZ formulation, for subcircuit elimination. The interpretation is that, fixed a courier $k$, $u[i,k] < u[j,k]$ implies that the node $i$ is visited before the node $j$ by the courier $k$.
 \end{itemize}
 
 
 \subsection{Objective function}
-As objective function, defined from the assignment as the maximum distance travelled by any courier, we use the following: 
+As objective function, defined from the assignments as the maximum distance travelled by any courier, we use the following: 
 \begin{equation}
     \max_{k \in 1 \dots m}\sum_{i = 1}^{n+1} X[i,j,k] \cdot D[i,j]
 \end{equation}
@@ -39,7 +39,7 @@ We defined the following constraints:
         \sum_{i = 1}^{n+1} X[i,j,k] = A[j,k]  \qquad  \forall j \in 1 \dots n,\forall k \in 1 \dots m.
     \end{equation}
 
-    \item Constraint to guarantee that each package has to be assigned:
+    \item Constraint to guarantee that each package is assigned:
     \begin{equation}
         \sum_{k = 1}^{m} A[i,k] = 1  \qquad \forall i \in 1 \dots n.
     \end{equation}
@@ -100,13 +100,13 @@ We defined the following constraints:
     \end{itemize}
     
     \subsubsection{Implied Model}
-    For the implied model we added one more constraint with the same meaning of \Cref{eq:impl_constr}:
+    For the implied model, we added one more constraint with the same meaning of \Cref{eq:impl_constr}:
     \begin{equation}
         \sum_{i = 1}^{n} A[i,k] \geq 1 \qquad \forall k \in 1 \dots m.
     \end{equation}
     
     \subsubsection{Symmetry Model}
-    For the symmetry model, we added the symmetry-breaking constraint related to the number of delivered packages as defined in \Cref{eq:cp_symm_amount}:
+    For the symmetry model, we added the symmetry breaking constraint related to the number of delivered packages as defined in \Cref{eq:cp_symm_amount}:
     \begin{equation}
         \sum_{i = 1}^{n} A[i,k] \leq \sum_{i = 1}^n A[i,j],
     \end{equation}
@@ -118,21 +118,21 @@ We defined the following constraints:
 
 \subsubsection{Experimental design}
 
-For the MIP models, we choose to use the solver-independent language AMPL. The workflow is based on the construction of three different models: the initial one, the implied one and the symmetry one.
+For the MIP models, we choose to use the solver-independent language AMPL. The workflow is based on the construction of three different models: the initial one, the implied one, and the symmetry breaking one.
 
-For reproducibility, we decided to only use open-source solvers such as HiGHS, SCIP, and GCG, provided by the AMPL framework.
+For reproducibility, we decided to only use open-source solvers provided by the AMPL framework such as HiGHS, SCIP, and GCG.
 
 
 \subsubsection{Experimental results}
 
 Starting from some preliminary experiments, we immediately observed that GCG performs poorly on the first ten instances and therefore decided to discard it from the full experiments.
 
-In \Cref{tab:mip_results}, we present the results of the MIP models. We can observe that the SCIP solver with the addition of the implied and symmetry breaking constraints improves in performance. On the other hand, this behavior is not the same for HiGHS.
+In \Cref{tab:mip_results}, we present the results of the MIP models. We can observe that the SCIP solver with the addition of implied and symmetry breaking constraints improves in performance. On the other hand, this behavior is not the same for HiGHS.
 Nevertheless, the HiGHS solver performances are in general significantly better than the SCIP ones.
 
 \begin{table}[H]
     \centering
-    \caption{Results of the SCIP and HiGHS solvers for the three models. Instances without a result have been omitted.}
+    \caption{MIP results. Results in \textbf{bold} are solved to optimality. Instances that are all without a solution have been omitted.}
     \label{tab:mip_results}
     \centerline{
         \begin{tabular}{ccccccc}
@@ -165,8 +165,8 @@ Nevertheless, the HiGHS solver performances are in general significantly better 
 \end{table}
 
 
-For the first ten instances, we plotted the graphs about the execution time (in seconds), the number of simplex iterations, and branching nodes explored for these two solvers.
-\begin{figure}[H]
+For the first ten instances, we plotted the graphs about the execution time (in seconds), the number of simplex iterations, and branching nodes explored by these two solvers.
+\begin{figure}[ht]
     \centering
     \begin{subfigure}{0.8\linewidth}
         \centering
@@ -188,5 +188,4 @@ For the first ten instances, we plotted the graphs about the execution time (in 
 % \end{figure}
 
 
-On a theoretical level, SCIP and HiGHS try to initially solve the relaxed-version of the problem (LP) using the revised simplex-method and finding a lower bound for the solution; then, if the solution found is not integer, they start to solve the MIP part using branch-and-cut (SCIP) or branch-and-bound (HiGHS). For the resolution of the sub-problems generated by these two methods, they proceed recursively by applying the same algorithm.
-From the plots, we can observe that a lower number of simplex iterations and branching nodes corresponds to a faster resolution time. This is in line with our previous observation regarding HiGHS as a better performing solver.
+On a theoretical level, SCIP and HiGHS try to initially solve the relaxed-version of the problem (LP) using the revised simplex-method and finding a lower bound for the solution; then, if the solution found is not an integer, they start to solve the MIP part using branch-and-cut (SCIP) or branch-and-bound (HiGHS). For the resolution of the sub-problems generated by these two methods, they proceed recursively by applying the same algorithm. Therefore, from the plots, we can observe that a lower number of simplex iterations and branching nodes corresponds to a faster resolution time. This is in line with our previous observation regarding HiGHS as a better performing solver.

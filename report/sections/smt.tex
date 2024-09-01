@@ -6,7 +6,7 @@
 The SMT model uses the logic of quantifier-free linear integer arithmetic (\texttt{QF\_LIA}) and relies on the following decision variables:
 
 \begin{itemize}
-    \item For each package $j$, $A_j \in [1, m]$ (\texttt{ASSIGNMENTS[j]} in Z3) indicates which courier delivers package $j$ where $A_j = i$ indicates that courier $i$ delivers package $j$.
+    \item For each package $j$, $A_j \in [1, m]$ (\texttt{ASSIGNMENTS[j]} in the code) indicates which courier delivers package $j$ where $A_j = i$ indicates that courier $i$ delivers package $j$.
     
     \item For each courier $i$, $P_{i,d} \in [1, n+1]$ for $d \in [1, n+1]$ (\texttt{PATH[i][d]} in the code) follows the definition of \Cref{eq:path_def}.
 
@@ -56,7 +56,7 @@ where $\texttt{DISTANCES}_i$ is equal to the distance traveled by each courier.
     %     \forall i \in \{ 1, \dots, m \}: \quad C_i = | \{ j \in \{1, \dots, n\} | A_j = i \}|
     % \end{equation}
 
-    \item Subcircuit constraint: each row $P_i$ should define a subcircuit, that is a Hamiltonian path that ignores all the elements $P_{i,j} = j$, namely the packages that the courier $i$ don't deliver. This can be modelled through MTZ subtour elimination as defined in \Cref{eq:subtour_constr5}.
+    \item Subcircuit constraint: each row $P_i$ should define a subcircuit, that is a Hamiltonian path that ignores all the elements $P_{i,j} = j$, namely the packages that the courier $i$ do not deliver. This can be modelled through MTZ subtour elimination as defined in \Cref{eq:subtour_constr5}.
 
     % \item Distance constraint:
     % \begin{equation}
@@ -86,7 +86,7 @@ For SMT, we experiment both symmetry breaking approaches as presented in \Cref{e
 The experimental setup consists of two steps: first, we developed a Python package to automate the generation of SMT-LIB code from a high-level interface, allowing us to easily experiment and compare different solvers. More specifically, as solvers we experimented with Z3, cvc5, OpenSMT, SMTInterpol, and Yices 2 using both linear and binary optimization approaches. Then, to improve the performances on larger instances, we experimented with two different search strategies using the Z3 Python library (\texttt{z3py}):
 \begin{description}
     \item[Two solvers approach]
-        As SMT solvers do not allow to assign a priority to the variables, this approach attempts to guide the exploration of the search space by alternating two solvers: the first one finds $A$ and the second one finds $P$ given $A$. In other words, the former decides which courier delivers which package and the latter decides the route taken by each courier, basically solving $m$ different Travelling Salesman Problems. 
+        As SMT solvers do not allow to assign a priority to the variables, this approach attempts to guide the exploration of the search space by alternating two solvers: the first one finds $A$ and the second one finds $P$ given $A$. In other words, the former decides which courier delivers which package and the latter decides the route taken by each courier, basically solving $m$ different travelling salesman problems. 
 
     \item[Local search approach]
         Similarly to the previous one, this approach also uses two solvers to first find $A$ and then $P$. However, instead of letting the second solver find an optimal solution for $P$ on its own, it is manually guided by performing a local search starting from a trivial solution (i.e., a path that delivers the items ordered by index).
