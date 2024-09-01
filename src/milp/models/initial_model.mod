@@ -68,7 +68,7 @@ subject to EndAtDepot {k in COURIERS}:
 #Subtour elimination -> MTZ formultation
 
 subject to SubtourElimination1{k in COURIERS, i in PACKS, j in NODES: j!=i}:
-	u[i,k] - u[j,k] + 1 <= n*(1-X[i,j,k]);
+	u[i,k] - u[j,k] + 1 <= (n-1)*(1-X[i,j,k]);
 
 subject to SubtourElimination2{k in COURIERS, i in PACKS}:
 	u[i,k] <= X[DEPOT,i,k] + (n+1)*(1-X[DEPOT,i,k]);
