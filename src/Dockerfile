@@ -49,10 +49,10 @@ RUN python3 -m pip install amplpy --no-cache-dir # Install amplpy
 RUN python3 -m amplpy.modules install highs cbc scip --no-cache-dir # Install modules
 RUN python3 -m amplpy.modules activate ${AMPL_KEY}
 
-
-RUN chmod +x ./entrypoint.sh
-
+# For Windows EOL char
 RUN apt install -y dos2unix
 RUN dos2unix ./entrypoint.sh
 
+
+RUN chmod +x ./entrypoint.sh
 ENTRYPOINT [ "./entrypoint.sh" ]
